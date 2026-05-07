@@ -1,11 +1,11 @@
--- Insertion des données dans la base de données*
+-- Insertion des données dans la base de données
 
 -- Table roles
 INSERT INTO roles(libelle) VALUES('Utilisateur');
 INSERT INTO roles(libelle) VALUES('Employé');
 INSERT INTO roles(libelle) VALUES('Administrateur');
 
---Table theme
+-- Table theme
 INSERT INTO theme(libelle) VALUES('Festivités Calendaires');
 INSERT INTO theme(libelle) VALUES('Cérémonies et Réceptions');
 INSERT INTO theme(libelle) VALUES('Affaires et Séminaires');
