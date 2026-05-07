@@ -15,7 +15,7 @@ CREATE TABLE roles(
 CREATE TABLE plat(
    Id_plat INT AUTO_INCREMENT,
    titre VARCHAR(255) NOT NULL,
-   type VARCHAR(255) NOT NULL,
+   type_plat VARCHAR(255) NOT NULL,
    photo VARCHAR(255),
    PRIMARY KEY(Id_plat)
 );
