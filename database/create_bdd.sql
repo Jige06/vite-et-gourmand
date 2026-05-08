@@ -63,6 +63,7 @@ CREATE TABLE utilisateur(
    ville VARCHAR(255) NOT NULL,
    actif BOOLEAN NOT NULL DEFAULT 1,
    Id_role INT NOT NULL,
+   must_change_password BOOLEAN NOT NULL DEFAULT 0,
    PRIMARY KEY(Id_Utilisateur),
    UNIQUE(email),
    FOREIGN KEY(Id_role) REFERENCES roles(Id_role)
