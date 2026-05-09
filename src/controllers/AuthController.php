@@ -15,6 +15,10 @@ class AuthController
 
         // on vérifie que les champs ne soient pas vides
         if ((!empty($email)) && (!empty($password))) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error'] = "L'adresse email n'est pas valide.";
+                Auth::redirect('/connexion');
+            }
             // on cherche l'utilisateur dans la bdd
             $user = UserModel::findByEmail($email);
 
@@ -29,6 +33,7 @@ class AuthController
                 $_SESSION['prenom'] = $user['prenom'];
 
                 switch ($_SESSION['role']) {
+                    // Jointure pour récupérer le libellé du rôle
                     case 'Administrateur':
                         Auth::redirect('/admin');
                         break;
@@ -63,19 +68,23 @@ class AuthController
         $ville = trim(htmlspecialchars($_POST['ville']));
         $password = trim($_POST['password']);
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['error'] = "L'adresse email n'est pas valide.";
-            Auth::redirect('/inscription');
-        }
-        if (!preg_match('/^[0-9]{10}$/', $telephone)) {
-            $_SESSION['error'] = "Le numéro de téléphone doit contenir 10 chiffres.";
-            Auth::redirect('/inscription');
-        }
-
         // on vérifie que les champs ne soient pas vides
         if ((!empty($nom)) && (!empty($prenom)) && (!empty($email)) && (!empty($telephone)) &&
             (!empty($adresse)) && (!empty($codePostal)) && (!empty($ville)) && (!empty($password))
         ) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error'] = "L'adresse email n'est pas valide.";
+                Auth::redirect('/inscription');
+            }
+            if (!preg_match('/^[0-9]{10}$/', $telephone)) {
+                $_SESSION['error'] = "Le numéro de téléphone doit contenir 10 chiffres.";
+                Auth::redirect('/inscription');
+            }
+            if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
+                $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                Auth::redirect('/inscription');
+            }
+
             // on cherche l'utilisateur dans la bdd
             $user = UserModel::findByEmail($email);
 
@@ -102,13 +111,9 @@ class AuthController
         }
     }
 
-    public function showResetPassword(){
-        require_once(__DIR__ . '/../views/auth/reset.php');
-    }
-
-    public function resetPassword()
+    public function showResetPassword()
     {
-        
+        require_once(__DIR__ . '/../views/auth/reset.php');
     }
 
     public function logout()
