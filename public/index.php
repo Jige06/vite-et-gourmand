@@ -3,6 +3,8 @@
 // Demarrage de la session utilisateur
 session_start();
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 // Chargement des variables d'environnement
 $env = parse_ini_file(__DIR__ . '/../.env');
 foreach ($env as $key => $value) {
@@ -10,9 +12,12 @@ foreach ($env as $key => $value) {
 }
 
 // Chargement des classes par autoload
-spl_autoload_register(function($class) {
+spl_autoload_register(function ($class) {
     if (file_exists(__DIR__ . '/../src/core/' . $class . '.php')) {
         require_once __DIR__ . '/../src/core/' . $class . '.php';
+    }
+    if (file_exists(__DIR__ . '/../src/entities/' . $class . '.php')) {
+        require_once __DIR__ . '/../src/entities/' . $class . '.php';
     }
     if (file_exists(__DIR__ . '/../src/controllers/' . $class . '.php')) {
         require_once __DIR__ . '/../src/controllers/' . $class . '.php';
