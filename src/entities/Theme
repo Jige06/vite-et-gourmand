@@ -1,0 +1,35 @@
+<?php
+
+class Theme
+{
+    private int $idTheme;
+    private string $libelle;
+
+    public function __construct($idTheme, $libelle)
+    {
+        $this->idTheme = $idTheme;
+        $this->libelle = $libelle;
+    }
+
+    public function getIdTheme()
+    {
+        return $this->idTheme;
+    }
+
+    public function setIdTheme($idTheme)
+    {
+        $this->idTheme = $idTheme;
+        return $this;
+    }
+
+    public function getLibelle()
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle($libelle)
+    {
+        $this->libelle = $libelle;
+        return $this;
+    }
+}
