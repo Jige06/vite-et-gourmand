@@ -2,7 +2,7 @@
 
 class AuthController
 {
-    public function showlogin()
+    public function showLogin()
     {
         require_once(__DIR__ . '/../views/auth/login.php');
     }
@@ -114,6 +114,35 @@ class AuthController
     public function showResetPassword()
     {
         require_once(__DIR__ . '/../views/auth/reset.php');
+    }
+
+    public function resetPassword()
+    {
+        // On récupére l'email saisi dans le formaulaire
+        $email = trim(htmlspecialchars($_POST['email']));
+
+        if (!empty($email)) {
+            // On vérifie que c'est bien au format email
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $user = UserModel::findByEmail($email);
+                if ($user !== null) {
+                    $tempPassword = UserModel::generateTempPassword();
+                    // enregistrement du temppassword enbdd;
+                    UserModel::updateTempPassword();
+                    UserModel::updateMustChangePassword();
+                    // envoi du mail avec le mot de passe temporaire
+                    UserModel::sendResetMail($email, $tempPassword);
+                }
+                $_SESSION['message'] = "Si un compte existe avec cet email, vous recevrez un mot de passe temporaire. Vous devrez le modifier lors de votre prochaine connexion";
+                Auth::redirect('/connexion');
+            } else {
+                $_SESSION['error'] = "L'adresse email n'est pas valide.";
+                Auth::redirect('/reset');
+            }
+        } else {
+            $_SESSION['message'] = "Veuillez saisir votre email.";
+            Auth::redirect('/reset');
+        }
     }
 
     public function logout()
