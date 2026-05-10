@@ -1,5 +1,8 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class UserModel
 {
     public static function findByEmail($email)
@@ -35,7 +38,30 @@ class UserModel
         $stmt->execute();
     }
 
-    public static function sendWelcomeMail() {}
+
+    public static function sendWelcomeMail($nom, $prenom, $email)
+    {
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = $_ENV['MAIL_HOST'];
+        $mail->SMTPAuth = true;
+        $mail->Port = $_ENV['MAIL_PORT'];
+        $mail->Username = $_ENV['MAIL_USER'];
+        $mail->Password = $_ENV['MAIL_PASS'];
+
+        $mail->setFrom($_ENV['MAIL_FROM'], 'Vite & Gourmand');
+        $mail->addAddress($email, $nom . ' ' . $prenom);
+
+        $mail->Subject = 'Bienvenue chez Vite & Gourmand';
+        $mail->Body = "Bonjour $prenom $nom, Julie et José sont ravis de vous compter parmi leurs clients !";
+
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Erreur envoi mail : " . $mail->ErrorInfo);
+        }
+    }
 
     public static function generateTempPassword()
     {
@@ -63,7 +89,7 @@ class UserModel
 
     public static function updateMustChangePassword($email, $value = 1)
     {
-                // Connexion à la BDD
+        // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
         // Requête préparée
         $stmt = $pdo->prepare("UPDATE utilisateur SET must_change_password = :value WHERE email = :email");
@@ -73,5 +99,27 @@ class UserModel
         $stmt->execute();
     }
 
-    public static function sendResetMail() {}
+    public static function sendResetMail($nom, $prenom, $email, $tempPassword)
+    {
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = $_ENV['MAIL_HOST'];
+        $mail->SMTPAuth = true;
+        $mail->Port = $_ENV['MAIL_PORT'];
+        $mail->Username = $_ENV['MAIL_USER'];
+        $mail->Password = $_ENV['MAIL_PASS'];
+
+        $mail->setFrom($_ENV['MAIL_FROM'], 'Vite & Gourmand');
+        $mail->addAddress($email, $nom . ' ' . $prenom);
+
+        $mail->Subject = 'Mot de passe temporaire';
+        $mail->Body = "Bonjour $prenom $nom, voici votre mot de passe temporaire: $tempPassword . Vous devrez le modifier lors de votre connexion.";
+
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Erreur envoi mail : " . $mail->ErrorInfo);
+        }
+    }
 }

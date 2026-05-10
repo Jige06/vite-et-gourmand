@@ -127,11 +127,11 @@ class AuthController
                 $user = UserModel::findByEmail($email);
                 if ($user !== null) {
                     $tempPassword = UserModel::generateTempPassword();
-                    // enregistrement du temppassword enbdd;
-                    UserModel::updateTempPassword();
-                    UserModel::updateMustChangePassword();
+                    // enregistrement du temppassword en bdd;
+                    UserModel::updateTempPassword($email, $tempPassword);
+                    UserModel::updateMustChangePassword($email, 1);
                     // envoi du mail avec le mot de passe temporaire
-                    UserModel::sendResetMail($email, $tempPassword);
+                    UserModel::sendResetMail($user['nom'], $user['prenom'], $email, $tempPassword);
                 }
                 $_SESSION['message'] = "Si un compte existe avec cet email, vous recevrez un mot de passe temporaire. Vous devrez le modifier lors de votre prochaine connexion";
                 Auth::redirect('/connexion');
