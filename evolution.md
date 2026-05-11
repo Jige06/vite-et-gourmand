@@ -7,3 +7,4 @@ RGAA complet
 enregistrer une commande en cours dans la bdd pour la retrouver lors d'une prochaine connexion.
 stocker la commande en cours dans localstorage pour la retrouver lors d'une prochaine reconnexion.
 Calcul kilométrique précis via API Google Maps ou OpenRouteService
+Mettre un validateur visuel de mot de passe.
