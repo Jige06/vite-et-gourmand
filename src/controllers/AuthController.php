@@ -72,8 +72,20 @@ class AuthController
         if ((!empty($nom)) && (!empty($prenom)) && (!empty($email)) && (!empty($telephone)) &&
             (!empty($adresse)) && (!empty($codePostal)) && (!empty($ville)) && (!empty($password))
         ) {
+            if (
+                !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $nom) ||
+                !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $prenom) ||
+                !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $ville)
+            ) {
+                $_SESSION['error'] = "Le nom, prénom et ville ne doivent contenir que des lettres.";
+                Auth::redirect('/inscription');
+            }
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $_SESSION['error'] = "L'adresse email n'est pas valide.";
+                Auth::redirect('/inscription');
+            }
+            if (!preg_match('/^[0-9]{5}$/', $codePostal)) {
+                $_SESSION['error'] = "Le code postal doit contenir 5 chiffres.";
                 Auth::redirect('/inscription');
             }
             if (!preg_match('/^[0-9]{10}$/', $telephone)) {
@@ -82,6 +94,10 @@ class AuthController
             }
             if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
                 $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                Auth::redirect('/inscription');
+            }
+            if ($_POST['password'] !== $_POST['confirm_password']) {
+                $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
                 Auth::redirect('/inscription');
             }
 
