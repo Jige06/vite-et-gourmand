@@ -17,7 +17,7 @@
                 </div>
                 <div class="lien text-center">
                     <a href="#">Mentions légales</a>
-                    <a href="#">Conditions générales de ventes</a>
+                    <a href="#">Conditions générales de vente</a>
                 </div>
             </div>
         </footer>
