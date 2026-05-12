@@ -75,6 +75,7 @@
   height: 400px;
   overflow: hidden;
 }
+
 .box-connexion {
   padding: 3rem;
   margin: 3rem auto 3rem auto;
@@ -120,4 +121,127 @@
 
 .forgot-password {
   font-size: 0.8rem;
+}
+
+.big-title-accueil {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.big-title-accueil img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.big-title-accueil h3,
+.big-title-accueil h2 {
+  font-family: var(--font-titre);
+  color: white;
+  font-size: 2rem;
+}
+
+.big-title-accueil h3,
+.big-title-accueil h2,
+.big-title-accueil button {
+  position: relative;
+  z-index: 1;
+  left: auto;
+  top: auto;
+  transform: none;
+}
+
+.big-title-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+}
+
+.big-title-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--couleur-dark);
+  border-radius: 5px;
+  color: var(--couleur-secondary);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.presentation {
+  width: 80%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.titre-presentation,
+.titre-realisation,
+.titre-avis {
+  font-family: var(--font-titre);
+  color: var(--couleur-primary);
+  width: 70%;
+  margin: 10px auto;
+}
+
+.text-realisation,
+.text-presentation {
+  font-family: var(--font-texte);
+  color: var(--couleur-primary);
+  width: 70%;
+  margin: 10px auto;
+}
+
+.text-presentation p {
+  text-align: justify;
+}
+
+.titre-presentation {
+  font-size: 1.5rem;
+}
+
+.image-presentation {
+  width: 50%;
+  max-height: 300px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.image-presentation img {
+  border-radius: 8px;
+  width: 80%;
+  height: auto;
+  object-fit: cover;
+}
+
+.realisations {
+  background-color: var(--couleur-dark);
+  border-radius: 8px;
+  width: 80%;
+}
+
+.image-realisation img {
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
+}
+
+.section-avis {
+  width: 80%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.avis {
+  font-family: var(--font-texte);
+  color: var(--couleur-primary);
+  border: 2px solid var(--couleur-secondary);
+  border-radius: 8px;
 }
