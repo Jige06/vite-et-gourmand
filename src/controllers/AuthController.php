@@ -9,7 +9,7 @@ class AuthController
 
     public function login()
     {
-        // on récupère les données du formulaire
+        // on récupère les données du formulaire et on les nettoie
         $email = trim(htmlspecialchars($_POST['email']));
         $password = trim($_POST['password']);
 
@@ -50,6 +50,15 @@ class AuthController
             }
         }
     }
+
+    public function handleLogin()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $this->login();
+    } else {
+        $this->showLogin();
+    }
+}
 
     public function showSignUp()
     {
@@ -127,6 +136,15 @@ class AuthController
         }
     }
 
+    public function handleSignUp()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $this->signUp();
+    } else {
+        $this->showSignUp();
+    }
+}
+
     public function showResetPassword()
     {
         require_once(__DIR__ . '/../views/auth/reset.php');
@@ -160,6 +178,15 @@ class AuthController
             Auth::redirect('/reset');
         }
     }
+
+    public function handleResetPassword()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $this->resetPassword();
+    } else {
+        $this->showResetPassword();
+    }
+}
 
     public function logout()
     {

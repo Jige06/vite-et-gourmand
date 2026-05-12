@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title-accueil container-fluid">
-    <img src="/public/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
     <h3 class="text-center">Julie et José vous souhaite la bienvenue chez</h3>
     <h2 class="text-center">Vite & Gourmand</h2>
     <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">Découvrir nos menus</button>
@@ -15,7 +15,7 @@
         <p>Portée par Julie et José, notre équipe met son professionnalisme au service de vos événements. Des repas de fêtes (Noël, Pâques) aux grandes célébrations (mariages, séminaires), nous proposons des menus savoureux en constante évolution, adaptés à tous les régimes. Profitez de notre savoir-faire artisanal et d'une commande simplifiée pour faire de vos réceptions un moment gastronomique d’exception.</p>
     </div>
     <div class="image-presentation">
-        <img src="/public/assets/images/Julie_et_José.png" alt="Julie_et_José_en_photo">
+        <img src="/assets/images/Julie_et_José.png" alt="Julie_et_José_en_photo">
     </div>
 </div>
 
@@ -28,26 +28,26 @@
     </div>
     <div class="row image mt-4">
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/public/assets/images/asperges_sauce_mousseline.png" alt="asperges_sauce_mousseline">
+            <img src="/assets/images/asperges_sauce_mousseline.png" alt="asperges_sauce_mousseline">
         </div>
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/public/assets/images/buffet_entrees_maraicheres.png" alt="buffet_entrees_maraicheres">
-        </div>
-    </div>
-    <div class="row image">
-        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/public/assets/images/cochon_lait_roti_broche.png" alt="cochon_lait_roti_broche">
-        </div>
-        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/public/assets/images/filet_boeuf_en_croute_juscorse.png" alt="filet_boeuf_en_croute_juscorse">
+            <img src="/assets/images/buffet_entrees_maraicheres.png" alt="buffet_entrees_maraicheres">
         </div>
     </div>
     <div class="row image">
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/public/assets/images/plateaux_fromages_france.png" alt="plateaux_fromages_france">
+            <img src="/assets/images/cochon_lait_roti_broche.png" alt="cochon_lait_roti_broche">
         </div>
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/public/assets/images/trio_gourmandises_chocolatees.png" alt="trio_gourmandises_chocolatees">
+            <img src="/assets/images/filet_boeuf_en_croute_juscorse.png" alt="filet_boeuf_en_croute_juscorse">
+        </div>
+    </div>
+    <div class="row image">
+        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
+            <img src="/assets/images/plateaux_fromages_france.png" alt="plateaux_fromages_france">
+        </div>
+        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
+            <img src="/assets/images/trio_gourmandises_chocolatees.png" alt="trio_gourmandises_chocolatees">
         </div>
     </div>
     <button onclick="window.location.href='/menus'" class="connect-button mb-3 mt-3" type="submit">Découvrir nos menus</button>

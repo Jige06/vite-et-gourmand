@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title container-fluid">
-    <img src="/public/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
     <h2 class="text-center">Connexion</h2>
 </div>
 
@@ -19,8 +19,9 @@
         </div>
         <div class="text-start mb-4">
             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
-            <div class="password">
+            <div class="password password-input">
                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">
+                <span onclick="togglePassword('motdepasse')">👁</span>
                 <div class="text-end">
                     <a class="forgot-password" href="#">Mot de passe oublié</a>
                 </div>

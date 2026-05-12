@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title container-fluid">
-    <img src="/public/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
     <h2 class="text-center">Inscription</h2>
 </div>
 <div class="box-connexion container-fluid">
@@ -46,14 +46,16 @@
         </div>
         <div class="text-start mb-4">
             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
-            <div>
+            <div class="password-input">
                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">
+                <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
             </div>
         </div>
         <div class="text-start mb-4">
             <label class="mb-1 d-block" for="confirm_motdepasse">Confirmation de votre mot de passe</label>
-            <div>
+            <div class="password-input">
                 <input class="form-control" type="password" id="confirm_motdepasse" name="confirm_password" required placeholder="Votre mot de passe">
+                <span onclick="togglePassword('motdepasse')">👁</span>
             </div>
         </div>
         <button class="connect-button mb-3 mt-3" type="submit">Créer votre compte</button>

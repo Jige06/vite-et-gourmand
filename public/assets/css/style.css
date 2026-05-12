@@ -245,3 +245,16 @@
   border: 2px solid var(--couleur-secondary);
   border-radius: 8px;
 }
+
+.password-input {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

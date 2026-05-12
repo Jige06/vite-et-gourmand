@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title container-fluid">
-    <img src="/public/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
     <h2 class="text-center">Changer mon mot de passe</h2>
 </div>
 <div class="box-connexion container-fluid">

@@ -29,13 +29,15 @@ spl_autoload_register(function ($class) {
 
 // Définition des routes
 $router = new Router();
-$router->add('/', []);
+$router->add('/', [HomeController::class,'index']);
 $router->add('/menus', []);
 $router->add('/menus/detail', []);
-$router->add('/connexion', []);
-$router->add('/inscription', []);
-$router->add('/mot-de-passe-oublie', []);
+$router->add('/connexion', [AuthController::class,'handleLogin']);
+$router->add('/logout', [AuthController::class, 'logout']);
+$router->add('/inscription', [AuthController::class,'handleSignUp']);
+$router->add('/mot-de-passe-oublie', [AuthController::class,'handleResetPassword']);
 $router->add('/contact', []);
+$router->add('/avis', []);
 $router->add('/commande', []);
 $router->add('/mon-espace', []);
 $router->add('/mon-espace/commandes', []);
