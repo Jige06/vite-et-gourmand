@@ -26,7 +26,13 @@ class AuthController
                 $_SESSION['error'] = "Il n'existe pas d'utilisateur avec cet email.";
                 Auth::redirect('/connexion');
                 return;
-            } else if (password_verify($password, $user['mot_de_passe'])) {
+            }
+            if ($user['actif'] == 0) {
+                $_SESSION['error'] = "Votre compte a été désactivé.";
+                Auth::redirect('/connexion');
+                return;
+            }
+            if (password_verify($password, $user['mot_de_passe'])) {
                 $_SESSION['id_user'] = $user['Id_Utilisateur'];
                 $_SESSION['role'] = $user['Id_role'];
                 $_SESSION['nom'] = $user['nom'];
