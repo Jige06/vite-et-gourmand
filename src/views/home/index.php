@@ -2,14 +2,14 @@
 
 <div class="big-title-accueil container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h3 class="text-center">Julie et José vous souhaite la bienvenue chez</h3>
+    <h3 class="text-center">Julie et José vous souhaitent la bienvenue chez</h3>
     <h2 class="text-center">Vite & Gourmand</h2>
     <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">Découvrir nos menus</button>
 </div>
 
 <div class="presentation container-fluid text-center mb-4 mt-4 pt-4 pb-4">
     <div class="titre-presentation pb-4 pt-4">
-        <h3>Notre entreprise</h3>
+        <h3>notre entreprise</h3>
     </div>
     <div class="text-presentation pb-1">
         <p>Portée par Julie et José, notre équipe met son professionnalisme au service de vos événements. Des repas de fêtes (Noël, Pâques) aux grandes célébrations (mariages, séminaires), nous proposons des menus savoureux en constante évolution, adaptés à tous les régimes. Profitez de notre savoir-faire artisanal et d'une commande simplifiée pour faire de vos réceptions un moment gastronomique d’exception.</p>
@@ -21,7 +21,7 @@
 
 <div class="realisations container-fluid text-center mb-4 mt-4 pb-4 pt-4">
     <div class="titre-realisation pb-4 pt-4">
-        <h3>Nos réalisations</h3>
+        <h3>nos réalisations</h3>
     </div>
     <div class="text-realisation pb-1">
         <p>Découvrez nos dernières créations culinaires et laissez-vous inspirer pour votre prochain événement.</p>
@@ -55,7 +55,7 @@
 
 <div class="section-avis container-fluid text-start mb-4 mt-4 pb-4 pt-4">
     <div class="titre-avis text-center pb-4 pt-4">
-        <h3>Quelques avis clients</h3>
+        <h3>quelques avis clients</h3>
     </div>
     <div class="avis ps-3 pe-3 pt-3 mt-2 mb-2">
         <p>Note: 4/5 * * * *</p>
