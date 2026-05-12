@@ -98,9 +98,12 @@ class MenuModel
 
         $params = [];
 
-        if (!empty($filters['prix_min']) && !empty($filters['prix_max'])) {
-            $sql .= " AND menu.prix_par_pers BETWEEN ? AND ?";
+        if (!empty($filters['prix_min'])) {
+            $sql .= " AND menu.prix_par_pers >= ?";
             $params[] = $filters['prix_min'];
+        }
+        if (!empty($filters['prix_max'])) {
+            $sql .= " AND menu.prix_par_pers <= ?";
             $params[] = $filters['prix_max'];
         }
         if (!empty($filters['theme'])) {
@@ -119,5 +122,50 @@ class MenuModel
 
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    public static function getAllThemes()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT * FROM theme");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public static function getAllRegimes()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT DISTINCT regime FROM menu");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public static function getMinPersonnes()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT MIN(nombre_pers_min) as min_pers FROM menu");
+        $stmt->execute();
+        return $stmt->fetch()['min_pers'];
+    }
+
+    public static function getMinPrix()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT MIN(prix_par_pers) as min_prix FROM menu");
+        $stmt->execute();
+        return $stmt->fetch()['min_prix'];
+    }
+
+    public static function getMaxPrix()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT MAX(prix_par_pers) as max_prix FROM menu");
+        $stmt->execute();
+        return $stmt->fetch()['max_prix'];
     }
 }

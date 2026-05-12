@@ -30,8 +30,12 @@ spl_autoload_register(function ($class) {
 // Définition des routes
 $router = new Router();
 $router->add('/', [HomeController::class,'index']);
-$router->add('/menus', []);
-$router->add('/menus/detail', []);
+$router->add('/menus', [MenuController::class, 'index']);
+$router->add('/menus/detail', [MenuController::class, 'showDetails']);
+$router->add('/menus/creer', [MenuController::class, 'handleCreate']);
+$router->add('/menus/modifier', [MenuController::class, 'handleUpdate']);
+$router->add('/menus/supprimer', [MenuController::class, 'handleDelete']);
+$router->add('/menus/filter', [MenuController::class, 'filter']);
 $router->add('/connexion', [AuthController::class,'handleLogin']);
 $router->add('/logout', [AuthController::class, 'logout']);
 $router->add('/inscription', [AuthController::class,'handleSignUp']);
