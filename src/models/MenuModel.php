@@ -2,6 +2,8 @@
 
 class MenuModel
 {
+
+    // Méthode permettant de créer un nouveau menu
     public static function createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme)
     {
         // Connexion à la BDD
@@ -23,6 +25,7 @@ class MenuModel
         $stmt->execute();
     }
 
+    // Méthode permettant de mettre à jour un menu
     public static function updateMenu($idMenu, $titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme)
     {
         // Connexion à la BDD
@@ -46,6 +49,7 @@ class MenuModel
         $stmt->execute();
     }
 
+    // Méthode permettant de supprimer un menu par son Id
     public static function deleteMenu($idMenu)
     {
         // Connexion à la BDD
@@ -55,12 +59,13 @@ class MenuModel
         $stmt->execute([$idMenu]);
     }
 
+    // Méthode qui récupère tous les menus avec leur theme
     public static function getAllMenu()
     {
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        // Requête préparée
+        // Requête préparée qui récupère tous les menus en joignant leur theme respectif
         $stmt = $pdo->prepare("SELECT menu.*, theme.libelle AS theme_libelle
         FROM menu
         JOIN theme ON menu.Id_theme = theme.Id_theme");
@@ -69,28 +74,32 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthode qui récupère un menu par son Id
     public static function getById($id)
     {
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        // Requête préparée
+        // Requête préparée que récupère un menu par son Id_menu en joignant son theme respectif 
         $stmt = $pdo->prepare("SELECT menu.*, theme.libelle AS theme_libelle
         FROM menu
         JOIN theme ON menu.Id_theme = theme.Id_theme
         WHERE menu.Id_menu = ?");
 
+        // On exécute la requete
         $stmt->execute([$id]);
+        // On recupere un tableau associatif
         $menu =  $stmt->fetch();
         return $menu ?: null;
     }
 
+    // Méthode qui récupère les menus en fonction des différents filtres
     public static function getByFilters($filters)
     {
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        // Requête préparée
+        // Requête préparée pour récupérer les menus  en fonction des filtres et en joignant leur theme respectif
         $sql = "SELECT menu.*, theme.libelle AS theme_libelle
         FROM menu
         JOIN theme ON menu.Id_theme = theme.Id_theme
@@ -124,6 +133,7 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthode qui récupère les différents thèmes
     public static function getAllThemes()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -133,6 +143,7 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthode qui récupère les différents régimes des menus
     public static function getAllRegimes()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -142,6 +153,27 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthode qui récupère les différents plats d'un menu
+    public static function getPlatsByMenu($idMenu)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT plat.* FROM plat JOIN menu_plat ON (plat.Id_plat = menu_plat.Id_plat) WHERE menu_plat.Id_menu = ?");
+        $stmt->execute([$idMenu]);
+        return $stmt->fetchAll();
+    }
+
+    // Méthode qui récupère les différents allergenes de d'un plat
+    public static function getAllergenesByPlat($idPlat)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT allergene.* FROM allergene JOIN plat_allergene ON (allergene.Id_allergene = plat_allergene.Id_allergene) WHERE plat_allergene.Id_plat = ?");
+        $stmt->execute([$idPlat]);
+        return $stmt->fetchAll();
+    }
+
+    // Méthode qui récupère la valeur min dans la propriété nombre_pers_min
     public static function getMinPersonnes()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -151,6 +183,7 @@ class MenuModel
         return $stmt->fetch()['min_pers'];
     }
 
+    // Méthode qui récupère le prix min par pers parmi l'ensemble des menus
     public static function getMinPrix()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -160,6 +193,7 @@ class MenuModel
         return $stmt->fetch()['min_prix'];
     }
 
+    // Méthode qui récupère le prix max par pers parmi l'ensemble des menus
     public static function getMaxPrix()
     {
         $pdo = DatabaseConnection::getInstance();

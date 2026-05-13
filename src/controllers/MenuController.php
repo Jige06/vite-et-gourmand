@@ -16,6 +16,24 @@ class MenuController
 
     public function showDetails()
     {
+        if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+            $_SESSION['error'] = "L'URL n'est pas valide.";
+            Auth::redirect('/menus');
+            return;
+        }
+        $idMenu = $_GET['id'];
+        $details = MenuModel::getById($idMenu);
+        if (!$details) {
+            $_SESSION['error'] = "L'URL n'est pas valide.";
+            Auth::redirect('/menus');
+            return;
+        }
+        $plats = MenuModel::getPlatsByMenu($idMenu);
+        foreach ($plats as &$plat) {
+            $allergenes = MenuModel::getAllergenesByPlat($plat['Id_plat']);
+            $plat['allergenes'] = $allergenes;
+        }
+        unset($plat);
         require_once(__DIR__ . '/../views/menus/detail.php');
     }
 
