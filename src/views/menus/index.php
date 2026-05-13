@@ -3,7 +3,7 @@
 <div class="big-title-accueil container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
     <h2 class="text-center">Vite & Gourmand</h2>
-    <button onclick="window.location.href='/commande'" class="big-title-button mb-3 mt-3" type="submit">Passez une commande</button>
+    <button onclick="window.location.href='/commande'" class="big-title-button mb-3 mt-3" type="button">Passez une commande</button>
 </div>
 <div class="menus container-fluid text-center mb-2 mt-2 pt-2 pb-2">
     <div class="titre-realisation pb-2 pt-2">
@@ -63,7 +63,7 @@
                     <h3><?= htmlspecialchars($menu['titre']) ?></h3>
                     <p><?= htmlspecialchars($menu['description_menu']) ?></p>
                     <p><?= $menu['prix_par_pers'] ?> €/pers — min <?= $menu['nombre_pers_min'] ?> pers</p>
-                    <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'">Voir le détail</button>
+                    <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'" type="button">Voir le détail</button>
                 </div>
             </div>
         <?php endforeach; ?>

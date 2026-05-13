@@ -4,7 +4,7 @@
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
     <h3 class="text-center">Julie et José vous souhaitent la bienvenue chez</h3>
     <h2 class="text-center">Vite & Gourmand</h2>
-    <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">Découvrir nos menus</button>
+    <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="button">Découvrir nos menus</button>
 </div>
 
 <div class="presentation container-fluid text-center mb-4 mt-4 pt-4 pb-4">
@@ -50,7 +50,7 @@
             <img src="/assets/images/trio_gourmandises_chocolatees.png" alt="trio_gourmandises_chocolatees">
         </div>
     </div>
-    <button onclick="window.location.href='/menus'" class="connect-button mb-3 mt-3" type="submit">Découvrir nos menus</button>
+    <button onclick="window.location.href='/menus'" class="connect-button mb-3 mt-3" type="button">Découvrir nos menus</button>
 </div>
 
 <div class="section-avis container-fluid text-start mb-4 mt-4 pb-4 pt-4">
