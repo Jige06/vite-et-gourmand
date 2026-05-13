@@ -122,4 +122,14 @@ class UserModel
             error_log("Erreur envoi mail : " . $mail->ErrorInfo);
         }
     }
+
+    public static function deactivateUser($idUser)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("UPDATE utilisateur SET actif = 0 WHERE Id_Utilisateur = :IdUser");
+        $stmt->bindValue(':IdUser', $idUser);
+
+        $stmt->execute();
+    }
 }
