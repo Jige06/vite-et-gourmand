@@ -42,7 +42,7 @@ $router->add('/inscription', [AuthController::class,'handleSignUp']);
 $router->add('/mot-de-passe-oublie', [AuthController::class,'handleResetPassword']);
 $router->add('/contact', []);
 $router->add('/avis', []);
-$router->add('/commande', []);
+$router->add('/commande', [OrderController::class,'handleOrder']);
 $router->add('/mon-espace', []);
 $router->add('/mon-espace/commandes', []);
 $router->add('/mon-espace/avis', []);

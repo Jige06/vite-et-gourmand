@@ -37,6 +37,7 @@ class AuthController
                 $_SESSION['role'] = $user['Id_role'];
                 $_SESSION['nom'] = $user['nom'];
                 $_SESSION['prenom'] = $user['prenom'];
+                $_SESSION['email'] = $user['email'];
 
                 switch ($_SESSION['role']) {
                     // Jointure pour récupérer le libellé du rôle

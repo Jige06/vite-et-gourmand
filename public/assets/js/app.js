@@ -43,37 +43,41 @@ async function applyFilters() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("theme-select")
-    .addEventListener("change", applyFilters);
-  document
-    .getElementById("regime-select")
-    .addEventListener("change", applyFilters);
-  document.getElementById("prix-min").addEventListener("change", function () {
-    const prixMax = document.getElementById("prix-max");
-    if (prixMax.value && this.value > prixMax.value) {
-      this.value = prixMax.value;
-    }
-    applyFilters();
-  });
-  document.getElementById("prix-max").addEventListener("change", function () {
-    const prixMin = document.getElementById("prix-min");
-    if (prixMin.value && this.value < prixMin.value) {
-      this.value = prixMin.value;
-    }
-    applyFilters();
-  });
-  document.getElementById("nbre-pers").addEventListener("change", applyFilters);
-  document
-    .getElementById("reset-filters")
-    .addEventListener("click", function () {
-      document.getElementById("theme-select").value = "";
-      document.getElementById("regime-select").value = "";
-      document.getElementById("prix-min").value = "";
-      document.getElementById("prix-max").value = "";
-      document.getElementById("nbre-pers").value = "";
+  if (document.getElementById("theme-select")) {
+    document
+      .getElementById("theme-select")
+      .addEventListener("change", applyFilters); // ligne 48
+    document
+      .getElementById("regime-select")
+      .addEventListener("change", applyFilters);
+    document.getElementById("prix-min").addEventListener("change", function () {
+      const prixMax = document.getElementById("prix-max");
+      if (prixMax.value && this.value > prixMax.value) {
+        this.value = prixMax.value;
+      }
       applyFilters();
     });
+    document.getElementById("prix-max").addEventListener("change", function () {
+      const prixMin = document.getElementById("prix-min");
+      if (prixMin.value && this.value < prixMin.value) {
+        this.value = prixMin.value;
+      }
+      applyFilters();
+    });
+    document
+      .getElementById("nbre-pers")
+      .addEventListener("change", applyFilters);
+    document
+      .getElementById("reset-filters")
+      .addEventListener("click", function () {
+        document.getElementById("theme-select").value = "";
+        document.getElementById("regime-select").value = "";
+        document.getElementById("prix-min").value = "";
+        document.getElementById("prix-max").value = "";
+        document.getElementById("nbre-pers").value = "";
+        applyFilters();
+      });
+  }
 });
 
 function updateMenuCards(menus) {
@@ -121,4 +125,204 @@ function updateMenuCards(menus) {
     col.appendChild(carte);
     container.appendChild(col);
   });
+}
+
+// Fonctionnement des boutons etape suivante et étape precedente de commande
+
+const formUser = document.getElementById("form-user");
+const formMenu = document.getElementById("form-menu");
+const formOrder = document.getElementById("form-order");
+if (formUser && formMenu && formOrder) {
+  let prixLivraison = 0;
+  // Passage à l'etape 2 de la commande
+  const etapeApres1 = document.getElementById("etape-apres1");
+
+  etapeApres1.addEventListener("click", function () {
+    const typeLivraison = document.querySelector(
+      'input[name="type_liv"]:checked',
+    ).value;
+
+    const date = document.getElementById("date_liv").value;
+    const heure = document.getElementById("heure_liv").value;
+    if (!date || !heure) {
+      const errorDiv = document.getElementById("error-date");
+      errorDiv.textContent = "Veuillez saisir date et heure.";
+      errorDiv.style.display = "block";
+      return;
+    }
+    document.getElementById("error-date").style.display = "none";
+
+    const dateLivraison = new Date(date);
+    const aujourdhui = new Date();
+    aujourdhui.setHours(0, 0, 0, 0);
+    if (dateLivraison < aujourdhui) {
+      const errorDivDate = document.getElementById("error-date");
+      errorDivDate.textContent =
+        "Veuillez saisir une date postérieure à aujourd'hui. Attention au délai minimum de commande de votre menu.";
+      errorDivDate.style.display = "block";
+      return;
+    }
+    document.getElementById("error-date").style.display = "none";
+
+    if (typeLivraison === "Livraison") {
+      // Récupération des valeurs pour l'API
+      const adresse = document.getElementById("adresse_liv").value;
+      const codePostal = document.getElementById("codePostal_liv").value;
+      const ville = document.getElementById("ville_liv").value;
+
+      if (!adresse || !codePostal || !ville) {
+        const errorDiv = document.getElementById("error-livraison");
+        errorDiv.textContent = "Veuillez remplir tous les champs de livraison.";
+        errorDiv.style.display = "block";
+        return;
+      }
+      document.getElementById("error-livraison").style.display = "none";
+
+      // Assemblage de l'adresse complète
+      const adresseComplete = adresse + " " + codePostal + " " + ville;
+      calculerFraisLivraison(adresseComplete);
+    }
+
+    formUser.style.display = "none";
+    formMenu.style.display = "block";
+  });
+
+  // Passage à l'etape 1 via l'etape 2 de la commande
+  const etapeAvant2 = document.getElementById("etape-avant2");
+  etapeAvant2.addEventListener("click", function () {
+    formUser.style.display = "block";
+    formMenu.style.display = "none";
+  });
+
+  // Passage à l'etape 3 via l'etape 2 de la commande
+  const etapeApres2 = document.getElementById("etape-apres2");
+  etapeApres2.addEventListener("click", function () {
+    formMenu.style.display = "none";
+    formOrder.style.display = "block";
+  });
+
+  // Passage à l'etape 2 via l'etape3 de la commande
+  const etapeAvant3 = document.getElementById("etape-avant3");
+  etapeAvant3.addEventListener("click", function () {
+    formOrder.style.display = "none";
+    formMenu.style.display = "block";
+  });
+
+  // Gestion de l'affiche des champs de livraison en fonction du type
+  // de livraison selectionné
+  const livraison = document.getElementById("livraison");
+  const enlevement = document.getElementById("enlevement");
+
+  livraison.addEventListener("change", function () {
+    document.querySelectorAll(".livraison").forEach(function (el) {
+      el.style.display = "block";
+    });
+  });
+
+  enlevement.addEventListener("change", function () {
+    document.querySelectorAll(".livraison").forEach(function (el) {
+      el.style.display = "none";
+    });
+    prixLivraison = 0;
+    document.getElementById("recap-livraison").textContent = "";
+    document.getElementById("hidden-livraison").value = 0;
+    calculerPrixTotal();
+  });
+
+  /* Géocode les deux adresses, calcule la distance par la route
+ et affiche les frais de livraison dans le récap de commande. */
+
+  // Récupération des données pour obtenir la distance pour calculer les frais de livraison
+  const apiKey =
+    "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjMwM2Q5YjE3ZGIxNzRiZDhiOTM4MDBhNDdkZDJhNjk4IiwiaCI6Im11cm11cjY0In0=";
+  const adresseViteGourmand = "19 Rue Bouffard 33000 Bordeaux";
+
+  async function calculerFraisLivraison(adresseComplete) {
+    // Géocodage de l'adresse du client
+    const url = `https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(adresseComplete)}`;
+    const responseClient = await fetch(url);
+    const dataClient = await responseClient.json();
+    const coordsClient = dataClient.features[0].geometry.coordinates;
+
+    // Géocodage de l'adresse de Vite & Gourmand
+    const urlVG = `https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(adresseViteGourmand)}`;
+    const responseVG = await fetch(urlVG);
+    const dataVG = await responseVG.json();
+    const coordsVG = dataVG.features[0].geometry.coordinates;
+
+    // Calcul de la distance
+    const responseDistance = await fetch(
+      "https://api.openrouteservice.org/v2/directions/driving-car",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: apiKey },
+        body: JSON.stringify({ coordinates: [coordsVG, coordsClient] }),
+      },
+    );
+    const dataDistance = await responseDistance.json();
+    const distanceKm = dataDistance.routes[0].summary.distance / 1000;
+
+    // Calcul du prix
+    prixLivraison = 5 + distanceKm * 0.59;
+
+    // Affichage dans le récap
+    document.getElementById("recap-livraison").textContent =
+      `Frais de livraison : ${prixLivraison.toFixed(2)} € (${distanceKm.toFixed(1)} km)`;
+    document.getElementById("hidden-livraison").value =
+      prixLivraison.toFixed(2);
+    calculerPrixTotal();
+  }
+
+  // Mise à jour du min quand le menu change
+  const menuSelect = document.getElementById("menu");
+  const optionDefaut = menuSelect.options[menuSelect.selectedIndex];
+  document.getElementById("nbre_pers").min = parseInt(
+    optionDefaut.dataset.minPers,
+  );
+  menuSelect.addEventListener("change", function () {
+    const optionSelectionnee = menuSelect.options[menuSelect.selectedIndex];
+    const nbreMinPers = parseInt(optionSelectionnee.dataset.minPers);
+    document.getElementById("nbre_pers").min = nbreMinPers;
+  });
+
+  // Calcul du total pour les menus
+  const nbrePersInput = document.getElementById("nbre_pers");
+  nbrePersInput.addEventListener("change", function () {
+    calculerPrixTotal();
+  });
+
+  function calculerPrixTotal() {
+    const optionSelectionnee = menuSelect.options[menuSelect.selectedIndex];
+    const prix = parseFloat(optionSelectionnee.dataset.prix);
+    const nbrePers = parseInt(nbrePersInput.value);
+    if (!nbrePers) return;
+    const nbreMinPers = parseInt(optionSelectionnee.dataset.minPers);
+    if (nbrePers < nbreMinPers) {
+      document.getElementById("recap-menu").textContent =
+        `Minimum ${nbreMinPers} personnes requis pour ce menu.`;
+      return;
+    }
+    let totalMenu;
+    if (nbrePers - nbreMinPers >= 5) {
+      const totalSansReduction = prix * nbrePers;
+      const reduction = totalSansReduction * 0.1;
+      totalMenu = totalSansReduction - reduction;
+
+      document.getElementById("recap-menu").textContent =
+        `Total de vos menus : ${totalSansReduction.toFixed(2)} €`;
+
+      document.getElementById("recap-reduc").textContent =
+        `Réduction : ${reduction.toFixed(2)} €`;
+    } else {
+      totalMenu = prix * nbrePers;
+      document.getElementById("recap-menu").textContent =
+        `Total de vos menus : ${totalMenu.toFixed(2)} €`;
+      document.getElementById("recap-reduc").textContent = "";
+    }
+
+    const totalGeneral = totalMenu + prixLivraison;
+    document.getElementById("recap-total").textContent =
+      `Total de votre commande : ${totalGeneral.toFixed(2)} € TTC`;
+    document.getElementById("hidden-total").value = totalGeneral.toFixed(2);
+  }
 }
