@@ -220,7 +220,7 @@ if (formUser && formMenu && formOrder) {
   });
 
   enlevement.addEventListener("change", function () {
-    document.querySelectorAll(".livraison").forEach(function (el) {
+    document.querySelectorAll(".livraison-param").forEach(function (el) {
       el.style.display = "none";
     });
     prixLivraison = 0;
@@ -228,6 +228,13 @@ if (formUser && formMenu && formOrder) {
     document.getElementById("hidden-livraison").value = 0;
     calculerPrixTotal();
   });
+
+  document
+    .getElementById("pret-materiel")
+    .addEventListener("change", function () {
+      const infoPret = document.getElementById("info-pret-materiel");
+      infoPret.style.display = this.checked ? "block" : "none";
+    });
 
   /* Géocode les deux adresses, calcule la distance par la route
  et affiche les frais de livraison dans le récap de commande. */
@@ -242,13 +249,15 @@ if (formUser && formMenu && formOrder) {
     const url = `https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(adresseComplete)}`;
     const responseClient = await fetch(url);
     const dataClient = await responseClient.json();
+    if (!dataClient.features || dataClient.features.length === 0) {
+      document.getElementById("recap-livraison").textContent =
+        "Adresse introuvable, veuillez vérifier votre adresse.";
+      return;
+    }
     const coordsClient = dataClient.features[0].geometry.coordinates;
 
-    // Géocodage de l'adresse de Vite & Gourmand
-    const urlVG = `https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(adresseViteGourmand)}`;
-    const responseVG = await fetch(urlVG);
-    const dataVG = await responseVG.json();
-    const coordsVG = dataVG.features[0].geometry.coordinates;
+    // Coordonnées fixes de Vite & Gourmand - 19 Rue Bouffard, Bordeaux
+    const coordsVG = [-0.5763, 44.8404];
 
     // Calcul de la distance
     const responseDistance = await fetch(

@@ -5,6 +5,9 @@
     <h2 class="text-center">Vite & Gourmand</h2>
     <button onclick="window.location.href='/commande'" class="big-title-button mb-3 mt-3" type="submit">Passez une commande</button>
 </div>
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+<?php endif; ?>
 <div class="menus container-fluid text-center mb-2 mt-2 pt-2 pb-2">
     <div class="titre-realisation pb-2 pt-2">
         <h3>nos menus</h3>

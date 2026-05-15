@@ -11,7 +11,10 @@ class UserModel
         $pdo = DatabaseConnection::getInstance();
 
         // Requête préparée
-        $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE email = ?");
+        $stmt = $pdo->prepare("SELECT utilisateur.*, roles.libelle as role_libelle 
+        FROM utilisateur 
+        JOIN roles ON utilisateur.Id_role = roles.Id_role 
+        WHERE utilisateur.email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
         return $user ?: null;

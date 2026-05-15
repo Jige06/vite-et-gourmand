@@ -291,3 +291,21 @@
 .menus {
   background-color: rgba(255, 255, 255, 0.8) !important;
 }
+
+#form-menu,
+#form-order {
+  display: none;
+}
+
+.form-user,
+.form-menu,
+.form-order {
+  font-family: var(--font-texte);
+  background-color: var(--couleur-bg-dark);
+  border-radius: 8px;
+  color: var(--couleur-secondary);
+  width: 40%;
+  min-width: 320px;
+  margin: 0 auto;
+  padding: 2rem;
+}

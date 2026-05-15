@@ -34,13 +34,12 @@ class AuthController
             }
             if (password_verify($password, $user['mot_de_passe'])) {
                 $_SESSION['id_user'] = $user['Id_Utilisateur'];
-                $_SESSION['role'] = $user['Id_role'];
+                $_SESSION['role'] = $user['role_libelle'];
                 $_SESSION['nom'] = $user['nom'];
                 $_SESSION['prenom'] = $user['prenom'];
                 $_SESSION['email'] = $user['email'];
 
                 switch ($_SESSION['role']) {
-                    // Jointure pour récupérer le libellé du rôle
                     case 'Administrateur':
                         Auth::redirect('/admin');
                         break;
@@ -59,13 +58,13 @@ class AuthController
     }
 
     public function handleLogin()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $this->login();
-    } else {
-        $this->showLogin();
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->login();
+        } else {
+            $this->showLogin();
+        }
     }
-}
 
     public function showSignUp()
     {
@@ -144,13 +143,13 @@ class AuthController
     }
 
     public function handleSignUp()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $this->signUp();
-    } else {
-        $this->showSignUp();
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->signUp();
+        } else {
+            $this->showSignUp();
+        }
     }
-}
 
     public function showResetPassword()
     {
@@ -187,13 +186,13 @@ class AuthController
     }
 
     public function handleResetPassword()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $this->resetPassword();
-    } else {
-        $this->showResetPassword();
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->resetPassword();
+        } else {
+            $this->showResetPassword();
+        }
     }
-}
 
     public function logout()
     {
