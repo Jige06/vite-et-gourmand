@@ -6,7 +6,7 @@ INSERT INTO roles(libelle) VALUES('Employé');
 INSERT INTO roles(libelle) VALUES('Administrateur');
 
 -- Table theme
-INSERT INTO theme(libelle) VALUES('Festivités Calendaires');
+INSERT INTO theme(libelle) VALUES('Festivités');
 INSERT INTO theme(libelle) VALUES('Cérémonies et Réceptions');
 INSERT INTO theme(libelle) VALUES('Affaires et Séminaires');
 
@@ -18,6 +18,7 @@ INSERT INTO statut_commande(libelle) VALUES('En cours de livraison');
 INSERT INTO statut_commande(libelle) VALUES('Livré');
 INSERT INTO statut_commande(libelle) VALUES('En attente du retour matériel');
 INSERT INTO statut_commande(libelle) VALUES('Terminé');
+INSERT INTO statut_commande(libelle) VALUES('Annulé');
 
 -- Table allergene
 INSERT INTO allergene(nom) VALUES('Gluten');

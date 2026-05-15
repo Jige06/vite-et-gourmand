@@ -146,7 +146,7 @@ if (formUser && formMenu && formOrder) {
     const heure = document.getElementById("heure_liv").value;
     if (!date || !heure) {
       const errorDiv = document.getElementById("error-date");
-      errorDiv.textContent = "Veuillez saisir date et heure.";
+      errorDiv.textContent = "Veuillez saisir la date et l'heure souhaitées.";
       errorDiv.style.display = "block";
       return;
     }
@@ -157,8 +157,7 @@ if (formUser && formMenu && formOrder) {
     aujourdhui.setHours(0, 0, 0, 0);
     if (dateLivraison < aujourdhui) {
       const errorDivDate = document.getElementById("error-date");
-      errorDivDate.textContent =
-        "Veuillez saisir une date postérieure à aujourd'hui. Attention au délai minimum de commande de votre menu.";
+      errorDivDate.textContent = "Date incorrect.";
       errorDivDate.style.display = "block";
       return;
     }

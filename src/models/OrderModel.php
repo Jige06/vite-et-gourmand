@@ -28,11 +28,14 @@ class OrderModel
         $stmt->bindValue(':id_Utilisateur', $idUser);
 
         $stmt->execute();
-        return $pdo->lastInsertId();
+        $idCommande = $pdo->lastInsertId();
+        $stmt2 = $pdo->prepare("INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES (?, 1, NOW())");
+        $stmt2->execute([$idCommande]);
+        return $idCommande;
     }
 
     // Méthode qui envoie le mail de confirmation de commande
-    public static function sendConfirmationMail($nom, $prenom, $email, $idCommande, $dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu)
+    public static function sendConfirmationMail($nom, $prenom, $email, $idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $idMenu)
     {
         $mail = new PHPMailer(true);
 
@@ -100,5 +103,63 @@ class OrderModel
         } catch (Exception $e) {
             error_log("Erreur envoi mail : " . $mail->ErrorInfo);
         }
+    }
+
+    // Méthode qui récupère toutes les commandes d'un utilisateur
+    public static function getOrdersByUser($idUser)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        // Requête avec sous requête qui s'execute pour chaque ligne de la requête principale
+        // Premet d'obtenir le statut le plus recent grace au ORDER BY DESC et LIMIT 1
+        $stmt = $pdo->prepare("SELECT commande.*, menu.titre AS menu_titre,
+            (SELECT statut_commande.libelle 
+                FROM commande_statut_commande 
+                JOIN statut_commande ON commande_statut_commande.Id_statut_commande = statut_commande.Id_statut_commande
+                WHERE commande_statut_commande.Id_commande = commande.Id_commande
+                ORDER BY date_changement DESC 
+                LIMIT 1) AS statut_actuel
+        FROM commande
+        JOIN menu ON commande.Id_menu = menu.Id_menu
+        WHERE commande.Id_Utilisateur = ?");
+        $stmt->execute([$idUser]);
+        $commande = $stmt->fetchAll();
+        return $commande;
+    }
+
+    public static function cancelOrder($idCommande)
+    {
+        // Connexion à la BDD
+        $pdo = DatabaseConnection::getInstance();
+
+        // Requête préparée
+        $stmt = $pdo->prepare("INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES (:Id_commande, 8, NOW())");
+        $stmt->bindValue(':Id_commande', $idCommande);
+
+        $stmt->execute();
+    }
+
+    public static function updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat)
+    {
+        // Connexion à la BDD
+        $pdo = DatabaseConnection::getInstance();
+
+        // Requête préparée
+        $stmt = $pdo->prepare("UPDATE commande
+        SET nbre_pers = :nbre_pers, type_livraison = :type_livraison, adresse_livraison = :adresse_livraison,
+        code_postal_livraison = :code_postal_livraison, ville_livraison = :ville_livraison, heure_livraison = :heure_livraison, date_livraison = :date_livraison, pret_materiel = :pret_materiel
+        WHERE Id_commande = :Id_commande");
+
+        $stmt->bindValue(':Id_commande', $idCommande);
+        $stmt->bindValue(':nbre_pers', $nbrePers);
+        $stmt->bindValue(':type_livraison', $typeLiv);
+        $stmt->bindValue(':adresse_livraison', $adresseLiv);
+        $stmt->bindValue(':code_postal_livraison', $codePostalLiv);
+        $stmt->bindValue(':ville_livraison', $villeLiv);
+        $stmt->bindValue(':heure_livraison', $heureLiv);
+        $stmt->bindValue(':date_livraison', $dateLiv);
+        $stmt->bindValue(':pret_materiel', $pretMat);
+
+        $stmt->execute();
     }
 }

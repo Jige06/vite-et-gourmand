@@ -64,7 +64,7 @@ class OrderController
             $idCommande = OrderModel::createOrder($dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser);
 
             // Envoi du mail de confirmation de la commande
-            OrderModel::sendConfirmationMail($nom, $prenom, $email, $idCommande, $dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu);
+            OrderModel::sendConfirmationMail($nom, $prenom, $email, $idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $idMenu);
 
             $_SESSION['success'] = "Votre commande a bien été enregistrée ! Vous recevrez un mail de confirmation.";
             Auth::redirect('/menus');
@@ -74,6 +74,53 @@ class OrderController
             // Sinon on affiche le formulaire
         } else {
             $this->showOrder();
+        }
+    }
+
+    public function showUserOrders()
+    {
+        $idUser = $_SESSION['id_user'];
+        $commandes = OrderModel::getOrdersByUser($idUser);
+
+        require_once(__DIR__ . '/../views/user/commandes.php');
+    }
+
+    public function deleteOrder()
+    {
+        if (!isset($_SESSION['id_user'])) {
+            Auth::redirect('/connexion');
+            return;
+        }
+        $idCommand = $_POST['id_commande'];
+        OrderModel::cancelOrder($idCommand);
+        $_SESSION['success'] = "Votre commande a bien été annulée !";
+        Auth::redirect('/mon-espace/commandes');
+    }
+
+    public function updateOrder()
+    {
+        if (!isset($_SESSION['id_user'])) {
+            Auth::redirect('/connexion');
+            return;
+        }
+
+        // Si le formulaire est soumis, on traite la commande
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idCommande = intval($_POST['id_commande']);
+            $nbrePers = trim(htmlspecialchars($_POST['nbre_pers']));
+            $typeLiv = trim(htmlspecialchars($_POST['type_liv']));
+            $adresseLiv = isset($_POST['adresse_liv']) ? trim(htmlspecialchars($_POST['adresse_liv'])) : null;
+            $codePostalLiv = isset($_POST['codePostal_liv']) ? trim(htmlspecialchars($_POST['codePostal_liv'])) : null;
+            $villeLiv = isset($_POST['ville_liv']) ? trim(htmlspecialchars($_POST['ville_liv'])) : null;
+            $heureLiv = trim(htmlspecialchars($_POST['heure_liv']));
+            $dateLiv = trim(htmlspecialchars($_POST['date_liv']));
+            $pretMat = isset($_POST['pret_materiel']) ? 1 : 0;
+
+            OrderModel::updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat);
+            $_SESSION['success'] = "Votre commande a été mis à jour !";
+            Auth::redirect('/mon-espace/commandes');
+        } else {
+            Auth::redirect('/mon-espace/commandes');
         }
     }
 }

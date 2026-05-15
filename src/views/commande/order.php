@@ -34,7 +34,7 @@
                 <input class="" type="radio" id="livraison" name="type_liv" required value="Livraison" checked>
                 <label for="livraison">Livraison</label>
                 <input class="ms-2" type="radio" id="enlevement" name="type_liv" required value="Enlevement">
-                <label for="enlevement">Enlèvement</label>
+                <label for="enlevement">Retrait sur place</label>
             </div>
 
             <div id="error-livraison" class="alert alert-danger" style="display:none"></div>
@@ -45,24 +45,25 @@
             </div>
 
             <div class="livraison livraison-param text-start mb-4">
-                <label class="mb-1 d-block" for="codePostal">Code postal de livraison</label>
+                <label class="mb-1 d-block" for="codePostal">Code postal</label>
                 <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" required placeholder="ex: 33000">
             </div>
 
             <div class="livraison livraison-param text-start mb-4">
-                <label class="mb-1 d-block" for="ville_liv">Ville de livraison</label>
+                <label class="mb-1 d-block" for="ville_liv">Ville</label>
                 <input class="form-control" type="text" id="ville_liv" name="ville_liv" required placeholder="ex: Bordeaux">
             </div>
 
             <div id="error-date" class="alert alert-danger" style="display:none"></div>
 
             <div class="livraison text-start mb-4">
-                <label class="mb-1 d-block" for="date_liv">Date de livraison</label>
+                <label class="mb-1 d-block" for="date_liv">Date</label>
+                <p><em>Merci de tenir compte du délai de commande minimum indiqué pour chaque menu</em></p>
                 <input class="form-control" type="date" id="date_liv" name="date_liv" required>
             </div>
 
             <div class="livraison text-start mb-4">
-                <label class="mb-1 d-block" for="heure_liv">Heure de livraison</label>
+                <label class="mb-1 d-block" for="heure_liv">Heure</label>
                 <input class="form-control" type="time" id="heure_liv" name="heure_liv" min="9:00" max="20:00" required>
             </div>
 
@@ -119,12 +120,12 @@
             </div>
 
             <div id="info-pret-materiel" class="alert alert-warning" style="display:none">
-                <strong>⚠️ Information importante :</strong> En cas de prêt de matériel, vous devrez le restituer sous 10 jours ouvrés.
-                Sans restitution dans ce délai, des frais de <strong>600€</strong> vous seront facturés conformément à nos CGV. Un mail d'information vous sera envoyé.
+                <strong>⚠️ Information importante :</strong> Matériel à restituer sous 10 jours ouvrés.
+                Passé ce délai, des frais de <strong>600€</strong> vous seront facturés conformément à nos CGV. Un mail d'information vous sera envoyé.
             </div>
 
             <div class="alert alert-info">
-                <strong>Une réduction de 10% est appliquée pour toutes commandes ayant 5 personnes de plus que le nombre de personnes minimum indiquée dans le menu</strong>
+                <strong>Réduction de 10% pour toute commande supérieure à 5 personnes que le minimum requis.</strong>
             </div>
 
             <div id="recap-livraison">

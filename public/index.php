@@ -29,22 +29,24 @@ spl_autoload_register(function ($class) {
 
 // Définition des routes
 $router = new Router();
-$router->add('/', [HomeController::class,'index']);
+$router->add('/', [HomeController::class, 'index']);
 $router->add('/menus', [MenuController::class, 'index']);
 $router->add('/menus/detail', [MenuController::class, 'showDetails']);
 $router->add('/menus/creer', [MenuController::class, 'handleCreate']);
 $router->add('/menus/modifier', [MenuController::class, 'handleUpdate']);
 $router->add('/menus/supprimer', [MenuController::class, 'handleDelete']);
 $router->add('/menus/filter', [MenuController::class, 'filter']);
-$router->add('/connexion', [AuthController::class,'handleLogin']);
+$router->add('/connexion', [AuthController::class, 'handleLogin']);
 $router->add('/logout', [AuthController::class, 'logout']);
-$router->add('/inscription', [AuthController::class,'handleSignUp']);
-$router->add('/mot-de-passe-oublie', [AuthController::class,'handleResetPassword']);
+$router->add('/inscription', [AuthController::class, 'handleSignUp']);
+$router->add('/mot-de-passe-oublie', [AuthController::class, 'handleResetPassword']);
 $router->add('/contact', []);
 $router->add('/avis', []);
-$router->add('/commande', [OrderController::class,'handleOrder']);
+$router->add('/commande', [OrderController::class, 'handleOrder']);
 $router->add('/mon-espace', []);
-$router->add('/mon-espace/commandes', []);
+$router->add('/mon-espace/commandes', [OrderController::class, 'showUserOrders']);
+$router->add('/mon-espace/commandes/modifier', [OrderController::class, 'updateOrder']);
+$router->add('/mon-espace/commandes/annuler', [OrderController::class, 'deleteOrder']);
 $router->add('/mon-espace/avis', []);
 $router->add('/employe', []);
 $router->add('/admin', []);
