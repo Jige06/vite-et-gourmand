@@ -41,7 +41,7 @@
         <tbody>
             <?php foreach ($orders as $order): ?>
                 <tr>
-                    <td><?= htmlspecialchars($order['Id_commande']) ?></td>
+                    <td><?= 'VG-' . date('Ymd', strtotime($order['date_commande'])) . '-' . sprintf('%04d', $order['Id_commande']) ?></td>
                     <td><?= htmlspecialchars($order['prenom'] . ' ' . $order['nom']) ?></td>
                     <td><?= htmlspecialchars($order['date_commande']) ?></td>
                     <td><?= htmlspecialchars($order['statut_actuel']) ?></td>
