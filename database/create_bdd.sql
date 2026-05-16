@@ -115,6 +115,7 @@ CREATE TABLE avis(
    description_avis VARCHAR(255) NOT NULL,
    statut VARCHAR(255) NOT NULL,
    Id_commande INT NOT NULL,
+   date_validation DATETIME,
    PRIMARY KEY(Id_avis),
    UNIQUE(Id_commande),
    FOREIGN KEY(Id_commande) REFERENCES commande(Id_commande)

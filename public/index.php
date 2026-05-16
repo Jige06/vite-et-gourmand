@@ -47,7 +47,8 @@ $router->add('/mon-espace', []);
 $router->add('/mon-espace/commandes', [OrderController::class, 'showUserOrders']);
 $router->add('/mon-espace/commandes/modifier', [OrderController::class, 'updateOrder']);
 $router->add('/mon-espace/commandes/annuler', [OrderController::class, 'deleteOrder']);
-$router->add('/mon-espace/avis', []);
+$router->add('/mon-espace/avis', [OrderController::class, 'LeaveReview']);
+$router->add('/mon-espace/profil', [UserController::class, 'updateProfil']);
 $router->add('/employe', []);
 $router->add('/admin', []);
 

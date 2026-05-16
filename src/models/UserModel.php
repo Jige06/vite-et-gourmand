@@ -125,4 +125,22 @@ class UserModel
             error_log("Erreur envoi mail : " . $mail->ErrorInfo);
         }
     }
+
+    public static function updateProfil($idUser, $nom, $prenom, $email, $telephone, $adresse, $codePostal, $ville)
+    {
+        $pdo = DatabaseConnection::getInstance();
+        $stmt = $pdo->prepare("UPDATE utilisateur 
+        SET nom = :nom, prenom = :prenom, email = :email, telephone = :telephone,
+        adresse = :adresse, code_postal = :code_postal, ville = :ville
+        WHERE Id_Utilisateur = :id_user");
+        $stmt->bindValue(':nom', $nom);
+        $stmt->bindValue(':prenom', $prenom);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':telephone', $telephone);
+        $stmt->bindValue(':adresse', $adresse);
+        $stmt->bindValue(':code_postal', $codePostal);
+        $stmt->bindValue(':ville', $ville);
+        $stmt->bindValue(':id_user', $idUser);
+        $stmt->execute();
+    }
 }

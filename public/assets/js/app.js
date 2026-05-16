@@ -43,10 +43,16 @@ async function applyFilters() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Initialisation des tooltips Bootstrap
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]',
+  );
+  tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el));
+
   if (document.getElementById("theme-select")) {
     document
       .getElementById("theme-select")
-      .addEventListener("change", applyFilters); // ligne 48
+      .addEventListener("change", applyFilters);
     document
       .getElementById("regime-select")
       .addEventListener("change", applyFilters);

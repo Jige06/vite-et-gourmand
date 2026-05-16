@@ -118,7 +118,10 @@ class OrderModel
                 JOIN statut_commande ON commande_statut_commande.Id_statut_commande = statut_commande.Id_statut_commande
                 WHERE commande_statut_commande.Id_commande = commande.Id_commande
                 ORDER BY date_changement DESC 
-                LIMIT 1) AS statut_actuel
+                LIMIT 1) AS statut_actuel,
+                (SELECT COUNT(*) 
+        FROM avis 
+        WHERE avis.Id_commande = commande.Id_commande) AS avis_depose
         FROM commande
         JOIN menu ON commande.Id_menu = menu.Id_menu
         WHERE commande.Id_Utilisateur = ?");
@@ -161,5 +164,19 @@ class OrderModel
         $stmt->bindValue(':pret_materiel', $pretMat);
 
         $stmt->execute();
+    }
+
+    public static function getStatusByOrder($idCommande)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        // Requête 
+        $stmt = $pdo->prepare("SELECT commande_statut_commande.*, statut_commande.libelle AS statut_libelle
+        FROM commande_statut_commande
+        JOIN statut_commande ON statut_commande.Id_statut_commande = commande_statut_commande.Id_statut_commande
+        WHERE commande_statut_commande.Id_commande = ? ORDER BY date_changement ASC");
+        $stmt->execute([$idCommande]);
+        $statutCommande = $stmt->fetchAll();
+        return $statutCommande;
     }
 }

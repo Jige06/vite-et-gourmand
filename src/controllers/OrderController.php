@@ -80,7 +80,12 @@ class OrderController
     public function showUserOrders()
     {
         $idUser = $_SESSION['id_user'];
+        $user = UserModel::findByEmail($_SESSION['email']);
         $commandes = OrderModel::getOrdersByUser($idUser);
+        foreach ($commandes as &$commande) {
+            $commande['historique'] = OrderModel::getStatusByOrder($commande['Id_commande']);
+        }
+        unset($commande);
 
         require_once(__DIR__ . '/../views/user/commandes.php');
     }
@@ -122,5 +127,24 @@ class OrderController
         } else {
             Auth::redirect('/mon-espace/commandes');
         }
+    }
+
+    public function leaveReview()
+    {
+        if (!isset($_SESSION['id_user'])) {
+            Auth::redirect('/connexion');
+            return;
+        }
+        $idCommande = intval($_POST['id_commande']);
+        $note = intval($_POST['note']);
+        if ($note < 1 || $note > 5) {
+            $_SESSION['error'] = "La note doit être comprise entre 1 et 5.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+        $descriptionAvis = trim(htmlspecialchars($_POST['commentaire']));
+        ReviewModel::createReview($note, $descriptionAvis, $idCommande);
+        $_SESSION['success'] = "Votre avis a bien été déposé. Il sera visible dès sa validation par notre équipe !";
+        Auth::redirect('/mon-espace/commandes');
     }
 }
