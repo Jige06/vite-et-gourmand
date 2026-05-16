@@ -49,7 +49,8 @@ $router->add('/mon-espace/commandes/modifier', [OrderController::class, 'updateO
 $router->add('/mon-espace/commandes/annuler', [OrderController::class, 'deleteOrder']);
 $router->add('/mon-espace/avis', [OrderController::class, 'LeaveReview']);
 $router->add('/mon-espace/profil', [UserController::class, 'updateProfil']);
-$router->add('/employe', []);
+$router->add('/employe', [EmployeController::class, 'showOrders']);
+$router->add('/employe/statut', [EmployeController::class, 'handleUpdateStatus']);
 $router->add('/admin', []);
 
 $router->dispatch();
