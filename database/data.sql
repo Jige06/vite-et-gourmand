@@ -40,13 +40,13 @@ INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Dimanche', '
 
 -- Table utilisateur
 INSERT INTO utilisateur(nom, prenom, email, mot_de_passe, telephone, adresse, code_postal, ville, actif, Id_role)
-    VALUES('Dupont', 'José', 'jose@viteetgourmand.fr', 'Admin1234!', '0557841234', '19 rue Bouffard', '33000', 'Bordeaux', 1, 3);
+    VALUES('Dupont', 'José', 'jose@viteetgourmand.fr', '$2y$10$Jro8DlwZmbBYYW1ovXXuUOl/WkSbtg88XhgGI.82diE5hFfo2ww0y', '0557841234', '19 rue Bouffard', '33000', 'Bordeaux', 1, 3);
 INSERT INTO utilisateur(nom, prenom, email, mot_de_passe, telephone, adresse, code_postal, ville, actif, Id_role)
-    VALUES('Martin', 'Julie', 'julie@viteetgourmand.fr', 'Employe1234!', '0557841235', '5 rue des Fleurs', '33000', 'Bordeaux', 1, 2);
+    VALUES('Martin', 'Julie', 'julie@viteetgourmand.fr', '$2y$10$PepVpgMkyuibjOSOXNbwFeNif2k5s6Nmls6ko.Ku0ggXvdUF2bVnC', '0557841235', '5 rue des Fleurs', '33000', 'Bordeaux', 1, 2);
 INSERT INTO utilisateur(nom, prenom, email, mot_de_passe, telephone, adresse, code_postal, ville, actif, Id_role)
-    VALUES('Durand', 'Pierre', 'pierre.durand@exemple.com', 'User1234!', '0612345678', '15 rue Sainte Catherine', '33000', 'Bordeaux', 1, 1);
+    VALUES('Durand', 'Pierre', 'pierre.durand@exemple.com', '$2y$10$to.i6KN5SxeOrlKEGRVuX.BcIt/x5YkEH76QHgimLJ0pGcJzSglT.', '0612345678', '15 rue Sainte Catherine', '33000', 'Bordeaux', 1, 1);
 INSERT INTO utilisateur(nom, prenom, email, mot_de_passe, telephone, adresse, code_postal, ville, actif, Id_role)
-    VALUES('Hebert', 'Jean-Guy', 'jghebert06@exemple.com', 'User1234!', '0612345678', '3 avenue du Marechal Juin', '33700', 'Mérignac', 1, 1);
+    VALUES('Hebert', 'Jean-Guy', 'jghebert06@exemple.com', '$2y$10$XT8hVUjtB7XpGXvgKahanOYM.EGqwQ0k2M4LvQgN2CdUHQMjShTZ6', '0612345678', '3 avenue du Marechal Juin', '33700', 'Mérignac', 1, 1);
 
 -- Table plat
 INSERT INTO plat(titre, type_plat) VALUES('Velouté de châtaignes au foie gras', 'Entrée');
@@ -139,3 +139,91 @@ INSERT INTO plat_allergene(Id_plat, Id_allergene) VALUES(19, 3);
 INSERT INTO plat_allergene(Id_plat, Id_allergene) VALUES(20, 1);
 INSERT INTO plat_allergene(Id_plat, Id_allergene) VALUES(20, 2);
 INSERT INTO plat_allergene(Id_plat, Id_allergene) VALUES(20, 3);
+
+-- Table commande
+-- Commandes de Pierre (Id 3)
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-04-01', 10, 450.00, 0, 'Enlèvement', '12:00:00', '2025-04-15', 0, 1, 3);
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, adresse_livraison, code_postal_livraison, ville_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-04-10', 12, 726.00, 26.00, 'Livraison', '10 rue de la Paix', 33100, 'Bordeaux', '19:00:00', '2025-04-25', 1, 2, 3);
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-05-01', 8, 240.00, 0, 'Enlèvement', '13:00:00', '2025-05-20', 0, 6, 3);
+
+-- Commandes de Jean-Guy (Id 4)
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-03-15', 20, 1300.00, 0, 'Enlèvement', '12:00:00', '2025-04-01', 0, 3, 4);
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, adresse_livraison, code_postal_livraison, ville_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-04-20', 25, 1540.00, 35.00, 'Livraison', '5 allée des Roses', 33700, 'Mérignac', '20:00:00', '2025-05-10', 1, 4, 4);
+
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-02-10', 10, 450.00, 0, 'Enlèvement', '12:00:00', '2025-02-20', 0, 3, 3);
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-02-15', 15, 825.00, 0, 'Enlèvement', '12:00:00', '2025-03-01', 0, 2, 4);
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-01-10', 6, 180.00, 0, 'Enlèvement', '12:00:00', '2025-01-20', 0, 6, 3);
+INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, type_livraison, heure_livraison, date_livraison, pret_materiel, Id_menu, Id_Utilisateur)
+    VALUES('2025-01-20', 20, 1300.00, 0, 'Enlèvement', '12:00:00', '2025-02-05', 0, 3, 4);
+
+-- Table commande_statut_commande
+-- Commande 1 (Pierre) : Terminée
+INSERT INTO commande_statut_commande VALUES(1, 1, '2025-04-01 10:00:00');
+INSERT INTO commande_statut_commande VALUES(1, 2, '2025-04-02 09:00:00');
+INSERT INTO commande_statut_commande VALUES(1, 3, '2025-04-10 14:00:00');
+INSERT INTO commande_statut_commande VALUES(1, 7, '2025-04-15 13:00:00');
+
+-- Commande 2 (Pierre) : En attente retour matériel
+INSERT INTO commande_statut_commande VALUES(2, 1, '2025-04-10 11:00:00');
+INSERT INTO commande_statut_commande VALUES(2, 2, '2025-04-11 10:00:00');
+INSERT INTO commande_statut_commande VALUES(2, 3, '2025-04-20 14:00:00');
+INSERT INTO commande_statut_commande VALUES(2, 4, '2025-04-24 10:00:00');
+INSERT INTO commande_statut_commande VALUES(2, 5, '2025-04-25 19:30:00');
+INSERT INTO commande_statut_commande VALUES(2, 6, '2025-04-25 20:00:00');
+
+-- Commande 3 (Pierre) : En attente de validation
+INSERT INTO commande_statut_commande VALUES(3, 1, '2025-05-01 09:00:00');
+
+-- Commande 4 (Jean-Guy) : Terminée
+INSERT INTO commande_statut_commande VALUES(4, 1, '2025-03-15 10:00:00');
+INSERT INTO commande_statut_commande VALUES(4, 2, '2025-03-16 09:00:00');
+INSERT INTO commande_statut_commande VALUES(4, 3, '2025-03-25 14:00:00');
+INSERT INTO commande_statut_commande VALUES(4, 7, '2025-04-01 13:00:00');
+
+-- Commande 5 (Jean-Guy) : Acceptée
+INSERT INTO commande_statut_commande VALUES(5, 1, '2025-04-20 11:00:00');
+INSERT INTO commande_statut_commande VALUES(5, 2, '2025-04-21 10:00:00');
+
+INSERT INTO commande_statut_commande VALUES(6, 1, '2025-02-10 10:00:00');
+INSERT INTO commande_statut_commande VALUES(6, 2, '2025-02-11 09:00:00');
+INSERT INTO commande_statut_commande VALUES(6, 7, '2025-02-20 14:00:00');
+
+INSERT INTO commande_statut_commande VALUES(7, 1, '2025-02-15 10:00:00');
+INSERT INTO commande_statut_commande VALUES(7, 2, '2025-02-16 09:00:00');
+INSERT INTO commande_statut_commande VALUES(7, 7, '2025-03-01 14:00:00');
+
+INSERT INTO commande_statut_commande VALUES(8, 1, '2025-01-10 10:00:00');
+INSERT INTO commande_statut_commande VALUES(8, 2, '2025-01-11 09:00:00');
+INSERT INTO commande_statut_commande VALUES(8, 7, '2025-01-20 14:00:00');
+
+INSERT INTO commande_statut_commande VALUES(9, 1, '2025-01-20 10:00:00');
+INSERT INTO commande_statut_commande VALUES(9, 2, '2025-01-21 09:00:00');
+INSERT INTO commande_statut_commande VALUES(9, 7, '2025-02-05 14:00:00');
+
+-- Table des avis
+INSERT INTO avis(note, description_avis, statut, Id_commande)
+    VALUES(5, 'Excellent service, repas délicieux !', 'Validé', 1);
+INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
+    VALUES(4, 'Très bon repas, livraison ponctuelle.', 'Validé', 4, '2025-04-02 10:00:00');
+INSERT INTO avis(note, description_avis, statut, Id_commande)
+    VALUES(3, 'Correct mais peut mieux faire.', 'En attente', 3);
+INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
+    VALUES(5, 'Parfait pour notre anniversaire de mariage, tout était impeccable !', 'Validé', 6, '2025-02-21 10:00:00');
+INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
+    VALUES(4, 'Très bonne prestation, équipe professionnelle et plats savoureux.', 'Validé', 7, '2025-03-02 10:00:00');
+INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
+    VALUES(5, 'Service irréprochable, nous recommandons vivement !', 'Validé', 8, '2025-01-21 10:00:00');
+INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
+    VALUES(3, 'Bon repas mais livraison légèrement en retard.', 'Validé', 9, '2025-02-06 10:00:00');
+INSERT INTO avis(note, description_avis, statut, Id_commande)
+    VALUES(2, 'Déçu par la qualité des plats, pas à la hauteur du prix.', 'Refusé', 2);
+INSERT INTO avis(note, description_avis, statut, Id_commande)
+    VALUES(4, 'Belle expérience gastronomique, à recommander.', 'En attente', 5);
