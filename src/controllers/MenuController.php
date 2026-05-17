@@ -14,31 +14,6 @@ class MenuController
         require_once(__DIR__ . '/../views/menus/index.php');
     }
 
-    public function showDetails()
-    {
-        require_once(__DIR__ . '/../views/menus/detail.php');
-    }
-
-    public function showCreateMenu()
-    {
-        require_once(__DIR__ . '/../views/employe/nouveau-menu.php');
-    }
-
-    public function create() {}
-
-    public function handleCreate() {}
-
-    public function showUpdateMenu()
-    {
-        require_once(__DIR__ . '/../views/employe/maj-menu.php');
-    }
-
-    public function update() {}
-
-    public function handleUpdate() {}
-
-    public function delete() {}
-
     public function filter()
     {
         $filters = [
