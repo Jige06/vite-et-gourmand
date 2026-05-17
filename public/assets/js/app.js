@@ -84,6 +84,35 @@ document.addEventListener("DOMContentLoaded", function () {
         applyFilters();
       });
   }
+
+  // Pré-remplissage du modal de modification d'un menu
+  const modalModifMenu = document.getElementById("modalModifMenu");
+  if (modalModifMenu) {
+    modalModifMenu.addEventListener("show.bs.modal", function (e) {
+      const btn = e.relatedTarget;
+      const form = document.getElementById("form-modif-menu");
+      form.querySelector('[name="Id_menu"]').value = btn.dataset.id;
+      form.querySelector('[name="titre"]').value = btn.dataset.titre;
+      form.querySelector('[name="description_menu"]').value =
+        btn.dataset.description;
+      form.querySelector('[name="prix_par_pers"]').value = btn.dataset.prix;
+      form.querySelector('[name="nombre_pers_min"]').value = btn.dataset.pers;
+      form.querySelector('[name="quantite_restante"]').value =
+        btn.dataset.stock;
+      form.querySelector('[name="conditions"]').value = btn.dataset.conditions;
+      form.querySelector('[name="regime"]').value = btn.dataset.regime;
+      form.querySelector('[name="Id_theme"]').value = btn.dataset.theme;
+    });
+  }
+
+  // Récupération  de l'id menu pour suppression d'un menu
+  const modalSupprimerMenu = document.getElementById("modalSupprimerMenu");
+  if (modalSupprimerMenu) {
+    modalSupprimerMenu.addEventListener("show.bs.modal", function (e) {
+      const btn = e.relatedTarget;
+      document.getElementById("id-menu-supprimer").value = btn.dataset.id;
+    });
+  }
 });
 
 function updateMenuCards(menus) {
