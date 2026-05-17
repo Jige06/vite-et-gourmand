@@ -63,6 +63,7 @@ CREATE TABLE utilisateur(
    ville VARCHAR(255) NOT NULL,
    actif BOOLEAN NOT NULL DEFAULT 1,
    Id_role INT NOT NULL,
+   -- Colonne ajoutée en cours de developpement
    must_change_password BOOLEAN NOT NULL DEFAULT 0,
    PRIMARY KEY(Id_Utilisateur),
    UNIQUE(email),
@@ -115,6 +116,7 @@ CREATE TABLE avis(
    description_avis VARCHAR(255) NOT NULL,
    statut VARCHAR(255) NOT NULL,
    Id_commande INT NOT NULL,
+   -- Colonne ajoutée en cours de developpement
    date_validation DATETIME,
    PRIMARY KEY(Id_avis),
    UNIQUE(Id_commande),
