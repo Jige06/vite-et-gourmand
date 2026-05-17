@@ -32,9 +32,6 @@ $router = new Router();
 $router->add('/', [HomeController::class, 'index']);
 $router->add('/menus', [MenuController::class, 'index']);
 $router->add('/menus/detail', [MenuController::class, 'showDetails']);
-$router->add('/menus/creer', [MenuController::class, 'handleCreate']);
-$router->add('/menus/modifier', [MenuController::class, 'handleUpdate']);
-$router->add('/menus/supprimer', [MenuController::class, 'handleDelete']);
 $router->add('/menus/filter', [MenuController::class, 'filter']);
 $router->add('/connexion', [AuthController::class, 'handleLogin']);
 $router->add('/logout', [AuthController::class, 'logout']);
@@ -51,6 +48,7 @@ $router->add('/mon-espace/avis', [OrderController::class, 'LeaveReview']);
 $router->add('/mon-espace/profil', [UserController::class, 'updateProfil']);
 $router->add('/employe', [EmployeController::class, 'showOrders']);
 $router->add('/employe/statut', [EmployeController::class, 'handleUpdateStatus']);
+$router->add('/employe/menus', [EmployeController::class, 'handleMenus']);
 $router->add('/employe/avis', [EmployeController::class, 'handleReviews']);
 $router->add('/admin', []);
 
