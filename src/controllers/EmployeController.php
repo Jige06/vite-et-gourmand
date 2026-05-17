@@ -2,6 +2,7 @@
 
 class EmployeController
 {
+    // Méthode qui appelle le model pour récuperer toutes les commandes
     public function showOrders()
     {
         // Vérification du rôle pour acceder à l'espace employé
@@ -19,6 +20,7 @@ class EmployeController
         require_once(__DIR__ . '/../views/employe/commandes.php');
     }
 
+    // Méthode qui appelle le modele pour mettre a jour le statut d'une commande
     public static function handleUpdateStatus()
     {
         if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
@@ -29,11 +31,20 @@ class EmployeController
         $idCommande = $_POST['Id_Commande'];
         $nouveauStatut = $_POST['nouveau_statut'];
 
-        EmployeModel::updateStatus($idCommande, $nouveauStatut);
+        $result = EmployeModel::updateStatus($idCommande, $nouveauStatut);
+
+        // Si nouveau statut saisi a deja été passé --> message de refus de ce statut
+        if ($result === false) {
+            $_SESSION['error'] = "Ce statut de commande a deja été validé.";
+            Auth::redirect('/employe');
+            return;
+        }
+
         $_SESSION['success'] = "Le statut de la commande a bien été mis à jour";
         Auth::redirect('/employe');
     }
 
+    // Méthode qui appelle le model pour changer le statut d'un avis client (validé/refusé)
     public function handleReviews()
     {
         if (
@@ -60,6 +71,7 @@ class EmployeController
         }
     }
 
+    // Méthode CRUD pour gérer les menus (creation, modification, suppression) depuis l'espace employe
     public function handleMenus()
     {
         // Vérification du rôle pour acceder à l'espace employé
@@ -73,7 +85,6 @@ class EmployeController
 
             if ($action === 'creer') {
 
-                // appel handleCreate()
                 $titre = trim($_POST['titre']);
                 $descriptionMenu = trim($_POST['description_menu']);
                 $prixParPers = intval($_POST['prix_par_pers']);
@@ -93,7 +104,6 @@ class EmployeController
                 $_SESSION['success'] = "Le menu a bien été créé.";
             } elseif ($action === 'modifier') {
 
-                // appel handleUpdate()
                 $idMenu = $_POST['Id_menu'];
                 $titre = trim($_POST['titre']);
                 $descriptionMenu = trim($_POST['description_menu']);
@@ -110,7 +120,6 @@ class EmployeController
                     move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
                     $photo = $nomFichier; // on stocke juste le nom en BDD
 
-
                 } else {
 
                     // récupérer l'ancienne photo depuis la BDD
@@ -122,7 +131,6 @@ class EmployeController
                 $_SESSION['success'] = "Le menu a bien été modifié.";
             } elseif ($action === 'supprimer') {
 
-                // appel delete()
                 $idMenu = $_POST['Id_menu'];
                 MenuModel::deleteMenu($idMenu);
                 $_SESSION['success'] = "Le menu a bien été supprimé.";
