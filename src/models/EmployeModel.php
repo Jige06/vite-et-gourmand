@@ -47,6 +47,15 @@ class EmployeModel
         $stmt->execute([$nouveauStatut]);
         $statut = $stmt->fetch();
 
+        // Vérification si ce statut a déjà été attribué à cette commande
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM commande_statut_commande 
+        WHERE Id_commande = ? AND Id_statut_commande = ?");
+        $stmt->execute([$idCommande, $statut['Id_statut_commande']]);
+        // fetchColumn récupère uniquement la 1ere colonne de la 1ere ligne -> le count
+        if ($stmt->fetchColumn() > 0) {
+            return false;
+        }
+
         // Insertion du nouveau statut en bdd 
         $stmt = $pdo->prepare("INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement)
         VALUES (:Id_commande, :statut_commande, NOW())");
@@ -54,5 +63,6 @@ class EmployeModel
         $stmt->bindValue(':statut_commande', $statut['Id_statut_commande']);
 
         $stmt->execute();
+        return true;
     }
 }
