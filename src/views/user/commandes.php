@@ -63,6 +63,7 @@
                                         unset($_SESSION['success']); ?></div>
 <?php endif; ?>
 
+<!-- Tableau des commandes du client -->
 <div>
     <table class="table table-hover table-borderless table-responsive-md">
         <thead>
@@ -106,8 +107,8 @@
         </tbody>
     </table>
 
+    <!-- Modal des détails de la commande -->
     <?php foreach ($commandes as $commande): ?>
-        <!-- Modal des détails de la commande -->
         <div class="modal fade" id="modal-<?= $commande['Id_commande'] ?>" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
