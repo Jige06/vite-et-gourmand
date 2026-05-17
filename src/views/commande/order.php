@@ -41,17 +41,17 @@
 
             <div class="livraison livraison-param text-start mb-4">
                 <label class="mb-1 d-block" for="adresse_liv">Adresse de livraison</label>
-                <input class="form-control" type="text" id="adresse_liv" name="adresse_liv" required placeholder="ex: 19 Avenue des Champs Elysée">
+                <input class="form-control" type="text" id="adresse_liv" name="adresse_liv" placeholder="ex: 19 Avenue des Champs Elysée">
             </div>
 
             <div class="livraison livraison-param text-start mb-4">
                 <label class="mb-1 d-block" for="codePostal">Code postal</label>
-                <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" required placeholder="ex: 33000">
+                <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" placeholder="ex: 33000">
             </div>
 
             <div class="livraison livraison-param text-start mb-4">
                 <label class="mb-1 d-block" for="ville_liv">Ville</label>
-                <input class="form-control" type="text" id="ville_liv" name="ville_liv" required placeholder="ex: Bordeaux">
+                <input class="form-control" type="text" id="ville_liv" name="ville_liv" placeholder="ex: Bordeaux">
             </div>
 
             <div id="error-date" class="alert alert-danger" style="display:none"></div>
