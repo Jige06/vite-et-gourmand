@@ -26,13 +26,24 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
                         <li class="nav-item"><a class="nav-link" href="/menus">Nos menus</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] === 'Utilisateur'): ?>
+                            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                        <?php endif; ?>
                         <?php if (isset($_SESSION['id_user'])): ?>
-                            <li class="nav-item"><a class="nav-link" href="/mon-espace">Mon espace</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/logout">Déconnexion</a></li>
                             <li class="nav-item">
                                 <span class="nav-link"><?= htmlspecialchars($_SESSION['prenom']) . ' ' . htmlspecialchars($_SESSION['nom']) ?></span>
                             </li>
+
+                            <?php if ($_SESSION['role'] === 'Administrateur'): ?>
+                                <li class="nav-item"><a class="nav-link" href="/admin">Espace admin</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/employe">Espace employé</a></li>
+                            <?php elseif ($_SESSION['role'] === 'Employé'): ?>
+                                <li class="nav-item"><a class="nav-link" href="/employe">Espace employé</a></li>
+                            <?php else: ?>
+                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">Mon espace</a></li>
+                            <?php endif; ?>
+
+                            <li class="nav-item"><a class="nav-link" href="/logout">Déconnexion</a></li>
                         <?php else: ?>
                             <li class="nav-item"><a class="nav-link" href="/connexion">Connexion</a></li>
                             <li class="nav-item"><a class="nav-link" href="/inscription">S'inscrire</a></li>
