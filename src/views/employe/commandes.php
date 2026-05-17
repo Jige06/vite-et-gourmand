@@ -9,6 +9,7 @@
                                         unset($_SESSION['success']); ?></div>
 <?php endif; ?>
 
+<!-- Filtres des menus par statut ou par nom/prenon -->
 <div class="filters">
     <form method="GET" action="/employe">
         <input type="text" name="client" placeholder="Nom du client">
@@ -28,6 +29,7 @@
     </form>
 </div>
 
+<!-- Tableau des commandes -->
 <div>
     <table class="table">
         <thead>
