@@ -63,6 +63,10 @@
                                         unset($_SESSION['success']); ?></div>
 <?php endif; ?>
 
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+<?php endif; ?>
+
 <!-- Tableau des commandes du client -->
 <div>
     <table class="table table-hover table-borderless table-responsive-md">
