@@ -7,7 +7,7 @@ class Auth
     // Vérifie si l'utilisateur est connecté
     public static function isConnected()
     {
-        return isset($_SESSION['user_id']);
+        return isset($_SESSION['id_user']);
     }
 
     // Vérifie si le rôle est correct
