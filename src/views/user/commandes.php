@@ -5,8 +5,8 @@
     <h2 class="text-center">mon espace</h2>
 </div>
 
-<div class="mon_espace">
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-profil">Modifier mon profil</button>
+<div class="mon_espace text-center">
+    <button class="connect-button mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#modal-profil">Modifier mon profil</button>
 </div>
 
 <!-- Modal de modification des informations du profil -->
@@ -51,7 +51,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="submit" form="form-profil" class="btn btn-primary">Enregistrer</button>
+                <button type="submit" form="form-profil" class="connect-button">Enregistrer</button>
             </div>
         </div>
     </div>
