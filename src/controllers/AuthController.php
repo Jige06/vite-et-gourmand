@@ -2,11 +2,13 @@
 
 class AuthController
 {
+    //Méthode qui affiche la vue de connexion
     public function showLogin()
     {
         require_once(__DIR__ . '/../views/auth/login.php');
     }
 
+    // Méthode qui permet de se connecter avec gestion des roles
     public function login()
     {
         // on récupère les données du formulaire et on les nettoie
@@ -57,6 +59,7 @@ class AuthController
         }
     }
 
+    // Méthode qui gére la connexion
     public function handleLogin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -66,14 +69,16 @@ class AuthController
         }
     }
 
+    // Méthode qui affiche le vue pour s'inscrire
     public function showSignUp()
     {
         require_once(__DIR__ . '/../views/auth/signup.php');
     }
 
+    // Méthode qui permet de se créer un compte (s'inscrire)
     public function signUp()
     {
-        // on récupère les données du formulaire
+        // on récupère les données du formulaire d'inscription
         $nom = trim(htmlspecialchars($_POST['nom']));
         $prenom = trim(htmlspecialchars($_POST['prenom']));
         $email = trim(htmlspecialchars($_POST['email']));
@@ -87,6 +92,8 @@ class AuthController
         if ((!empty($nom)) && (!empty($prenom)) && (!empty($email)) && (!empty($telephone)) &&
             (!empty($adresse)) && (!empty($codePostal)) && (!empty($ville)) && (!empty($password))
         ) {
+
+            // Vérification que les champs ne contiennent que des lettres
             if (
                 !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $nom) ||
                 !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $prenom) ||
@@ -95,22 +102,28 @@ class AuthController
                 $_SESSION['error'] = "Le nom, prénom et ville ne doivent contenir que des lettres.";
                 Auth::redirect('/inscription');
             }
+
+            // Vérification du format de l'email
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $_SESSION['error'] = "L'adresse email n'est pas valide.";
                 Auth::redirect('/inscription');
             }
+            // Vérification que le code postal ne contient que 5 chiffres
             if (!preg_match('/^[0-9]{5}$/', $codePostal)) {
                 $_SESSION['error'] = "Le code postal doit contenir 5 chiffres.";
                 Auth::redirect('/inscription');
             }
+            // Vérification que le téléphone ne contient que 10 chiffres
             if (!preg_match('/^[0-9]{10}$/', $telephone)) {
                 $_SESSION['error'] = "Le numéro de téléphone doit contenir 10 chiffres.";
                 Auth::redirect('/inscription');
             }
+            // Vérification que le mot de passe a le bon format (sécurité)
             if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
                 $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
                 Auth::redirect('/inscription');
             }
+            // Vérification que le mot de passe est indique à la 1ere saisi
             if ($_POST['password'] !== $_POST['confirm_password']) {
                 $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
                 Auth::redirect('/inscription');
@@ -135,6 +148,7 @@ class AuthController
             $_SESSION['prenom'] = $newUser['prenom'];
 
             UserModel::sendWelcomeMail($nom, $prenom, $email);
+            $_SESSION['success'] = "Votre compte a été créé avec succés !";
             Auth::redirect('/');
         } else {
             $_SESSION['error'] = "Tous les champs doivent être remplis";
@@ -142,6 +156,7 @@ class AuthController
         }
     }
 
+    // Méthode qui gére l'inscription
     public function handleSignUp()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -151,11 +166,13 @@ class AuthController
         }
     }
 
+    // Méthode qui affiche la vue de reinitialisation du mot de passe
     public function showResetPassword()
     {
         require_once(__DIR__ . '/../views/auth/reset.php');
     }
 
+    // Méthode qui permet de reinitialiser le mot de passe
     public function resetPassword()
     {
         // On récupére l'email saisi dans le formaulaire
@@ -166,6 +183,8 @@ class AuthController
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $user = UserModel::findByEmail($email);
                 if ($user !== null) {
+
+                    // Génération d'un mot de passe temporaire
                     $tempPassword = UserModel::generateTempPassword();
                     // enregistrement du temppassword en bdd;
                     UserModel::updateTempPassword($email, $tempPassword);
@@ -185,6 +204,7 @@ class AuthController
         }
     }
 
+    // Méthode qui gère la réinitialisation du mot de passe
     public function handleResetPassword()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -194,6 +214,7 @@ class AuthController
         }
     }
 
+    // Méthode qui permet de se déconnecter
     public function logout()
     {
         session_unset();
