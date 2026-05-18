@@ -62,7 +62,7 @@
         <?php foreach ($menus as $menu): ?>
             <div class="details-menu col-12 col-md-6 col-lg-4 mb-3 ms-3 mp-3 pt-2 pb-2">
                 <div class="carte-menu">
-                    <img src="/assets/images/<?= htmlspecialchars($menu['photo']) ?>" alt="<?= pathinfo($menu['photo'], PATHINFO_FILENAME) ?>">
+                    <img class="card-img-menu" src="/assets/images/menus/<?= htmlspecialchars($menu['photo']) ?>" alt="photo du menu <?= htmlspecialchars($menu['titre']) ?>">
                     <p><?= htmlspecialchars($menu['theme_libelle']) ?></p>
                     <h3><?= htmlspecialchars($menu['titre']) ?></h3>
                     <p><?= htmlspecialchars($menu['description_menu']) ?></p>
