@@ -9,6 +9,10 @@
         <div class="alert alert-danger"><?= $_SESSION['error'];
                                         unset($_SESSION['error']); ?></div>
     <?php endif; ?>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success"><?= $_SESSION['success'];
+                                            unset($_SESSION['success']); ?></div>
+    <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/inscription" method="post">
         <div class="connexion text-start mb-4">
             <label class="mb-1 d-block" for="nom">Nom</label>
@@ -55,7 +59,7 @@
             <label class="mb-1 d-block" for="confirm_motdepasse">Confirmation de votre mot de passe</label>
             <div class="password-input">
                 <input class="form-control" type="password" id="confirm_motdepasse" name="confirm_password" required placeholder="Votre mot de passe">
-                <span onclick="togglePassword('motdepasse')">👁</span>
+                <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
             </div>
         </div>
         <button class="connect-button mb-3 mt-3" type="submit">Créer votre compte</button>
