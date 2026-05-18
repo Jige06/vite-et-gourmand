@@ -113,6 +113,15 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("id-menu-supprimer").value = btn.dataset.id;
     });
   }
+  // Récupération  de l'id utilisateur pour la désactivation d'un employé
+  const modalDeactivate = document.getElementById("modalDeactivate");
+  if (modalDeactivate) {
+    modalDeactivate.addEventListener("show.bs.modal", function (e) {
+      const btn = e.relatedTarget;
+      document.getElementById("id-utilisateur-desactiver").value =
+        btn.dataset.id;
+    });
+  }
 });
 
 function updateMenuCards(menus) {
@@ -127,8 +136,9 @@ function updateMenuCards(menus) {
     carte.className = "carte-menu";
 
     const image = document.createElement("img");
-    image.src = "/assets/images/" + menu.photo;
-    image.alt = menu.photo.replace(/\.[^/.]+$/, "");
+    image.src = "/assets/images/menus/" + menu.photo;
+    image.alt = "photo du menu " + menu.titre;
+    image.className = "card-img-menu";
 
     const theme = document.createElement("p");
     theme.textContent = menu.theme_libelle;
