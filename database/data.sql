@@ -49,40 +49,40 @@ INSERT INTO utilisateur(nom, prenom, email, mot_de_passe, telephone, adresse, co
     VALUES('Hebert', 'Jean-Guy', 'jghebert06@exemple.com', '$2y$10$XT8hVUjtB7XpGXvgKahanOYM.EGqwQ0k2M4LvQgN2CdUHQMjShTZ6', '0612345678', '3 avenue du Marechal Juin', '33700', 'Mérignac', 1, 1);
 
 -- Table plat
-INSERT INTO plat(titre, type_plat) VALUES('Velouté de châtaignes au foie gras', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Asperges sauce mousseline', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Cassolette de Saint-Jacques au Noilly Prat', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Carpaccio de saumon à l\'aneth et baies roses', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Buffet d\'entrées maraîchères', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Tartare de thon rouge au citron vert', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Pressé de légumes grillés et pesto basilic', 'Entrée');
-INSERT INTO plat(titre, type_plat) VALUES('Épaule d\'agneau confite aux herbes', 'Plat');
-INSERT INTO plat(titre, type_plat) VALUES('Filet de bœuf en croûte et son jus corsé', 'Plat');
-INSERT INTO plat(titre, type_plat) VALUES('Ballotine de volaille farcie aux morilles', 'Plat');
-INSERT INTO plat(titre, type_plat) VALUES('Cochon de lait rôti à la broche', 'Plat');
-INSERT INTO plat(titre, type_plat) VALUES('Dos de cabillaud rôti, émulsion de crustacés', 'Plat');
-INSERT INTO plat(titre, type_plat) VALUES('Magret de canard, réduction au vin de Bordeaux', 'Plat');
-INSERT INTO plat(titre, type_plat) VALUES('Entremet aux fruits de saison', 'Dessert');
-INSERT INTO plat(titre, type_plat) VALUES('Trio de gourmandises chocolatées', 'Dessert');
-INSERT INTO plat(titre, type_plat) VALUES('Pièce montée traditionnelle', 'Dessert');
-INSERT INTO plat(titre, type_plat) VALUES('Wedding cake', 'Dessert');
-INSERT INTO plat(titre, type_plat) VALUES('Buffet de mignardises et macarons', 'Dessert');
-INSERT INTO plat(titre, type_plat) VALUES('Café gourmand revisité', 'Dessert');
-INSERT INTO plat(titre, type_plat) VALUES('Cannelé bordelais façon profiterole', 'Dessert');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Velouté de châtaignes au foie gras', 'Entrée', 'veloute_chataignes_foiegras.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Asperges sauce mousseline', 'Entrée', 'asperges_sauce_mousseline.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Cassolette de Saint-Jacques au Noilly Prat', 'Entrée', 'cassolette_saintjacques.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Carpaccio de saumon à l\'aneth et baies roses', 'Entrée', 'carpaccio_saumon_baiesroses.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Buffet d\'entrées maraîchères', 'Entrée', 'buffet_entrees_maraicheres.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Tartare de thon rouge au citron vert', 'Entrée', 'tartare_thon_rouge_citronvert.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Pressé de légumes grillés et pesto basilic', 'Entrée', 'presse_legumes_grilles_basilic.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Épaule d\'agneau confite aux herbes', 'Plat', 'epaule_agneau_confite_herbes.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Filet de bœuf en croûte et son jus corsé', 'Plat', 'filet_boeuf_en_croute_juscorse.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Ballotine de volaille farcie aux morilles', 'Plat', 'ballotine_volaille_farcie_morille.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Cochon de lait rôti à la broche', 'Plat', 'cochon_lait_roti_broche.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Dos de cabillaud rôti, émulsion de crustacés', 'Plat', 'dos_cabillaud_roti.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Magret de canard, réduction au vin de Bordeaux', 'Plat', 'magret_canard_vin_bordeaux.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Entremet aux fruits de saison', 'Dessert', 'entremet_fruits_saisons.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Trio de gourmandises chocolatées', 'Dessert', 'trio_gourmandises_chocolatees.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Pièce montée traditionnelle', 'Dessert', 'piece_montee_traditionnelle.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Wedding cake', 'Dessert', 'weeding_cake.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Buffet de mignardises et macarons', 'Dessert', 'Buffet_mignardises_et_macarons.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Café gourmand revisité', 'Dessert', 'café_gourmand_revisite.png');
+INSERT INTO plat(titre, type_plat, photo) VALUES('Cannelé bordelais façon profiterole', 'Dessert', 'cannele_bordelais_facon_profiterole.png');
 
 -- Table menu
 INSERT INTO menu(titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-    VALUES('Tradition de saison', 'Des saveurs authentiques qui célèbrent le meilleur de chaque saison.', 45.00, 10, 20, 'Commander au minimum 1 semaine avant la prestation.', 'Classique', 'uploads/menus/default.jpg', 1);
+    VALUES('Tradition de saison', 'Des saveurs authentiques qui célèbrent le meilleur de chaque saison.', 45.00, 10, 20, 'Commander au minimum 1 semaine avant la prestation.', 'Classique', 'menu_tradition_de_saison.png', 1);
 INSERT INTO menu(titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-    VALUES('Prestige Régional', 'Une escapade gastronomique au cœur des terroirs français.', 55.00, 10, 20, 'Commander au minimum 2 semaines avant la prestation.', 'Classique', 'uploads/menus/default.jpg', 1);
+    VALUES('Prestige Régional', 'Une escapade gastronomique au cœur des terroirs français.', 55.00, 10, 20, 'Commander au minimum 2 semaines avant la prestation.', 'Classique', 'menu_prestige_regional.png', 1);
 INSERT INTO menu(titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-    VALUES('Noces d\'Argent', 'Un repas d\'exception pour célébrer vos moments les plus précieux.', 65.00, 20, 35, 'Commander au minimum 1 mois avant la prestation.', 'Classique', 'uploads/menus/default.jpg', 2);
+    VALUES('Noces d\'Argent', 'Un repas d\'exception pour célébrer vos moments les plus précieux.', 65.00, 20, 35, 'Commander au minimum 1 mois avant la prestation.', 'Classique', 'menu_noces_argent.png', 2);
 INSERT INTO menu(titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-    VALUES('Héritage & Partage', 'La générosité à table, sublimée par notre savoir-faire artisanal.', 55.00, 20, 30, 'Commander au minimum 1 semaine avant la prestation.', 'Classique', 'uploads/menus/default.jpg', 2);
+    VALUES('Héritage & Partage', 'La générosité à table, sublimée par notre savoir-faire artisanal.', 55.00, 20, 30, 'Commander au minimum 1 semaine avant la prestation.', 'Classique', 'menu_heritage_et_partage.png', 2);
 INSERT INTO menu(titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-    VALUES('L\'Exécutif', 'Une cuisine raffinée pour vos rendez-vous professionnels les plus importants.', 60.00, 6, 12, 'Commander au minimum 48 heures avant la prestation.', 'Classique', 'uploads/menus/default.jpg', 3);
+    VALUES('L\'Exécutif', 'Une cuisine raffinée pour vos rendez-vous professionnels les plus importants.', 60.00, 6, 12, 'Commander au minimum 48 heures avant la prestation.', 'Classique', 'menu_executif.png', 3);
 INSERT INTO menu(titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-    VALUES('Le Gourmet Rapide', 'L\'élégance gastronomique au service de vos déjeuners d\'affaires.', 30.00, 8, 15, 'Commander au minimum 24 heures avant la prestation.', 'Classique', 'uploads/menus/default.jpg', 3);
+    VALUES('Le Gourmet Rapide', 'L\'élégance gastronomique au service de vos déjeuners d\'affaires.', 30.00, 8, 15, 'Commander au minimum 24 heures avant la prestation.', 'Classique', 'menu_gourmet_rapide.png', 3);
 
 -- Table menu_plat
 INSERT INTO menu_plat(Id_menu, Id_plat) VALUES(1, 1);
