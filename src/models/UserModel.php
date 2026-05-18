@@ -161,4 +161,91 @@ class UserModel
         $stmt->execute();
         return true;
     }
+
+    // Méthode qui met a jour le statut actif/désativé d'un compte employé
+    public static function deactivateUser($idUser)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("UPDATE utilisateur SET actif = 0 WHERE Id_Utilisateur = ?");
+        $stmt->execute([$idUser]);
+    }
+
+    // Méthode qui cré un nouvel utilisateur (Role employé) en vérifiant si l'email n'est pas déja present dans la BDD
+    public static function createEmploye($nom, $prenom, $email, $password)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        // Vérifier si l'email est déjà utilisé par un autre utilisateur
+        $stmt = $pdo->prepare("SELECT Id_Utilisateur FROM utilisateur WHERE email = ?");
+        $stmt->execute([$email]);
+        if ($stmt->fetch()) {
+            return false;
+        }
+
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+
+        $stmt = $pdo->prepare("INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, telephone, adresse, code_postal, ville, actif, Id_role)
+        VALUES (:nom, :prenom, :email, :mot_de_passe, '0557841234', '19 rue Bouffard', '33000', 'Bordeaux', 1, 2)");
+        $stmt->bindValue(':nom', $nom);
+        $stmt->bindValue(':prenom', $prenom);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':mot_de_passe', $hash);
+
+        $stmt->execute();
+        return true;
+    }
+
+    // Méthode qui envoie le mail à l'employé (nouveau compte employé)
+    public static function sendNewEmployeMail($nom, $prenom, $email)
+    {
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->CharSet = 'UTF-8';
+        $mail->Host = $_ENV['MAIL_HOST'];
+        $mail->SMTPAuth = true;
+        $mail->Port = $_ENV['MAIL_PORT'];
+        $mail->Username = $_ENV['MAIL_USER'];
+        $mail->Password = $_ENV['MAIL_PASS'];
+
+        $mail->setFrom($_ENV['MAIL_FROM'], 'Vite & Gourmand');
+        $mail->addAddress($email, $nom . ' ' . $prenom);
+
+        $mail->Subject = 'Confirmation de la création de votre espace employé';
+        $mail->isHTML(true);
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Montserrat, sans-serif; color: #0f172a; }
+                .header { background-color: #0f172a; padding: 20px; text-align: center; border-radius: 8px; }
+                .header h1 { color: #e67e22; font-family: 'Playfair Display', serif; }
+                .content { padding: 30px; }
+                .recap { background-color: #1e293b; color: white; padding: 20px; border-radius: 8px; }
+                .total { color: #e67e22; font-weight: bold; font-size: 1.2rem; }
+            </style>
+        </head>
+        <body>
+            <div class='header'>
+            <h1>Vite & Gourmand</h1>
+            </div>
+            <div class='content'>
+            <p>Bonjour $prenom $nom,</p>
+            <p>Votre compte employé a bien été créé.</p>
+            <p>Pour obtenir votre mot de passe, veuillez vous rapprocher de l'administrateur.</p>
+            <br>
+            <p>À bientôt,</p>
+            <p>José</p>
+            </div>
+        </body>
+        </html>";
+
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Erreur envoi mail : " . $mail->ErrorInfo);
+        }
+    }
 }
