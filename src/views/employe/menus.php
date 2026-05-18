@@ -1,20 +1,25 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
+<?php require_once('../src/views/layouts/nav-employe.php'); ?>
+
+<div class="employe text-center mt-4 mb-4">
+    <h1>Espace employé</h1>
+    <h3>Gestion des menus</h3>
+</div>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestion des menus</h1>
         <?php if (isset($_SESSION['success'])): ?>
             <div class="alert alert-success"><?= $_SESSION['success'];
                                                 unset($_SESSION['success']); ?></div>
         <?php endif; ?>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreerMenu">
+        <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerMenu">
             + Créer un menu
         </button>
     </div>
 
     <!-- tableau des menus -->
     <div>
-        <table class="table">
+        <table class="table table-hover table-borderless table-responsive-md">
             <thead>
                 <tr>
                     <th scope="col">Nom du menu</th>
@@ -41,7 +46,7 @@
                         <td><?= htmlspecialchars($menu['theme_libelle']) ?></td>
                         <td>
                             <button
-                                class="btn btn-primary"
+                                class="connect-button mb-3"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalModifMenu"
                                 data-id="<?= $menu['Id_menu'] ?>"

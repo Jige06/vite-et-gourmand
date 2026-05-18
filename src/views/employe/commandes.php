@@ -1,7 +1,9 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
+<?php require_once('../src/views/layouts/nav-employe.php'); ?>
 
-<div class="employe">
+<div class="employe text-center mt-4 mb-4">
     <h1>Espace employé</h1>
+    <h3>Tableau des commandes</h3>
 </div>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -14,7 +16,7 @@
 <?php endif; ?>
 
 <!-- Filtres des menus par statut ou par nom/prenon -->
-<div class="filters">
+<div class="container filters mb-4">
     <form method="GET" action="/employe">
         <input type="text" name="client" placeholder="Nom du client">
         <label for="statut-select">Choisissez un statut&nbsp;:</label>
@@ -29,19 +31,20 @@
             <option value="Terminé">Terminé</option>
             <option value="Annulé">Annulé</option>
         </select>
-        <button type="submit">Filtrer</button>
+        <button class="connect-button" type="submit">Filtrer</button>
     </form>
 </div>
 
 <!-- Tableau des commandes -->
-<div>
-    <table class="table">
+<div class="container mb-4">
+    <table class="table table-hover table-borderless table-responsive-md">
         <thead>
             <tr>
                 <th scope="col">N° de commande</th>
                 <th scope="col">Client</th>
                 <th scope="col">Date</th>
                 <th scope="col">Statut actuel</th>
+                <th scope="col">Statut à changer</th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +55,7 @@
                     <td><?= htmlspecialchars($order['date_commande']) ?></td>
                     <td><?= htmlspecialchars($order['statut_actuel']) ?></td>
                     <td>
-                        <form method="POST" action="/employe/statut">
+                        <form class="container" method="POST" action="/employe/statut">
                             <input type="hidden" name="Id_Commande" value="<?= $order['Id_commande'] ?>">
                             <label for="statut-select">Nouveau statut&nbsp;:</label>
                             <select name="nouveau_statut" id="nouveau_statut">
@@ -65,7 +68,7 @@
                                 <option value="Terminé">Terminé</option>
                                 <option value="Annulé">Annulé</option>
                             </select>
-                            <button type="submit">Valider</button>
+                            <button class="connect-button ms-4" type="submit">Valider</button>
                         </form>
                     </td>
                 </tr>

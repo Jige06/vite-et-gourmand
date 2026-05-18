@@ -1,12 +1,13 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
+<?php require_once('../src/views/layouts/nav-employe.php'); ?>
 
-<div class="employe text-center">
+<div class="employe text-center mt-4 mb-4">
     <h1>Espace employé</h1>
-    <p>Validation des avis</p>
+    <h3>Validation des avis</h3>
 </div>
 
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mt-5 justify-content-center">
     <?php foreach ($avis as $unAvis): ?>
         <div class="col">
         <div class="card" style="width: 16rem;">
