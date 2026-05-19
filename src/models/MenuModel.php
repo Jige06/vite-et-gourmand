@@ -2,6 +2,8 @@
 
 class MenuModel
 {
+
+    // Méthode qui permet de créer un nouveau menu
     public static function createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme)
     {
         // Connexion à la BDD
@@ -23,6 +25,7 @@ class MenuModel
         $stmt->execute();
     }
 
+    // Méthode qui permet de modifier un menu existant
     public static function updateMenu($idMenu, $titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme)
     {
         // Connexion à la BDD
@@ -46,6 +49,7 @@ class MenuModel
         $stmt->execute();
     }
 
+    // Méthode qui permet de supprimer un menu
     public static function deleteMenu($idMenu)
     {
         // Connexion à la BDD
@@ -55,6 +59,7 @@ class MenuModel
         $stmt->execute([$idMenu]);
     }
 
+    // Méthode qui permet de récupérer tous les menus
     public static function getAllMenu()
     {
         // Connexion à la BDD
@@ -69,6 +74,7 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthode qui permet de récupérer un menu par son Id
     public static function getById($id)
     {
         // Connexion à la BDD
@@ -85,6 +91,7 @@ class MenuModel
         return $menu ?: null;
     }
 
+    // Méthode qui permet de récupérer les menus en fonction des filtres
     public static function getByFilters($filters)
     {
         // Connexion à la BDD
@@ -124,6 +131,7 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthodes qui permet de récupérer tous les thèmes
     public static function getAllThemes()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -133,6 +141,7 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+    // Méthode qui permet de récupérer tous les régimes
     public static function getAllRegimes()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -142,6 +151,8 @@ class MenuModel
         return $stmt->fetchAll();
     }
 
+
+    // Méthode qui permet de récupérer le nombre min de personne des menus
     public static function getMinPersonnes()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -151,6 +162,7 @@ class MenuModel
         return $stmt->fetch()['min_pers'];
     }
 
+    // Méthode qui eprmet de récuperer le prix min des menus
     public static function getMinPrix()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -160,6 +172,7 @@ class MenuModel
         return $stmt->fetch()['min_prix'];
     }
 
+    // Méthode qui eprmet de récuperer le prix max des menus
     public static function getMaxPrix()
     {
         $pdo = DatabaseConnection::getInstance();
