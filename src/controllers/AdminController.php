@@ -55,7 +55,6 @@ class AdminController
                 UserModel::sendNewEmployeMail($nom, $prenom, $email);
 
                 $_SESSION['success'] = "Le compte employé a bien été créé.";
-
             } elseif ($action === 'desactiver') {
                 $idUser = $_POST['id_user'];
                 UserModel::deactivateUser($idUser);
@@ -66,5 +65,19 @@ class AdminController
             $employes = AdminModel::getEmployes();
             require_once(__DIR__ . '/../views/admin/index.php');
         }
+    }
+
+    // Méthode qui gère la synchronisation, la récuperation et l'affichage des stats
+    public function handleStats()
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Administrateur') {
+            Auth::redirect('/connexion');
+            return;
+        }
+        MongoDBModel::syncStats();
+
+        $stats = MongoDBModel::getStats();
+
+        require_once(__DIR__ . '/../views/admin/stats.php');
     }
 }
