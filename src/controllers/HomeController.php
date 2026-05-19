@@ -4,6 +4,9 @@ class HomeController
 {
     public function index()
     {
+        // Récupération des avis validés pour les afficher
+        $validatedReviews = ReviewModel::getValidatedReviews();
+
         require_once(__DIR__ . '/../views/home/index.php');
     }
 }
