@@ -142,4 +142,64 @@ class EmployeController
             require_once(__DIR__ . '/../views/employe/menus.php');
         }
     }
+
+
+    // Méthode CRUD pour gérer les plats (creation, modification, suppression) depuis l'espace employe
+    public function handlePlats()
+    {
+        // Vérification du rôle pour acceder à l'espace employé
+        if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
+            header('Location: /connexion');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $action = $_POST['action'];
+
+            if ($action === 'creer') {
+
+                $titre = trim($_POST['titre']);
+                $typePlat = trim($_POST['type_plat']);
+                $photo = null;
+                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
+                    $nomFichier = basename($_FILES['photo']['name']);
+                    $destination = __DIR__ . '/../../public/assets/images/plats/' . $nomFichier;
+                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
+                    $photo = $nomFichier; // on stocke juste le nom en BDD
+                }
+                PlatModel::createPlat($titre, $typePlat, $photo);
+                $_SESSION['success'] = "Le plat a bien été créé.";
+            } elseif ($action === 'modifier') {
+
+                $idPlat = $_POST['Id_plat'];
+                $titre = trim($_POST['titre']);
+                $typePlat = trim($_POST['type_plat']);
+                $photo = null;
+                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
+                    $nomFichier = basename($_FILES['photo']['name']);
+                    $destination = __DIR__ . '/../../public/assets/images/plats/' . $nomFichier;
+                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
+                    $photo = $nomFichier; // on stocke juste le nom en BDD
+
+                } else {
+
+                    // récupérer l'ancienne photo depuis la BDD
+                    $platActuel = PlatModel::getById($idPlat);
+                    $photo = $platActuel['photo'];
+                }
+
+                PlatModel::updatePlat($idPlat, $titre, $typePlat, $photo);
+                $_SESSION['success'] = "Le plat a bien été modifié.";
+            } elseif ($action === 'supprimer') {
+
+                $idPlat = $_POST['Id_plat'];
+                PlatModel::deletePlat($idPlat);
+                $_SESSION['success'] = "Le plat a bien été supprimé.";
+            }
+            Auth::redirect('/employe/plats');
+        } else {
+            $plats = PlatModel::getAllPlats();
+            require_once(__DIR__ . '/../views/employe/plats.php');
+        }
+    }
 }
