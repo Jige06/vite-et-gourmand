@@ -320,3 +320,15 @@
 th {
   color: var(--couleur-primary);
 }
+
+.contact {
+    background-color: var(--couleur-bg-dark) !important;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.contact label {
+    color: white !important;
+}
