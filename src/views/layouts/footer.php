@@ -12,12 +12,12 @@
                         <p>05 57 84 12 34</p>
                     </div>
                     <div class="lien col">
-                        <a href="mailto:contact@viteetgourmand.com">contact@viteetgourmand.com</a>
+                        <a href="mailto:contact@viteetgourmand.fr">contact@viteetgourmand.fr</a>
                     </div>
                 </div>
                 <div class="lien text-center">
-                    <a href="#">Mentions légales</a>
-                    <a href="#">Conditions générales de vente</a>
+                    <a href="/mentions-legales">Mentions légales</a>
+                    <a href="/cgv">Conditions générales de vente</a>
                 </div>
             </div>
         </footer>
