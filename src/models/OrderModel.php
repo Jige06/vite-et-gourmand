@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class OrderModel
 {
     // Méthode de création d'une commande
-    public static function createOrder($dateCommande, $nbrePers, $montantTotal, $prixLivraison, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser)
+    public static function createOrder($dateCommande, $nbrePers, $montantTotal, $prixLivraison, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser)
     {
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
@@ -18,9 +18,9 @@ class OrderModel
         $stmt->bindValue(':montant_total', $montantTotal);
         $stmt->bindValue(':prix_livraison', $prixLivraison);
         $stmt->bindValue(':type_livraison', $typeLiv);
-        $stmt->bindValue(':adresse_livraison', $adresseLiv);
-        $stmt->bindValue(':code_postal_livraison', $codePostalLiv);
-        $stmt->bindValue(':ville_livraison', $villeLive);
+        $stmt->bindValue(':adresse_livraison', $adresseLiv ?: null);
+        $stmt->bindValue(':code_postal_livraison', $codePostalLiv ?: null, PDO::PARAM_INT);
+        $stmt->bindValue(':ville_livraison', $villeLiv ?: null);
         $stmt->bindValue(':heure_livraison', $heureLiv);
         $stmt->bindValue(':date_livraison', $dateLiv);
         $stmt->bindValue(':pret_materiel', $pretMat);
