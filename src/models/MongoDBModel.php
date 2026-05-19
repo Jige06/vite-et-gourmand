@@ -26,13 +26,14 @@ class MongoDBModel
         return self::$instance;
     }
 
+    // Méthode qui permlet de mettre à jour les stats
     public static function syncStats()
     {
         // Connexion à la BDD MySQL
         $pdo = DatabaseConnection::getInstance();
 
         // Requete qui récupère les statistiques
-        $stmt= $pdo->prepare("SELECT m.titre, COUNT(commande.Id_commande) AS nbre_commandes, SUM(commande.montant_total) AS ca_total
+        $stmt = $pdo->prepare("SELECT menu.titre, COUNT(commande.Id_commande) AS nbre_commandes, SUM(commande.montant_total) AS ca_total
         FROM commande
         JOIN menu ON commande.Id_menu = menu.Id_menu
         WHERE commande.Id_commande NOT IN (
@@ -54,6 +55,7 @@ class MongoDBModel
         $collection->insertMany($stats);
     }
 
+    // Méthode qui récupère les stats
     public static function getStats()
     {
         $collection = self::getInstance()->vite_gourmand->stats_commandes;
