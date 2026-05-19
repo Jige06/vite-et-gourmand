@@ -60,6 +60,24 @@ class ReviewModel
         $validatedReviews = $stmt->fetchAll();
         return $validatedReviews;
     }
+
+    //Méthode qui récupère tous les avis validés (sans limite)
+    public static function getAllValidatedReviews()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT avis.*, utilisateur.prenom, menu.titre, menu.photo
+        FROM avis
+        JOIN commande ON avis.Id_commande = commande.Id_commande
+        JOIN utilisateur ON commande.Id_Utilisateur = utilisateur.Id_Utilisateur
+        JOIN menu ON commande.Id_menu = menu.Id_menu
+        WHERE avis.statut = 'Validé'
+        ORDER BY avis.date_validation DESC");
+
+        $stmt->execute();
+        $allValidatedReviews = $stmt->fetchAll();
+        return $allValidatedReviews;
+    }
 }
 
 
