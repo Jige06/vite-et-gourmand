@@ -122,6 +122,41 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.dataset.id;
     });
   }
+
+  // Graphiques statistiques administrateur
+  if (document.getElementById("graphiqueCommandes")) {
+    const labels = stats.map((s) => s.titre);
+    const nbCommandes = stats.map((s) => s.nbre_commandes);
+    const caTotal = stats.map((s) => s.ca_total);
+
+    new Chart(document.getElementById("graphiqueCommandes"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Nombre de commandes",
+            data: nbCommandes,
+            backgroundColor: "#0056b3",
+          },
+        ],
+      },
+    });
+
+    new Chart(document.getElementById("graphiqueCA"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Chiffre d'affaires (€)",
+            data: caTotal,
+            backgroundColor: "#e67e22",
+          },
+        ],
+      },
+    });
+  }
 });
 
 function updateMenuCards(menus) {
