@@ -28,26 +28,26 @@
     </div>
     <div class="row image mt-4">
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/assets/images/asperges_sauce_mousseline.png" alt="asperges_sauce_mousseline">
+            <img src="/assets/images/plats/asperges_sauce_mousseline.png" alt="asperges_sauce_mousseline">
         </div>
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/assets/images/buffet_entrees_maraicheres.png" alt="buffet_entrees_maraicheres">
-        </div>
-    </div>
-    <div class="row image">
-        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/assets/images/cochon_lait_roti_broche.png" alt="cochon_lait_roti_broche">
-        </div>
-        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/assets/images/filet_boeuf_en_croute_juscorse.png" alt="filet_boeuf_en_croute_juscorse">
+            <img src="/assets/images/plats/buffet_entrees_maraicheres.png" alt="buffet_entrees_maraicheres">
         </div>
     </div>
     <div class="row image">
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/assets/images/plateaux_fromages_france.png" alt="plateaux_fromages_france">
+            <img src="/assets/images/plats/cochon_lait_roti_broche.png" alt="cochon_lait_roti_broche">
         </div>
         <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
-            <img src="/assets/images/trio_gourmandises_chocolatees.png" alt="trio_gourmandises_chocolatees">
+            <img src="/assets/images/plats/filet_boeuf_en_croute_juscorse.png" alt="filet_boeuf_en_croute_juscorse">
+        </div>
+    </div>
+    <div class="row image">
+        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
+            <img src="/assets/images/plats/plateaux_fromages_france.png" alt="plateaux_fromages_france">
+        </div>
+        <div class="col-12 col-md-12 col-lg-6 image-realisation mb-4">
+            <img src="/assets/images/plats/trio_gourmandises_chocolatees.png" alt="trio_gourmandises_chocolatees">
         </div>
     </div>
     <button onclick="window.location.href='/menus'" class="connect-button mb-3 mt-3" type="submit">Découvrir nos menus</button>
@@ -57,26 +57,13 @@
     <div class="titre-avis text-center pb-4 pt-4">
         <h3>quelques avis clients</h3>
     </div>
-    <div class="avis ps-3 pe-3 pt-3 mt-2 mb-2">
-        <p>Note: 4/5 * * * *</p>
-        <p>Prenom: Marc-Antoine</p>
-        <p>"Un service d'une qualité rare à Bordeaux. Nous avons fait appel à Julie et José pour notre mariage et tout était parfait, du vin d'honneur au dessert. Le filet de bœuf en croûte a fait l'unanimité auprès de nos invités ! Professionnalisme et discrétion assurés."</p>
-    </div>
-    <div class="avis ps-3 pe-3 pt-3 mt-2 mb-2">
-        <p>Note: 4/5 * * * *</p>
-        <p>Prenom: Marc-Antoine</p>
-        <p>"Un service d'une qualité rare à Bordeaux. Nous avons fait appel à Julie et José pour notre mariage et tout était parfait, du vin d'honneur au dessert. Le filet de bœuf en croûte a fait l'unanimité auprès de nos invités ! Professionnalisme et discrétion assurés."</p>
-    </div>
-    <div class="avis ps-3 pe-3 pt-3 mt-2 mb-2">
-        <p>Note: 4/5 * * * *</p>
-        <p>Prenom: Marc-Antoine</p>
-        <p>"Un service d'une qualité rare à Bordeaux. Nous avons fait appel à Julie et José pour notre mariage et tout était parfait, du vin d'honneur au dessert. Le filet de bœuf en croûte a fait l'unanimité auprès de nos invités ! Professionnalisme et discrétion assurés."</p>
-    </div>
-    <div class="avis ps-3 pe-3 pt-3 mt-2 mb-2">
-        <p>Note: 4/5 * * * *</p>
-        <p>Prenom: Marc-Antoine</p>
-        <p>"Un service d'une qualité rare à Bordeaux. Nous avons fait appel à Julie et José pour notre mariage et tout était parfait, du vin d'honneur au dessert. Le filet de bœuf en croûte a fait l'unanimité auprès de nos invités ! Professionnalisme et discrétion assurés."</p>
-    </div>
+    <?php foreach ($validatedReviews as $avis): ?>
+        <div class="avis ps-3 pe-3 pt-3 mt-2 mb-2">
+            <p>Note: <?= htmlspecialchars($avis['note']) ?>/5</p>
+            <p>Prénom: <?= htmlspecialchars($avis['prenom']) ?></p>
+            <p>"<?= htmlspecialchars($avis['description_avis']) ?>"</p>
+        </div>
+    <?php endforeach; ?>
     <div class="avis-button text-center">
         <button onclick="window.location.href='/avis'" class="connect-button mb-3 mt-3" type="submit">Lire les avis</button>
     </div>
