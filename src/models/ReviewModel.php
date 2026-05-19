@@ -18,6 +18,7 @@ class ReviewModel
         $stmt->execute();
     }
 
+    // Méthode qui récupère les avis en attente de validation
     public static function getPendingReviews()
     {
         $pdo = DatabaseConnection::getInstance();
@@ -33,13 +34,31 @@ class ReviewModel
         return $avis;
     }
 
+    // Méthode qui met à jour le statut des avis
     public static function updateReviewStatus($idAvis, $statut)
     {
         $pdo = DatabaseConnection::getInstance();
 
         $stmt = $pdo->prepare("UPDATE avis SET statut = ?, date_validation = NOW() WHERE Id_avis = ?");
         $stmt->execute([$statut, $idAvis]);
+    }
 
+    // Méthode qui récupère les 4 derniers avis validés
+    public static function getValidatedReviews()
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT avis.*, utilisateur.prenom
+        FROM avis
+        JOIN commande ON avis.Id_commande = commande.Id_commande
+        JOIN utilisateur ON commande.Id_Utilisateur = utilisateur.Id_Utilisateur
+        WHERE avis.statut = 'Validé'
+        ORDER BY avis.date_validation DESC
+        LIMIT 4");
+
+        $stmt->execute();
+        $validatedReviews = $stmt->fetchAll();
+        return $validatedReviews;
     }
 }
 
