@@ -123,6 +123,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Pré-remplissage modal modification plat
+  const modalModifPlat = document.getElementById("modalModifPlat");
+  if (modalModifPlat) {
+    modalModifPlat.addEventListener("show.bs.modal", function (e) {
+      const btn = e.relatedTarget;
+      const form = document.getElementById("form-modif-plat");
+      form.querySelector('[name="Id_plat"]').value = btn.dataset.id;
+      form.querySelector('[name="titre"]').value = btn.dataset.titre;
+      form.querySelector('[name="type_plat"]').value = btn.dataset.type;
+    });
+  }
+
+  // Récupération id plat pour suppression
+  const modalSupprimerPlat = document.getElementById("modalSupprimerPlat");
+  if (modalSupprimerPlat) {
+    modalSupprimerPlat.addEventListener("show.bs.modal", function (e) {
+      const btn = e.relatedTarget;
+      document.getElementById("id-plat-supprimer").value = btn.dataset.id;
+    });
+  }
+
   // Graphiques statistiques administrateur
   if (document.getElementById("graphiqueCommandes")) {
     const labels = stats.map((s) => s.titre);
