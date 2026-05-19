@@ -53,5 +53,7 @@ $router->add('/employe/plats', [EmployeController::class, 'handlePlats']);
 $router->add('/employe/avis', [EmployeController::class, 'handleReviews']);
 $router->add('/admin', [AdminController::class, 'handleNewEmploye']);
 $router->add('/admin/stats', [AdminController::class, 'handleStats']);
+$router->add('/cgv', [LegalController::class, 'showCgv']);
+$router->add('/mentions-legales', [LegalController::class, 'showMentionsLegales']);
 
 $router->dispatch();
