@@ -2,6 +2,9 @@
 
 class MenuController
 {
+
+    // Affiche la page liste des menus selon les données des filtres
+    // Récupère les menus, thèmes, régimes et fourchettes de prix depuis le MenuModel
     public function index()
     {
         $menus = MenuModel::getAllMenu();
@@ -14,6 +17,8 @@ class MenuController
         require_once(__DIR__ . '/../views/menus/index.php');
     }
 
+    // Filtre les menus selon les critères passés en GET et retourne le résultat en JSON.
+    // Utilisé par le fetch JavaScript pour le filtrage dynamique sans rechargement de page.
     public function filter()
     {
         $filters = [
