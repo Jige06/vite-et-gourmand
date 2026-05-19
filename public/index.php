@@ -49,6 +49,7 @@ $router->add('/mon-espace/profil', [UserController::class, 'updateProfil']);
 $router->add('/employe', [EmployeController::class, 'showOrders']);
 $router->add('/employe/statut', [EmployeController::class, 'handleUpdateStatus']);
 $router->add('/employe/menus', [EmployeController::class, 'handleMenus']);
+$router->add('/employe/plats', [EmployeController::class, 'handlePlats']);
 $router->add('/employe/avis', [EmployeController::class, 'handleReviews']);
 $router->add('/admin', [AdminController::class, 'handleNewEmploye']);
 $router->add('/admin/stats', [AdminController::class, 'handleStats']);
