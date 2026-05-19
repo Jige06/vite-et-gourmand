@@ -37,7 +37,7 @@ $router->add('/connexion', [AuthController::class, 'handleLogin']);
 $router->add('/logout', [AuthController::class, 'logout']);
 $router->add('/inscription', [AuthController::class, 'handleSignUp']);
 $router->add('/mot-de-passe-oublie', [AuthController::class, 'handleResetPassword']);
-$router->add('/contact', []);
+$router->add('/contact', [ContactController::class, 'handleContact']);
 $router->add('/avis', [AvisController::class, 'index']);
 $router->add('/commande', [OrderController::class, 'handleOrder']);
 $router->add('/mon-espace', []);
