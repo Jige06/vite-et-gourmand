@@ -32,8 +32,8 @@ class MongoDBModel
         // Connexion à la BDD MySQL
         $pdo = DatabaseConnection::getInstance();
 
-        // Requete qui récupère les statistiques
-        $stmt = $pdo->prepare("SELECT menu.titre, COUNT(commande.Id_commande) AS nbre_commandes, SUM(commande.montant_total) AS ca_total
+        // Requete qui récupère une ligne par commande avec la date de commande
+        $stmt = $pdo->prepare("SELECT menu.titre, commande.montant_total, commande.date_commande
         FROM commande
         JOIN menu ON commande.Id_menu = menu.Id_menu
         WHERE commande.Id_commande NOT IN (
@@ -41,7 +41,7 @@ class MongoDBModel
         FROM commande_statut_commande
         JOIN statut_commande ON commande_statut_commande.Id_statut_commande = statut_commande.Id_statut_commande
         WHERE statut_commande.libelle = 'Annulé')
-        GROUP BY menu.Id_menu, menu.titre");
+        ");
         $stmt->execute();
         $stats = $stmt->fetchAll();
 
@@ -51,16 +51,49 @@ class MongoDBModel
         // On vide la collection pour actualiser avec les nouvelles stats
         $collection->deleteMany([]);
 
-        // Insertion des nouvelles stats
-        $collection->insertMany($stats);
+        // Insertion des nouvelles stats (une ligne par commande)
+        if (!empty($stats)) {
+            $collection->insertMany($stats);
+        }
     }
 
     // Méthode qui récupère les stats
-    public static function getStats()
+    public static function getStats($menuFiltre = null, $dateDebut = null, $dateFin = null)
     {
+        // Connexion à la colelction
         $collection = self::getInstance()->vite_gourmand->stats_commandes;
 
-        $cursor = $collection->find([]);
+        // Construction du filtre
+        $filtre = [];
+
+        if ($menuFiltre) {
+            $filtre['titre'] = $menuFiltre;
+        }
+
+        if ($dateDebut && $dateFin) {
+            $filtre['date_commande'] = [
+                '$gte' => $dateDebut,
+                '$lte' => $dateFin,
+            ];
+        }
+
+        // Agrégation MongoDB
+        $pipeline = [];
+
+        if (!empty($filtre)) {
+            $pipeline[] = ['$match' => $filtre];
+        }
+
+        $pipeline[] = ['$group' => [
+            '_id' => '$titre',
+            'titre' => ['$first' => '$titre'],
+            'nbre_commandes' => ['$sum' => 1],
+            'ca_total' => ['$sum' => ['$toDouble' => '$montant_total']],
+        ]];
+
+        $pipeline[] = ['$sort' => ['titre' => 1]];
+
+        $cursor = $collection->aggregate($pipeline);
         return iterator_to_array($cursor);
     }
 }

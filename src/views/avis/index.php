@@ -2,13 +2,13 @@
 
 <div class="big-title-accueil container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">Vite & Gourmand</h2>
-    <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">Découvrir nos menus</button>
+    <h1 class="text-center">Vite & Gourmand</h1>
+    <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">découvrir nos menus</button>
 </div>
 <div class="presentation container-fluid text-center mb-4 mt-4 pt-4 pb-4">
 
-    <div class="titre-realisation pb-4 pt-4">
-        <h3>les avis</h3>
+    <div class="titre-h2-bleu pb-4 pt-4">
+        <h2>les avis</h2>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mt-5 justify-content-center">
@@ -29,7 +29,7 @@
         <?php endforeach; ?>
     </div>
     <div class="avis-button text-center">
-        <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">Envie de commander ?</button>
+        <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">envie de commander ?</button>
     </div>
 </div>
 

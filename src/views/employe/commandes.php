@@ -3,7 +3,7 @@
 
 <div class="employe text-center mt-4 mb-4">
     <h1>Espace employé</h1>
-    <h3>Tableau des commandes</h3>
+    <h2>Tableau des commandes</h2>
 </div>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -16,11 +16,11 @@
 <?php endif; ?>
 
 <!-- Filtres des menus par statut ou par nom/prenon -->
-<div class="container filters mb-4">
+<div class="container filters mb-4 py-3">
     <form method="GET" action="/employe">
-        <input type="text" name="client" placeholder="Nom du client">
-        <label for="statut-select">Choisissez un statut&nbsp;:</label>
-        <select name="statut" id="statut-select">
+        <input class="mx-4" type="text" name="client" placeholder="Nom du client">
+        <label class="ms-4" for="statut-select">choisissez un statut&nbsp;:</label>
+        <select class="ms-1" name="statut" id="statut-select">
             <option value=""></option>
             <option value="En attente de validation">En attente de validation</option>
             <option value="Accepté">Accepté</option>
@@ -31,7 +31,7 @@
             <option value="Terminé">Terminé</option>
             <option value="Annulé">Annulé</option>
         </select>
-        <button class="connect-button" type="submit">Filtrer</button>
+        <button class="connect-button mx-5" type="submit">filtrer</button>
     </form>
 </div>
 
@@ -43,6 +43,7 @@
                 <th scope="col">N° de commande</th>
                 <th scope="col">Client</th>
                 <th scope="col">Date</th>
+                <th scope="col">Montant total</th>
                 <th scope="col">Statut actuel</th>
                 <th scope="col">Statut à changer</th>
             </tr>
@@ -53,6 +54,7 @@
                     <td><?= 'VG-' . date('Ymd', strtotime($order['date_commande'])) . '-' . sprintf('%04d', $order['Id_commande']) ?></td>
                     <td><?= htmlspecialchars($order['prenom'] . ' ' . $order['nom']) ?></td>
                     <td><?= htmlspecialchars($order['date_commande']) ?></td>
+                    <td><?= htmlspecialchars($order['montant_total']) ?> €</td>
                     <td><?= htmlspecialchars($order['statut_actuel']) ?></td>
                     <td>
                         <form class="container" method="POST" action="/employe/statut">
@@ -68,7 +70,7 @@
                                 <option value="Terminé">Terminé</option>
                                 <option value="Annulé">Annulé</option>
                             </select>
-                            <button class="connect-button ms-4" type="submit">Valider</button>
+                            <button class="connect-button ms-4" type="submit">valider</button>
                         </form>
                     </td>
                 </tr>

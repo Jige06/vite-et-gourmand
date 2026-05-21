@@ -2,7 +2,7 @@
 
 <div class="big-title container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">Connexion</h2>
+    <h1 class="text-center">Connexion</h1>
 </div>
 
 <div class="box-connexion container-fluid">
@@ -23,11 +23,11 @@
                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">
                 <span onclick="togglePassword('motdepasse')">👁</span>
                 <div class="text-end">
-                    <a class="forgot-password" href="#">Mot de passe oublié</a>
+                    <a class="forgot-password" href="/mot-de-passe-oublie">Mot de passe oublié</a>
                 </div>
             </div>
         </div>
-        <button class="connect-button mb-3 mt-3" type="submit">Se connecter</button>
+        <button class="connect-button mb-3 mt-3" type="submit">se connecter</button>
         <div class=" mt-1">
             <p>Pas de compte ? <a href="/inscription">Créer un compte, cliquez ici</a></p>
         </div>

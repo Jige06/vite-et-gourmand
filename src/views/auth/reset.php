@@ -2,7 +2,7 @@
 
 <div class="big-title container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">Changer mon mot de passe</h2>
+    <h1 class="text-center">Changer mon mot de passe</h1>
 </div>
 <div class="box-connexion container-fluid">
     <?php if (isset($_SESSION['error'])): ?>
@@ -19,7 +19,7 @@
             <input class="form-control" type="email" id="email" name="email" required placeholder="exemple@exemple.com">
         </div>
 
-        <button class="connect-button mb-3 mt-3" type="submit">Recevoir mon mot de passe temporaire</button>
+        <button class="connect-button mb-3 mt-3" type="submit">recevoir mon mot de passe temporaire</button>
         <div class=" mt-1">
             <p>Vous vous rappelez de votre mot de passe ! <a href="/connexion">Se connecter</a></p>
         </div>

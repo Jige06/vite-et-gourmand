@@ -40,9 +40,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/menus">Nos menus</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/avis">Les avis</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">accueil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/menus">nos menus</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/avis">les avis</a></li>
                         <?php if (!isset($_SESSION['role']) || $_SESSION['role'] === 'Utilisateur'): ?>
                             <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                         <?php endif; ?>
@@ -52,18 +52,18 @@
                             </li>
 
                             <?php if ($_SESSION['role'] === 'Administrateur'): ?>
-                                <li class="nav-item"><a class="nav-link" href="/admin">Espace admin</a></li>
-                                <li class="nav-item"><a class="nav-link" href="/employe">Espace employé</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/admin">espace admin</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/employe">espace employé</a></li>
                             <?php elseif ($_SESSION['role'] === 'Employé'): ?>
-                                <li class="nav-item"><a class="nav-link" href="/employe">Espace employé</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/employe">espace employé</a></li>
                             <?php else: ?>
-                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">Mon espace</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mon espace</a></li>
                             <?php endif; ?>
 
-                            <li class="nav-item"><a class="nav-link" href="/logout">Déconnexion</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/logout">déconnexion</a></li>
                         <?php else: ?>
-                            <li class="nav-item"><a class="nav-link" href="/connexion">Connexion</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/inscription">S'inscrire</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/connexion">connexion</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/inscription">s'inscrire</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>

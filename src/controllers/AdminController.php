@@ -76,7 +76,17 @@ class AdminController
         }
         MongoDBModel::syncStats();
 
-        $stats = MongoDBModel::getStats();
+        // Récupération des filtres depuis l'url (GET)
+        $menuFiltre = isset($_GET['menu']) && $_GET['menu'] !== '' ? trim($_GET['menu']) : null;
+        $dateDebut = isset($_GET['date_debut']) && $_GET['date_debut'] !== '' ? trim($_GET['date_debut']) : null;
+        $dateFin = isset($_GET['date_fin']) && $_GET['date_fin'] !== '' ? trim($_GET['date_fin']) : null;
+
+        // Récupération de tous les menus distincts pour le select
+        $collection = MongoDBModel::getInstance()->vite_gourmand->stats_commandes;
+        $menus = $collection->distinct('titre');
+        sort($menus);
+
+        $stats = MongoDBModel::getStats($menuFiltre, $dateDebut, $dateFin);
 
         require_once(__DIR__ . '/../views/admin/stats.php');
     }

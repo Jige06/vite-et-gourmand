@@ -3,7 +3,7 @@
 
 <div class="employe text-center mt-4 mb-4">
     <h1>Espace employé</h1>
-    <h3>Gestion des plats</h3>
+    <h2>Gestion des plats</h2>
 </div>
 
 <div class="container mt-4">
@@ -13,13 +13,13 @@
                                                 unset($_SESSION['success']); ?></div>
         <?php endif; ?>
         <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerPlat">
-            + Créer un plat
+            + créer un plat
         </button>
     </div>
 
     <!-- tableau des plats -->
     <div>
-        <table class="table table-hover table-borderless table-responsive-md">
+        <table class="table table-hover table-responsive-md align-middle">
             <thead>
                 <tr>
                     <th scope="col">Nom du plat</th>
@@ -40,10 +40,10 @@
                                 data-id="<?= $plat['Id_plat'] ?>"
                                 data-titre="<?= htmlspecialchars($plat['titre']) ?>"
                                 data-type="<?= htmlspecialchars($plat['type_plat']) ?>">
-                                Modifier
+                                modifier
                             </button>
                             <input type="hidden" name="Id_plat" value="<?= $plat['Id_plat'] ?>">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalSupprimerPlat" data-id="<?= $plat['Id_plat'] ?>">Supprimer</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalSupprimerPlat" data-id="<?= $plat['Id_plat'] ?>">supprimer</button>
                         </td>
                     </tr>
 
@@ -82,8 +82,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" form="form-crea-plat" class="btn btn-primary">Créer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+                    <button type="submit" form="form-crea-plat" class="btn btn-primary">créer</button>
                 </div>
             </div>
         </div>
@@ -121,8 +121,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" form="form-modif-plat" class="btn btn-primary">Modifier</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+                    <button type="submit" form="form-modif-plat" class="btn btn-primary">modifier</button>
                 </div>
             </div>
         </div>
@@ -140,11 +140,11 @@
                     <p>Êtes-vous sûr de vouloir supprimer ce plat ? Cette action est irréversible.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/employe/plats">
                         <input type="hidden" name="action" value="supprimer">
                         <input type="hidden" name="Id_plat" id="id-plat-supprimer">
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                        <button type="submit" class="btn btn-danger">supprimer</button>
                     </form>
                 </div>
             </div>

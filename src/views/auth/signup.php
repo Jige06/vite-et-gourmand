@@ -2,7 +2,7 @@
 
 <div class="big-title container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">Inscription</h2>
+    <h1 class="text-center">Inscription</h1>
 </div>
 <div class="box-connexion container-fluid">
     <?php if (isset($_SESSION['error'])): ?>
@@ -62,7 +62,7 @@
                 <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
             </div>
         </div>
-        <button class="connect-button mb-3 mt-3" type="submit">Créer votre compte</button>
+        <button class="connect-button mb-3 mt-3" type="submit">créer votre compte</button>
         <div class=" mt-1">
             <p>Déjà un compte? <a href="/connexion">Se connecter</a></p>
         </div>

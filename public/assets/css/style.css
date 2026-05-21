@@ -12,6 +12,7 @@
   --font-texte: "Montserrat", sans-serif;
 }
 
+/* HEADER NAVBAR */
 .navbar {
   background-color: var(--couleur-dark);
   font-family: var(--font-texte);
@@ -37,6 +38,12 @@
   border-bottom: 2px solid var(--couleur-secondary);
 }
 
+/* FOOTER */
+.footer {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
 .container-fluid {
   padding: 0;
   background-color: var(--couleur-dark);
@@ -58,7 +65,7 @@
   object-fit: cover;
 }
 
-.big-title h2 {
+.big-title h1 {
   font-family: var(--font-titre);
   color: white;
   font-size: 3rem;
@@ -104,6 +111,7 @@
   background-color: var(--couleur-dark);
   border-radius: 5px;
   color: var(--couleur-secondary);
+  font-weight: bold;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -142,14 +150,14 @@
   object-fit: cover;
   z-index: 0;
 }
-.big-title-accueil h3,
+.big-title-accueil h1,
 .big-title-accueil h2 {
   font-family: var(--font-titre);
-  color: white;
-  font-size: 2rem;
+  color: white !important;
+  font-size: 2.5rem !important;
 }
 
-.big-title-accueil h3,
+.big-title-accueil h1,
 .big-title-accueil h2,
 .big-title-accueil button {
   position: relative;
@@ -171,36 +179,45 @@
   background-color: var(--couleur-dark);
   border-radius: 5px;
   color: var(--couleur-secondary);
+  font-weight: bold;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
 
 .presentation {
-  width: 80%;
+  width: 60%;
   height: auto;
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.titre-presentation,
-.titre-realisation,
-.titre-avis {
-  font-family: var(--font-titre);
-  color: var(--couleur-primary);
-  width: 70%;
-  margin: 10px auto;
+.titre-realisation {
+  color:  rgba(255, 255, 255, 0.8);
 }
 
-.text-realisation,
-.text-presentation {
+.titre-presentation,
+.titre-avis {
   font-family: var(--font-texte);
   color: var(--couleur-primary);
   width: 70%;
   margin: 10px auto;
 }
+.text-realisation {
+  font-size: 1.2rem;
+  color:  rgba(255, 255, 255, 0.8);
+}
+
+
+.text-presentation {
+  font-family: var(--font-texte);
+  color: var(--couleur-primary);
+  width: 90%;
+  margin: 10px auto;
+}
 
 .text-presentation p {
   text-align: justify;
+  font-size: 1.2rem;
 }
 
 .titre-presentation {
@@ -208,8 +225,8 @@
 }
 
 .image-presentation {
-  width: 50%;
-  max-height: 300px;
+  width: 70%;
+  max-height: 500px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -224,7 +241,7 @@
 .realisations {
   background-color: var(--couleur-dark);
   border-radius: 8px;
-  width: 80%;
+  width: 60%;
 }
 
 .image-realisation img {
@@ -246,6 +263,10 @@
   color: var(--couleur-primary);
   border: 2px solid var(--couleur-secondary);
   border-radius: 8px;
+}
+
+.titre-h2-bleu {
+  color: var(--couleur-primary);
 }
 
 .password-input {
@@ -284,6 +305,17 @@
     width: 100%;
     height: 200px;
     object-fit: cover;
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+#recap-menu,
+#recap-reduc,
+#recap-total,
+#recap-livraison {
+  font-weight: bold;
 }
 
 .filters {
@@ -325,10 +357,33 @@ th {
     background-color: var(--couleur-bg-dark) !important;
     border-radius: 8px;
     padding: 2rem;
-    width: 60%;
+    width: 90%;
+    max-width: 700px;
     margin: 0 auto;
 }
 
 .contact label {
-    color: white !important;
+    color: var(--couleur-secondary) !important;
+}
+
+.cgv,
+.ml {
+  font-family: var(--font-texte);
+  color: var(--couleur-dark);
+}
+
+.cgv h3,
+.ml h3 {
+  font-family: var(--font-texte);
+  color: var(--couleur-secondary);
+  font-size: 1.4rem;
+}
+
+.table {
+  font-size: 1.1rem;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem 1.5rem;
 }

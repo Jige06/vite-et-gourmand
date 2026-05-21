@@ -214,7 +214,7 @@ INSERT INTO avis(note, description_avis, statut, Id_commande)
 INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
     VALUES(4, 'Très bon repas, livraison ponctuelle.', 'Validé', 4, '2025-04-02 10:00:00');
 INSERT INTO avis(note, description_avis, statut, Id_commande)
-    VALUES(3, 'Correct mais peut mieux faire.', 'En attente', 3);
+    VALUES(4, 'Satisfait dans l\'ensemble.', 'En attente', 3);
 INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
     VALUES(5, 'Parfait pour notre anniversaire de mariage, tout était impeccable !', 'Validé', 6, '2025-02-21 10:00:00');
 INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
@@ -222,7 +222,7 @@ INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
 INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
     VALUES(5, 'Service irréprochable, nous recommandons vivement !', 'Validé', 8, '2025-01-21 10:00:00');
 INSERT INTO avis(note, description_avis, statut, Id_commande, date_validation)
-    VALUES(3, 'Bon repas mais livraison légèrement en retard.', 'Validé', 9, '2025-02-06 10:00:00');
+    VALUES(4, 'Bon repas, nous avons apprécié le prêt de matériel.', 'Validé', 9, '2025-02-06 10:00:00');
 INSERT INTO avis(note, description_avis, statut, Id_commande)
     VALUES(2, 'Déçu par la qualité des plats, pas à la hauteur du prix.', 'Refusé', 2);
 INSERT INTO avis(note, description_avis, statut, Id_commande)

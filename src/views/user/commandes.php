@@ -2,11 +2,15 @@
 
 <div class="big-title-accueil container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">mon espace</h2>
+    <h1 class="text-center">mon espace</h1>
 </div>
 
-<div class="mon_espace text-center">
-    <button class="connect-button mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#modal-profil">Modifier mon profil</button>
+<div class="mon_espace text-center py-2">
+    <button class="connect-button my-4 mx-4" data-bs-toggle="modal" data-bs-target="#modal-profil">modifier mon profil</button>
+</div>
+
+<div class="text-center mt-4 mb-4">
+    <h2>mes commandes</h2>
 </div>
 
 <!-- Modal de modification des informations du profil -->
@@ -50,8 +54,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="submit" form="form-profil" class="connect-button">Enregistrer</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+                <button type="submit" form="form-profil" class="connect-button">enregistrer</button>
             </div>
         </div>
     </div>
@@ -64,12 +68,13 @@
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+    <div class="alert alert-danger"><?= $_SESSION['error'];
+                                    unset($_SESSION['error']); ?></div>
 <?php endif; ?>
 
 <!-- Tableau des commandes du client -->
-<div>
-    <table class="table table-hover table-borderless table-responsive-md">
+<div class="py-5 px-5">
+    <table class="table table-hover table-responsive-md align-middle">
         <thead>
             <tr class="text-center">
                 <th scope="col">N° de commande</th>
@@ -94,17 +99,19 @@
                     <td> <?= htmlspecialchars($commande['statut_actuel']) ?></td>
                     <?php $peutSuivre = !in_array($commande['statut_actuel'], ['En attente de validation', 'Annulé']); ?>
                     <td>
-                        <button class="btn btn-sm btn-info" <?= !$peutSuivre ? 'disabled' : '' ?> data-bs-toggle="modal" data-bs-target="#modal-suivi-<?= $commande['Id_commande'] ?>">Suivi</button>
+                        <button class="btn btn-sm btn-info" <?= !$peutSuivre ? 'disabled' : '' ?> data-bs-toggle="modal" data-bs-target="#modal-suivi-<?= $commande['Id_commande'] ?>">suivi</button>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modal-<?= $commande['Id_commande'] ?>">Détails</button>
-                        <?php $peutModifier = $commande['statut_actuel'] === 'En attente de validation'; ?>
-                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modal-modifier-<?= $commande['Id_commande'] ?>" <?= !$peutModifier ? 'disabled' : '' ?>>Modifier</button>
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-annuler-<?= $commande['Id_commande'] ?>" <?= !$peutModifier ? 'disabled' : '' ?>>Annuler</button>
+                        <div class="d-flex flex-wrap gap-2 justify-content-center">
+                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modal-<?= $commande['Id_commande'] ?>">détails</button>
+                            <?php $peutModifier = $commande['statut_actuel'] === 'En attente de validation'; ?>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modal-modifier-<?= $commande['Id_commande'] ?>" <?= !$peutModifier ? 'disabled' : '' ?>>modifier</button>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-annuler-<?= $commande['Id_commande'] ?>" <?= !$peutModifier ? 'disabled' : '' ?>>annuler</button>
+                        </div>
                     </td>
                     <?php $peutDonnerAvis = $commande['statut_actuel'] === 'Terminé' && $commande['avis_depose'] == 0; ?>
                     <td>
-                        <button class="btn btn-sm btn-success" <?= !$peutDonnerAvis ? 'disabled' : '' ?> data-bs-toggle="modal" data-bs-target="#modal-avis-<?= $commande['Id_commande'] ?>">Déposer un avis</button>
+                        <button class="btn btn-sm btn-success" <?= !$peutDonnerAvis ? 'disabled' : '' ?> data-bs-toggle="modal" data-bs-target="#modal-avis-<?= $commande['Id_commande'] ?>">déposer un avis</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -158,7 +165,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Retour</button>
                         <form action="/mon-espace/commandes/annuler" method="post">
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
-                            <button type="submit" class="btn btn-danger">Confirmer l'annulation</button>
+                            <button type="submit" class="btn btn-danger">confirmer l'annulation</button>
                         </form>
                     </div>
                 </div>
@@ -226,8 +233,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" form="form-modifier-<?= $commande['Id_commande'] ?>" class="btn btn-primary">Enregistrer</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+                        <button type="submit" form="form-modifier-<?= $commande['Id_commande'] ?>" class="btn btn-primary">enregistrer</button>
                     </div>
                 </div>
             </div>
@@ -275,7 +282,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
                     </div>
                 </div>
             </div>
@@ -310,7 +317,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary" form="form-avis-<?= $commande['Id_commande'] ?>">Envoyer</button>
+                        <button type="submit" class="btn btn-primary" form="form-avis-<?= $commande['Id_commande'] ?>">envoyer</button>
                     </div>
                 </div>
             </div>

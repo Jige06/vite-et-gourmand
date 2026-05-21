@@ -2,18 +2,20 @@
 
 <div class="big-title-accueil container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">Vite & Gourmand</h2>
-    <button onclick="window.location.href='/commande'" class="big-title-button mb-3 mt-3" type="submit">Passez une commande</button>
+    <h1 class="text-center">Vite & Gourmand</h1>
+    <button onclick="window.location.href='/commande'" class="big-title-button mb-3 mt-3" type="submit">passer une commande</button>
 </div>
 <?php if (isset($_SESSION['success'])): ?>
     <div class="alert alert-success"><?= $_SESSION['success'];
                                         unset($_SESSION['success']); ?></div>
 <?php endif; ?>
-<div class="menus container-fluid text-center mb-2 mt-2 pt-2 pb-2">
-    <div class="titre-realisation pb-2 pt-2">
-        <h3>nos menus</h3>
+<div class="menus container-fluid text-center mb-4 mt-4 pt-4 pb-4">
+    <div class="titre-h2-bleu  pb-4 pt-4">
+        <h2>nos menus</h2>
     </div>
-    <div class="filters container mt-4 pt-2 pb-2">
+
+    <!-- Les filtres -->
+    <div class="filters container mt-4 mb-4 pt-4 pb-4">
         <div class="row justify-content-center g-3">
             <div class="col-12 col-md-auto">
                 <label for="theme-select">Thème</label>
@@ -52,22 +54,24 @@
         </div>
         <div class="row justify-content-center mt-3">
             <div class="col-12 col-md-auto text-center">
-                <button class="connect-button" id="reset-filters">Réinitialisez les filtres</button>
+                <button class="connect-button" id="reset-filters">réinitialiser les filtres</button>
             </div>
         </div>
     </div>
 </div>
-<div class="list-menus text-center mt-4 mb-4">
+
+<!-- Les cartes menus -->
+<div class="list-menus text-center mt-4 mb-4 ms-4 pt-4 pb-4">
     <div class="row justify-content-center" id="menu-cards">
         <?php foreach ($menus as $menu): ?>
-            <div class="details-menu col-12 col-md-6 col-lg-4 mb-3 ms-3 mp-3 pt-2 pb-2">
+            <div class="details-menu col-12 col-md-6 col-lg-4 mb-3 ms-4 mp-4 pt-2 pb-2">
                 <div class="carte-menu">
                     <img class="card-img-menu" src="/assets/images/menus/<?= htmlspecialchars($menu['photo']) ?>" alt="photo du menu <?= htmlspecialchars($menu['titre']) ?>">
                     <p><?= htmlspecialchars($menu['theme_libelle']) ?></p>
                     <h3><?= htmlspecialchars($menu['titre']) ?></h3>
                     <p><?= htmlspecialchars($menu['description_menu']) ?></p>
                     <p><?= $menu['prix_par_pers'] ?> €/pers — min <?= $menu['nombre_pers_min'] ?> pers</p>
-                    <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'">Voir le détail</button>
+                    <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'">voir le détail</button>
                 </div>
             </div>
         <?php endforeach; ?>

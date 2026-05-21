@@ -3,7 +3,7 @@
 
 <div class="employe text-center mt-4 mb-4">
     <h1>Espace administrateur</h1>
-    <h3>Tableau des employés</h3>
+    <h2>Tableau des employés</h2>
 </div>
 
 <div class="container mt-4">
@@ -17,7 +17,7 @@
                                             unset($_SESSION['error']); ?></div>
         <?php endif; ?>
         <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerEmploye">
-            + Créer un compte employé
+            + créer un compte employé
         </button>
     </div>
 
@@ -40,14 +40,14 @@
                         <td><?= htmlspecialchars($employe['email']) ?></td>
                         <td>
                             <?php if ($employe['actif'] == 1): ?>
-                                <span class="badge bg-success">Actif</span>
+                                <span class="badge bg-success">actif</span>
                             <?php else: ?>
-                                <span class="badge bg-danger">Désactivé</span>
+                                <span class="badge bg-danger">désactivé</span>
                             <?php endif; ?>
                         </td>
                         <td>
                             <?php if ($employe['actif'] == 1): ?>
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDeactivate" data-id="<?= $employe['Id_Utilisateur'] ?>">Désactiver</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDeactivate" data-id="<?= $employe['Id_Utilisateur'] ?>">désactiver</button>
                             <?php else: ?>
                                 <span class="text-muted">—</span>
                             <?php endif; ?>
@@ -99,8 +99,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" form="form-crea-employe" class="connect-button">Créer le compte</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+                    <button type="submit" form="form-crea-employe" class="connect-button">créer le compte</button>
                 </div>
             </div>
         </div>
@@ -118,11 +118,11 @@
                     <p>Êtes-vous sûr de vouloir désactiver ce compte employé ? Cette action est irréversible.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/admin">
                         <input type="hidden" name="action" value="desactiver">
                         <input type="hidden" name="id_user" id="id-utilisateur-desactiver">
-                        <button type="submit" class="btn btn-danger">Désactiver</button>
+                        <button type="submit" class="btn btn-danger">désactiver</button>
                     </form>
                 </div>
             </div>

@@ -1,5 +1,5 @@
         <footer>
-            <div class="container-fluid text-center pt-4">
+            <div class="container-fluid footer text-center pt-4">
                 <div class="row">
                     <div class="col">
                         <p>Du lundi au jeudi : 9h00 - 19h00</p>

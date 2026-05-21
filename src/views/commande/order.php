@@ -2,7 +2,7 @@
 
 <div class="big-title container-fluid">
     <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
-    <h2 class="text-center">Commande</h2>
+    <h1 class="text-center">Commande</h1>
 </div>
 
 <div class="form-container">
@@ -11,7 +11,7 @@
         <div class="form-user mt-4 mb-4" id="form-user">
 
             <div class="livraison mb-4 text-center">
-                <h3>informations de commande</h3>
+                <h2>informations de commande</h2>
             </div>
 
             <div class="livraison text-start mb-4">
@@ -73,7 +73,7 @@
             </div>
 
             <div class="text-center">
-                <button class="connect-button mb-3 mt-3" id="etape-apres1" type="button">Etape suivante</button>
+                <button class="connect-button mb-3 mt-3" id="etape-apres1" type="button">étape suivante</button>
             </div>
 
         </div>
@@ -84,7 +84,7 @@
         <div class="form-menu mt-4 mb-4" id="form-menu">
             <!-- Étape 2 : Choix du menu -->
             <div class="livraison mb-4 text-center">
-                <h3>choix de votre menu</h3>
+                <h2>choix de votre menu</h2>
             </div>
 
             <label for="menu">Choisissez un menu</label>
@@ -97,8 +97,8 @@
             </select>
 
             <div class="text-center mt-5">
-                <button class="connect-button mb-3 mt-3" id="etape-avant2" type="button">Etape précédente</button>
-                <button class="connect-button mb-3 mt-3 ms-5" id="etape-apres2" type="button">Etape suivante</button>
+                <button class="connect-button mb-3 mt-3" id="etape-avant2" type="button">étape précédente</button>
+                <button class="connect-button mb-3 mt-3 ms-5" id="etape-apres2" type="button">étape suivante</button>
             </div>
 
         </div>
@@ -106,7 +106,7 @@
         <div class="form-order mt-4 mb-4" id="form-order">
             <!-- Étape 3 : Finalisation -->
             <div class="livraison mb-4 text-center">
-                <h3>finalisation de votre commande</h3>
+                <h2>finalisation de votre commande</h2>
             </div>
 
             <div class="livraison text-start mb-4">
@@ -143,8 +143,8 @@
             <input type="hidden" name="montant_total" id="hidden-total">
 
             <div class="text-center mt-4">
-                <button class="connect-button mb-3 mt-3" id="etape-avant3" type="button">Etape précédente</button>
-                <button class="connect-button mb-3 mt-3 ms-5" id="validation" type="submit">Validez</button>
+                <button class="connect-button mb-3 mt-3" id="etape-avant3" type="button">étape précédente</button>
+                <button class="connect-button mb-3 mt-3 ms-5" id="validation" type="submit">valider</button>
             </div>
 
         </div>
