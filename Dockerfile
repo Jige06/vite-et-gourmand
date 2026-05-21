@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y \
 # Installation de l'extension MongoDB
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
-# Activation du module rewrite Apache
-RUN a2enmod rewrite
+# Activation du module rewrite Apache + fix MPM
+RUN a2dismod mpm_event && a2enmod mpm_prefork rewrite
 
 # Copie du projet dans /var/www/html
 COPY . /var/www/html
