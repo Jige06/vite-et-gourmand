@@ -6,20 +6,11 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libzstd-dev \
     zip \
-    && docker-php-ext-install pdo pdo_mysql zip
-
-# Installation de l'extension MongoDB
-RUN pecl install mongodb && docker-php-ext-enable mongodb
-
-RUN a2enmod rewrite
-
-# Supprimer les configs MPM en conflit
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf \
-    /etc/apache2/mods-enabled/mpm_event.load \
-    /etc/apache2/mods-enabled/mpm_worker.conf \
-    /etc/apache2/mods-enabled/mpm_worker.load \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load
+    && docker-php-ext-install pdo pdo_mysql zip \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb \
+    && sed -i 's/^LoadModule mpm_event/#LoadModule mpm_event/' /etc/apache2/mods-enabled/mpm_event.load \
+    && a2enmod mpm_prefork rewrite
 
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
