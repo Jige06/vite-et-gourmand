@@ -5,16 +5,23 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libzstd-dev \
     zip \
+    curl \
     && docker-php-ext-install pdo pdo_mysql zip \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
     && a2enmod rewrite
 
+# Installation de Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html
+
+# Installation des dépendances Composer
+RUN cd /var/www/html && composer install --no-dev --optimize-autoloader
+
 RUN chown -R www-data:www-data /var/www/html
 
-# Script de démarrage
 RUN echo '#!/bin/bash\n\
 find /etc/apache2/mods-enabled/ -name "mpm_*.load" -delete\n\
 find /etc/apache2/mods-enabled/ -name "mpm_*.conf" -delete\n\
