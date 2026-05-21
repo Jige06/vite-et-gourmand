@@ -133,8 +133,8 @@ vite-et-gourmand/
 ## 🌐 Liens
 
 - **Dépôt GitHub** : [github.com/Jige06/vite-et-gourmand](https://github.com/Jige06/vite-et-gourmand)
-- **Application déployée** : [votre-app.railway.app](https://votre-app.railway.app)
-- **Gestion de projet** : [trello.com/votre-board](https://trello.com/invite/b/698f205608a640eec2cec29e/ATTIbc2a9d11b045fafeb3c16d80817390bf7F928597/ecf-vitegourmand)
+- **Application déployée** : [vite-et-gourmand.up.railway.app](https://vite-et-gourmand.up.railway.app/)
+- **Gestion de projet** : [Trello — Vite & Gourmand](https://trello.com/invite/b/698f205608a640eec2cec29e/ATTIbc2a9d11b045fafeb3c16d80817390bf7F928597/ecf-vitegourmand)
 
 ---
 
