@@ -65,7 +65,7 @@ class MenuModel
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        // Requête préparée
+        // Requête préparée qui récupère tous les menus en joignant leur theme respectif
         $stmt = $pdo->prepare("SELECT menu.*, theme.libelle AS theme_libelle
         FROM menu
         JOIN theme ON menu.Id_theme = theme.Id_theme");
@@ -80,13 +80,15 @@ class MenuModel
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        // Requête préparée
+        // Requête préparée que récupère un menu par son Id_menu en joignant son theme respectif 
         $stmt = $pdo->prepare("SELECT menu.*, theme.libelle AS theme_libelle
         FROM menu
         JOIN theme ON menu.Id_theme = theme.Id_theme
         WHERE menu.Id_menu = ?");
 
+        // On exécute la requete
         $stmt->execute([$id]);
+        // On recupere un tableau associatif
         $menu =  $stmt->fetch();
         return $menu ?: null;
     }
@@ -97,7 +99,7 @@ class MenuModel
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        // Requête préparée
+        // Requête préparée pour récupérer les menus  en fonction des filtres et en joignant leur theme respectif
         $sql = "SELECT menu.*, theme.libelle AS theme_libelle
         FROM menu
         JOIN theme ON menu.Id_theme = theme.Id_theme
@@ -180,5 +182,25 @@ class MenuModel
         $stmt = $pdo->prepare("SELECT MAX(prix_par_pers) as max_prix FROM menu");
         $stmt->execute();
         return $stmt->fetch()['max_prix'];
+    }
+
+    // Méthode qui récupère les différents plats d'un menu
+    public static function getPlatsByMenu($idMenu)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT plat.* FROM plat JOIN menu_plat ON plat.Id_plat = menu_plat.Id_plat WHERE menu_plat.Id_menu = ?");
+        $stmt->execute([$idMenu]);
+        return $stmt->fetchAll();
+    }
+
+    // Méthode qui récupère les différents allergènes d'un plat
+    public static function getAllergenesByPlat($idPlat)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT allergene.* FROM allergene JOIN plat_allergene ON allergene.Id_allergene = plat_allergene.Id_allergene WHERE plat_allergene.Id_plat = ?");
+        $stmt->execute([$idPlat]);
+        return $stmt->fetchAll();
     }
 }

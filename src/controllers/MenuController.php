@@ -17,6 +17,30 @@ class MenuController
         require_once(__DIR__ . '/../views/menus/index.php');
     }
 
+    // Affiche la page détail d'un menu
+    public function showDetails()
+    {
+        if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+            $_SESSION['error'] = "L'URL n'est pas valide.";
+            Auth::redirect('/menus');
+            return;
+        }
+        $idMenu = $_GET['id'];
+        $details = MenuModel::getById($idMenu);
+        if (!$details) {
+            $_SESSION['error'] = "L'URL n'est pas valide.";
+            Auth::redirect('/menus');
+            return;
+        }
+        $plats = MenuModel::getPlatsByMenu($idMenu);
+        foreach ($plats as &$plat) {
+            $allergenes = MenuModel::getAllergenesByPlat($plat['Id_plat']);
+            $plat['allergenes'] = $allergenes;
+        }
+        unset($plat);
+        require_once(__DIR__ . '/../views/menus/detail.php');
+    }
+
     // Filtre les menus selon les critères passés en GET et retourne le résultat en JSON.
     // Utilisé par le fetch JavaScript pour le filtrage dynamique sans rechargement de page.
     public function filter()
