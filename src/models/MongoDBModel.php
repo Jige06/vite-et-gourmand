@@ -17,8 +17,16 @@ class MongoDBModel
             if (self::$instance === null) {
                 $host = $_ENV['MONGO_HOST'];
                 $port = $_ENV['MONGO_PORT'];
+                $user = $_ENV['MONGO_USER'] ?? null;
+                $pass = $_ENV['MONGO_PASS'] ?? null;
 
-                self::$instance = new Client("mongodb://$host:$port");
+                if ($user && $pass) {
+                    $uri = "mongodb://$user:$pass@$host:$port";
+                } else {
+                    $uri = "mongodb://$host:$port";
+                }
+
+                self::$instance = new Client($uri);
             }
         } catch (\Throwable $th) {
             die("Erreur de connexion MongoDB: " . $th->getMessage());
