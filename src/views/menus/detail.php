@@ -2,14 +2,14 @@
 
 <div class="big-title-accueil container-fluid">
     <img src="/assets/images/menus/<?= htmlspecialchars($details['photo']) ?>" alt="<?= pathinfo($details['photo'], PATHINFO_FILENAME) ?>">
-    <h2 class="text-center"><?= htmlspecialchars($details['theme_libelle']) ?></h2>
+    <h1 class="text-center"><?= htmlspecialchars($details['theme_libelle']) ?></h1>
     <h2 class="text-center">Menu <?= htmlspecialchars($details['titre']) ?></h2>
     <h3 class=" description text-center"><em><?= htmlspecialchars($details['description_menu']) ?></em></h3>
 </div>
 
 
 <div class="details-container mt-4 mb-4 pb-4">
-    <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="button">Retour aux menus</button>
+    <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="button">retour aux menus</button>
 
     <div class="row align-items-center">
         <div id="carouselExampleFade" class="carousel slide carousel-fade col-12 col-lg-6" data-bs-ride="carousel">
@@ -39,7 +39,7 @@
             <p><span class="style-details">Stock disponible:</span> <?= htmlspecialchars($details['quantite_restante']) ?></p>
             
         </div>
-        <div class="alert alert-warning">
+        <div class="alert alert-warning mt-3 mb-5">
                 <strong>⚠️</strong>
                 <?= htmlspecialchars($details['conditions']) ?>
             </div>
@@ -49,9 +49,9 @@
 
     <div class="button-commande text-center">
         <?php if (isset($_SESSION['id_user'])): ?>
-            <button onclick="window.location.href='/commande?id_menu=<?= $details['Id_menu'] ?>'" class="big-title-button mb-3 mt-3" type="button">Commandez ce menu</button>
+            <button onclick="window.location.href='/commande?id_menu=<?= $details['Id_menu'] ?>'" class="big-title-button mb-3 mt-3" type="button">commandez ce menu</button>
         <?php else: ?>
-            <button onclick="window.location.href='/connexion'" class="big-title-button mb-3 mt-3" type="button">Commandez ce menu</button>
+            <button onclick="window.location.href='/connexion'" class="big-title-button mb-3 mt-3" type="button">commandez ce menu</button>
         <?php endif; ?>
     </div>
 

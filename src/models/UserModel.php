@@ -109,6 +109,16 @@ class UserModel
         $stmt->execute();
     }
 
+    // Méthode qui met à jour le mot de passe d'un utilisateur
+    public static function updatePassword($email, $hash)
+    {
+        $pdo = DatabaseConnection::getInstance();
+        $stmt = $pdo->prepare("UPDATE utilisateur SET mot_de_passe = :hash WHERE email = :email");
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+    }
+
     // Méthode qui envoie le mail avec le mot de passe temporaire via PHPMailer
     public static function sendResetMail($nom, $prenom, $email, $tempPassword)
     {
@@ -125,7 +135,35 @@ class UserModel
         $mail->addAddress($email, $nom . ' ' . $prenom);
 
         $mail->Subject = 'Mot de passe temporaire';
-        $mail->Body = "Bonjour $prenom $nom, voici votre mot de passe temporaire: $tempPassword . Vous devrez le modifier lors de votre connexion.";
+        $mail->isHTML(true);
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Montserrat, sans-serif; color: #0f172a; }
+                .header { background-color: #0f172a; padding: 20px; text-align: center; border-radius: 8px; }
+                .header h1 { color: #e67e22; font-family: 'Playfair Display', serif; }
+                .content { padding: 30px; }
+                .recap { background-color: #1e293b; color: white; padding: 20px; border-radius: 8px; }
+                .total { color: #e67e22; font-weight: bold; font-size: 1.2rem; }
+            </style>
+        </head>
+        <body>
+            <div class='header'>
+            <h1>Vite & Gourmand</h1>
+            </div>
+            <div class='content'>
+            <p>Bonjour $prenom $nom,</p>
+            <p>voici votre mot de passe temporaire: $tempPassword</p>
+            <p>Vous devrez le modifier lors de votre  première connexion.</p>
+            <br>
+            <p>À bientôt,</p>
+            <p>Vite & Gourmand</p>
+            </div>
+        </body>
+        </html>";
 
         try {
             $mail->send();
@@ -233,7 +271,7 @@ class UserModel
             </div>
             <div class='content'>
             <p>Bonjour $prenom $nom,</p>
-            <p>Votre compte employé a bien été créé.</p>
+            <p>Votre compte employé a bien été créé avec comme identifiant $email .</p>
             <p>Pour obtenir votre mot de passe, veuillez vous rapprocher de l'administrateur.</p>
             <br>
             <p>À bientôt,</p>

@@ -71,11 +71,7 @@
                     <h3><?= htmlspecialchars($menu['titre']) ?></h3>
                     <p><?= htmlspecialchars($menu['description_menu']) ?></p>
                     <p><?= $menu['prix_par_pers'] ?> €/pers — min <?= $menu['nombre_pers_min'] ?> pers</p>
-<<<<<<< HEAD
                     <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'">voir le détail</button>
-=======
-                    <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'" type="button">Voir le détail</button>
->>>>>>> feature/detail-menu
                 </div>
             </div>
         <?php endforeach; ?>

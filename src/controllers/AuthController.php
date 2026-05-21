@@ -41,6 +41,12 @@ class AuthController
                 $_SESSION['prenom'] = $user['prenom'];
                 $_SESSION['email'] = $user['email'];
 
+                // Vérification si l'utilisateur doit changer son mot de passe
+                if ($user['must_change_password'] == 1) {
+                    Auth::redirect('/changer-mot-de-passe');
+                    return;
+                }
+
                 switch ($_SESSION['role']) {
                     case 'Administrateur':
                         Auth::redirect('/admin');
@@ -211,6 +217,46 @@ class AuthController
             $this->resetPassword();
         } else {
             $this->showResetPassword();
+        }
+    }
+
+    // Méthode qui gère la demande de modification de password apres reset
+    public function handleChangePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $password = trim($_POST['password']);
+            $confirm = trim($_POST['confirm_password']);
+
+            if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
+                $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                Auth::redirect('/changer-mot-de-passe');
+                return;
+            }
+            if ($password !== $confirm) {
+                $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
+                Auth::redirect('/changer-mot-de-passe');
+                return;
+            }
+
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+            UserModel::updatePassword($_SESSION['email'], $hash);
+            UserModel::updateMustChangePassword($_SESSION['email'], 0);
+
+            $_SESSION['success'] = "Votre mot de passe a été modifié avec succès !";
+
+            switch ($_SESSION['role']) {
+                case 'Administrateur':
+                    Auth::redirect('/admin');
+                    break;
+                case 'Employé':
+                    Auth::redirect('/employe');
+                    break;
+                default:
+                    Auth::redirect('/');
+                    break;
+            }
+        } else {
+            require_once(__DIR__ . '/../views/auth/changePassword.php');
         }
     }
 

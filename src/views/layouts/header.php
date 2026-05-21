@@ -44,7 +44,7 @@
                         <li class="nav-item"><a class="nav-link" href="/menus">nos menus</a></li>
                         <li class="nav-item"><a class="nav-link" href="/avis">les avis</a></li>
                         <?php if (!isset($_SESSION['role']) || $_SESSION['role'] === 'Utilisateur'): ?>
-                            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/contact">contact</a></li>
                         <?php endif; ?>
                         <?php if (isset($_SESSION['id_user'])): ?>
                             <li class="nav-item">
