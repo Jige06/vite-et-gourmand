@@ -6,9 +6,12 @@ session_start();
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Chargement des variables d'environnement
-$env = parse_ini_file(__DIR__ . '/../.env');
-foreach ($env as $key => $value) {
-    $_ENV[$key] = $value;
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    $env = parse_ini_file($envFile);
+    foreach ($env as $key => $value) {
+        $_ENV[$key] = $value;
+    }
 }
 
 // Chargement des classes par autoload
@@ -41,7 +44,6 @@ $router->add('/changer-mot-de-passe', [AuthController::class, 'handleChangePassw
 $router->add('/contact', [ContactController::class, 'handleContact']);
 $router->add('/avis', [AvisController::class, 'index']);
 $router->add('/commande', [OrderController::class, 'handleOrder']);
-$router->add('/mon-espace', []);
 $router->add('/mon-espace/commandes', [OrderController::class, 'showUserOrders']);
 $router->add('/mon-espace/commandes/modifier', [OrderController::class, 'updateOrder']);
 $router->add('/mon-espace/commandes/annuler', [OrderController::class, 'deleteOrder']);
