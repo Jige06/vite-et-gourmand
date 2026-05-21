@@ -14,7 +14,7 @@
                                         unset($_SESSION['message']); ?></div>
     <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/mot-de-passe-oublie" method="post">
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="email">Email</label>
             <input class="form-control" type="email" id="email" name="email" required placeholder="exemple@exemple.com">
         </div>

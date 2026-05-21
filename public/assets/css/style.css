@@ -72,8 +72,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -250%);
+  transform: translate(-50%, -50%);
   z-index: 1;
+  width: 100%;
+  text-align: center;
 }
 
 .big-title {
@@ -86,12 +88,13 @@
 .box-connexion {
   padding: 3rem;
   margin: 3rem auto 3rem auto;
-  width: 50%;
+  width: 90%;
+  max-width: 500px;
   border-radius: 8px;
 }
 
 .box-connexion .form-control {
-  width: 350px;
+  width: 100%;
 }
 
 .box-connexion label,
@@ -120,11 +123,6 @@
 .connect-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
-}
-
-.password .connexion {
-  width: 300px;
-  display: inline-block;
 }
 
 .forgot-password {
@@ -289,7 +287,6 @@
 }
 
 .details-menu {
-  max-width: 400px;
   background-color: var(--couleur-bg-dark);
   border-radius: 8px;
   font-family: var(--font-texte);
@@ -416,10 +413,6 @@ th {
     height: 300px;
     margin-bottom: 1rem;
   }
-}
-
-.carousel-inner {
-  border-radius: 8px;
 }
 
 .list-details {

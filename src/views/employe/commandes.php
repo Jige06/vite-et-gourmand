@@ -36,7 +36,7 @@
 </div>
 
 <!-- Tableau des commandes -->
-<div class="container mb-4">
+<div class="container mb-4 table-responsive">
     <table class="table table-hover table-borderless table-responsive-md">
         <thead>
             <tr>

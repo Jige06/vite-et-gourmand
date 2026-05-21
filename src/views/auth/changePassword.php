@@ -11,11 +11,11 @@
     <?php endif; ?>
     <p class="text-center text-warning">Vous utilisez un mot de passe temporaire. Veuillez le modifier avant de continuer.</p>
     <form class="d-flex flex-column align-items-center" action="/changer-mot-de-passe" method="post">
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="password">Nouveau mot de passe</label>
             <input class="form-control" type="password" id="password" name="password" required>
         </div>
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="confirm_password">Confirmer le mot de passe</label>
             <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
         </div>

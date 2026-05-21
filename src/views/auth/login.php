@@ -11,13 +11,13 @@
                                         unset($_SESSION['error']); ?></div>
     <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/connexion" method="post">
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="email">Email</label>
             <input class="form-control" type="email" id="email" name="email" required placeholder="exemple@exemple.com"
                 value="<?= isset($_SESSION['prefill_email']) ? htmlspecialchars($_SESSION['prefill_email']) : '';
                         unset($_SESSION['prefill_email']); ?>">
         </div>
-        <div class="text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
             <div class="password password-input">
                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">

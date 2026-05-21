@@ -14,49 +14,49 @@
                                             unset($_SESSION['success']); ?></div>
     <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/inscription" method="post">
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="nom">Nom</label>
             <input class="form-control" type="text" id="nom" name="nom" required placeholder="ex: Martin">
         </div>
-        <div class="text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="prenom">Prénom</label>
             <div class="password">
                 <input class="form-control" type="text" id="prenom" name="prenom" required placeholder="ex: Antoine">
             </div>
         </div>
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="adresse">Adresse</label>
             <input class="form-control" type="text" id="adresse" name="adresse" required placeholder="ex: 19 Avenue des Champs Elysée">
         </div>
-        <div class="text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="codePostal">Code postal</label>
             <div>
                 <input class="form-control" type="text" id="codePostal" name="codePostal" required placeholder="ex: 33000">
             </div>
         </div>
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="ville">Ville</label>
             <input class="form-control" type="text" id="ville" name="ville" required placeholder="ex: Bordeaux">
         </div>
-        <div class="text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="telephone">Téléphone</label>
             <div>
                 <input class="form-control" type="text" id="telephone" name="telephone" required placeholder="ex: 0612345678">
             </div>
         </div>
-        <div class="connexion text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="email">Email</label>
             <input class="form-control" type="email" id="email" name="email" required placeholder="exemple@exemple.com">
         </div>
-        <div class="text-start mb-4">
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
             <div class="password-input">
                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">
                 <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
             </div>
         </div>
-        <div class="text-start mb-4">
-            <label class="mb-1 d-block" for="confirm_motdepasse">Confirmation de votre mot de passe</label>
+        <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
+            <label class="mb-1 d-block" for="confirm_motdepasse">Confirmer votre mot de passe</label>
             <div class="password-input">
                 <input class="form-control" type="password" id="confirm_motdepasse" name="confirm_password" required placeholder="Votre mot de passe">
                 <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
