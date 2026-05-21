@@ -11,7 +11,11 @@ RUN apt-get update && apt-get install -y \
 # Installation de l'extension MongoDB
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
-RUN a2enmod rewrite
+# Désactiver mpm_event, activer mpm_prefork
+RUN if apache2ctl -M 2>/dev/null | grep -q 'mpm_event'; then \
+        a2dismod mpm_event; \
+    fi \
+    && a2enmod mpm_prefork rewrite
 
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
