@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
 # Installation de l'extension MongoDB
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
-# Fix MPM Apache
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
+# Fix MPM Apache — forcer mpm_prefork
+RUN apt-get install -y apache2 \
+    && a2dismod mpm_event mpm_worker mpm_prefork 2>/dev/null || true \
     && a2enmod mpm_prefork rewrite
 
 # Copie du projet dans /var/www/html
