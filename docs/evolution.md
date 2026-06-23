@@ -18,3 +18,4 @@ Envoi de mail de confirmation d'annulation de commande
 Filter les commandes annulées pour le calcul du CA (espace admin)
 espace employe mail notification avis
 mettre a jour mcd et diagramme de classe: date_validation DATETIME, dans table avis
+Bouton menu suivant et precedant dans la page détails
