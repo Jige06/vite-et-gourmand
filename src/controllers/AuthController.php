@@ -35,6 +35,9 @@ class AuthController
                 return;
             }
             if (password_verify($password, $user['mot_de_passe'])) {
+                // Régénération de l'id de session pour prévenir la fixation de session
+                session_regenerate_id(true);
+
                 $_SESSION['id_user'] = $user['Id_Utilisateur'];
                 $_SESSION['role'] = $user['role_libelle'];
                 $_SESSION['nom'] = $user['nom'];
@@ -147,6 +150,9 @@ class AuthController
             $hash = password_hash($password, PASSWORD_BCRYPT);
             UserRepository::createUser($nom, $prenom, $email, $hash, $telephone, $adresse, $codePostal, $ville, 1);
             $newUser = UserRepository::findByEmail($email);
+
+            // Régénération de l'id de session pour prévenir la fixation de session
+            session_regenerate_id(true);
 
             $_SESSION['id_user'] = $newUser['Id_Utilisateur'];
             $_SESSION['role'] = $newUser['Id_role'];
@@ -266,6 +272,11 @@ class AuthController
         session_unset();
 
         session_destroy();
+
+        // Supprime explicitement le cookie de session côté navigateur
+        if (isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time() - 3600, '/');
+        }
 
         Auth::redirect('/');
     }

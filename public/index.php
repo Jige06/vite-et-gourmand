@@ -1,8 +1,5 @@
 <?php
 
-// Demarrage de la session utilisateur
-session_start();
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Chargement des variables d'environnement
@@ -10,6 +7,19 @@ $env = parse_ini_file(__DIR__ . '/../.env');
 foreach ($env as $key => $value) {
     $_ENV[$key] = $value;
 }
+
+// Détection de l'environnement (local ou production)
+$isProduction = ($_ENV['APP_ENV'] ?? 'local') === 'production';
+
+// Configuration sécurisée du cookie de session, avant le démarrage de la session
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => $isProduction,
+    'samesite' => 'Lax',
+]);
+
+// Demarrage de la session utilisateur
+session_start();
 
 // Chargement des classes par autoload
 spl_autoload_register(function ($class) {
