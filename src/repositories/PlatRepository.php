@@ -1,5 +1,5 @@
 <?php
-class PlatModel
+class PlatRepository
 {
 
     // Méthode qui récupère tous les plats

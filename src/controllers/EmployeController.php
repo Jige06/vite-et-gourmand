@@ -15,7 +15,7 @@ class EmployeController
             'statut' => $_GET['statut'] ?? null,
             'client' => $_GET['client'] ?? null,
         ];
-        $orders = EmployeModel::getAllOrders($filters);
+        $orders = EmployeRepository::getAllOrders($filters);
 
         require_once(__DIR__ . '/../views/employe/commandes.php');
     }
@@ -31,7 +31,7 @@ class EmployeController
         $idCommande = $_POST['Id_Commande'];
         $nouveauStatut = $_POST['nouveau_statut'];
 
-        $result = EmployeModel::updateStatus($idCommande, $nouveauStatut);
+        $result = EmployeRepository::updateStatus($idCommande, $nouveauStatut);
 
         // Si nouveau statut saisi a deja été passé --> message de refus de ce statut
         if ($result === false) {
@@ -60,13 +60,13 @@ class EmployeController
             // traitement du changement de statut
             $idAvis = $_POST['id_avis'];
             $statut = $_POST['statut'];
-            ReviewModel::updateReviewStatus($idAvis, $statut);
+            ReviewRepository::updateReviewStatus($idAvis, $statut);
             $_SESSION['success'] = "L'avis a bien été mis à jour";
             Auth::redirect('/employe/avis');
         } else {
 
             // affichage de la liste des avis
-            $avis = ReviewModel::getPendingReviews();
+            $avis = ReviewRepository::getPendingReviews();
             require_once(__DIR__ . '/../views/employe/avis.php');
         }
     }
@@ -100,7 +100,7 @@ class EmployeController
                     move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
                     $photo = $nomFichier; // on stocke juste le nom en BDD
                 }
-                MenuModel::createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
+                MenuRepository::createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
                 $_SESSION['success'] = "Le menu a bien été créé.";
             } elseif ($action === 'modifier') {
 
@@ -123,22 +123,22 @@ class EmployeController
                 } else {
 
                     // récupérer l'ancienne photo depuis la BDD
-                    $menuActuel = MenuModel::getById($idMenu);
+                    $menuActuel = MenuRepository::getById($idMenu);
                     $photo = $menuActuel['photo'];
                 }
 
-                MenuModel::updateMenu($idMenu, $titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
+                MenuRepository::updateMenu($idMenu, $titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
                 $_SESSION['success'] = "Le menu a bien été modifié.";
             } elseif ($action === 'supprimer') {
 
                 $idMenu = $_POST['Id_menu'];
-                MenuModel::deleteMenu($idMenu);
+                MenuRepository::deleteMenu($idMenu);
                 $_SESSION['success'] = "Le menu a bien été supprimé.";
             }
             Auth::redirect('/employe/menus');
         } else {
-            $menus = MenuModel::getAllMenu();
-            $themes = MenuModel::getAllThemes();
+            $menus = MenuRepository::getAllMenu();
+            $themes = MenuRepository::getAllThemes();
             require_once(__DIR__ . '/../views/employe/menus.php');
         }
     }
@@ -167,7 +167,7 @@ class EmployeController
                     move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
                     $photo = $nomFichier; // on stocke juste le nom en BDD
                 }
-                PlatModel::createPlat($titre, $typePlat, $photo);
+                PlatRepository::createPlat($titre, $typePlat, $photo);
                 $_SESSION['success'] = "Le plat a bien été créé.";
             } elseif ($action === 'modifier') {
 
@@ -184,21 +184,21 @@ class EmployeController
                 } else {
 
                     // récupérer l'ancienne photo depuis la BDD
-                    $platActuel = PlatModel::getById($idPlat);
+                    $platActuel = PlatRepository::getById($idPlat);
                     $photo = $platActuel['photo'];
                 }
 
-                PlatModel::updatePlat($idPlat, $titre, $typePlat, $photo);
+                PlatRepository::updatePlat($idPlat, $titre, $typePlat, $photo);
                 $_SESSION['success'] = "Le plat a bien été modifié.";
             } elseif ($action === 'supprimer') {
 
                 $idPlat = $_POST['Id_plat'];
-                PlatModel::deletePlat($idPlat);
+                PlatRepository::deletePlat($idPlat);
                 $_SESSION['success'] = "Le plat a bien été supprimé.";
             }
             Auth::redirect('/employe/plats');
         } else {
-            $plats = PlatModel::getAllPlats();
+            $plats = PlatRepository::getAllPlats();
             require_once(__DIR__ . '/../views/employe/plats.php');
         }
     }

@@ -22,7 +22,7 @@ class AuthController
                 Auth::redirect('/connexion');
             }
             // on cherche l'utilisateur dans la bdd
-            $user = UserModel::findByEmail($email);
+            $user = UserRepository::findByEmail($email);
 
             if ($user === null) {
                 $_SESSION['error'] = "Il n'existe pas d'utilisateur avec cet email.";
@@ -136,7 +136,7 @@ class AuthController
             }
 
             // on cherche l'utilisateur dans la bdd
-            $user = UserModel::findByEmail($email);
+            $user = UserRepository::findByEmail($email);
 
             if ($user !== null) {
                 $_SESSION['error'] = "Un compte existe déjà avec cet email";
@@ -145,15 +145,15 @@ class AuthController
                 return;
             }
             $hash = password_hash($password, PASSWORD_BCRYPT);
-            UserModel::createUser($nom, $prenom, $email, $hash, $telephone, $adresse, $codePostal, $ville, 1);
-            $newUser = UserModel::findByEmail($email);
+            UserRepository::createUser($nom, $prenom, $email, $hash, $telephone, $adresse, $codePostal, $ville, 1);
+            $newUser = UserRepository::findByEmail($email);
 
             $_SESSION['id_user'] = $newUser['Id_Utilisateur'];
             $_SESSION['role'] = $newUser['Id_role'];
             $_SESSION['nom'] = $newUser['nom'];
             $_SESSION['prenom'] = $newUser['prenom'];
 
-            UserModel::sendWelcomeMail($nom, $prenom, $email);
+            UserRepository::sendWelcomeMail($nom, $prenom, $email);
             $_SESSION['success'] = "Votre compte a été créé avec succés !";
             Auth::redirect('/');
         } else {
@@ -187,16 +187,16 @@ class AuthController
         if (!empty($email)) {
             // On vérifie que c'est bien au format email
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $user = UserModel::findByEmail($email);
+                $user = UserRepository::findByEmail($email);
                 if ($user !== null) {
 
                     // Génération d'un mot de passe temporaire
-                    $tempPassword = UserModel::generateTempPassword();
+                    $tempPassword = UserRepository::generateTempPassword();
                     // enregistrement du temppassword en bdd;
-                    UserModel::updateTempPassword($email, $tempPassword);
-                    UserModel::updateMustChangePassword($email, 1);
+                    UserRepository::updateTempPassword($email, $tempPassword);
+                    UserRepository::updateMustChangePassword($email, 1);
                     // envoi du mail avec le mot de passe temporaire
-                    UserModel::sendResetMail($user['nom'], $user['prenom'], $email, $tempPassword);
+                    UserRepository::sendResetMail($user['nom'], $user['prenom'], $email, $tempPassword);
                 }
                 $_SESSION['message'] = "Si un compte existe avec cet email, vous recevrez un mot de passe temporaire. Vous devrez le modifier lors de votre prochaine connexion";
                 Auth::redirect('/connexion');
@@ -239,8 +239,8 @@ class AuthController
             }
 
             $hash = password_hash($password, PASSWORD_BCRYPT);
-            UserModel::updatePassword($_SESSION['email'], $hash);
-            UserModel::updateMustChangePassword($_SESSION['email'], 0);
+            UserRepository::updatePassword($_SESSION['email'], $hash);
+            UserRepository::updateMustChangePassword($_SESSION['email'], 0);
 
             $_SESSION['success'] = "Votre mot de passe a été modifié avec succès !";
 

@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class ContactModel
+class ContactRepository
 {
 
     // Méthode qui envoie le mail de demande de contact

@@ -11,9 +11,9 @@ class OrderController
     public function showOrder()
     {
         // Récupération de la liste des menus
-        $menus = MenuModel::getAllMenu();
+        $menus = MenuRepository::getAllMenu();
         // Récupération des infos de l'utilisateur
-        $user = UserModel::findByEmail($_SESSION['email']);
+        $user = UserRepository::findByEmail($_SESSION['email']);
         // Récupération de l'id du menu choisi
         $idMenu = isset($_GET['id_menu']) ? $_GET['id_menu'] : null;
         // Affichage de la vue order
@@ -61,10 +61,10 @@ class OrderController
             }
 
             // traiter la commande
-            $idCommande = OrderModel::createOrder($dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser);
+            $idCommande = OrderRepository::createOrder($dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser);
 
             // Envoi du mail de confirmation de la commande
-            OrderModel::sendConfirmationMail($nom, $prenom, $email, $idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $idMenu);
+            OrderRepository::sendConfirmationMail($nom, $prenom, $email, $idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $idMenu);
 
             $_SESSION['success'] = "Votre commande a bien été enregistrée ! Vous recevrez un mail de confirmation.";
             Auth::redirect('/menus');
@@ -80,10 +80,10 @@ class OrderController
     public function showUserOrders()
     {
         $idUser = $_SESSION['id_user'];
-        $user = UserModel::findByEmail($_SESSION['email']);
-        $commandes = OrderModel::getOrdersByUser($idUser);
+        $user = UserRepository::findByEmail($_SESSION['email']);
+        $commandes = OrderRepository::getOrdersByUser($idUser);
         foreach ($commandes as &$commande) {
-            $commande['historique'] = OrderModel::getStatusByOrder($commande['Id_commande']);
+            $commande['historique'] = OrderRepository::getStatusByOrder($commande['Id_commande']);
         }
         unset($commande);
 
@@ -97,7 +97,7 @@ class OrderController
             return;
         }
         $idCommand = $_POST['id_commande'];
-        OrderModel::cancelOrder($idCommand);
+        OrderRepository::cancelOrder($idCommand);
         $_SESSION['success'] = "Votre commande a bien été annulée !";
         Auth::redirect('/mon-espace/commandes');
     }
@@ -121,7 +121,7 @@ class OrderController
             $dateLiv = trim(htmlspecialchars($_POST['date_liv']));
             $pretMat = isset($_POST['pret_materiel']) ? 1 : 0;
 
-            OrderModel::updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat);
+            OrderRepository::updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat);
             $_SESSION['success'] = "Votre commande a été mis à jour !";
             Auth::redirect('/mon-espace/commandes');
         } else {
@@ -143,7 +143,7 @@ class OrderController
             return;
         }
         $descriptionAvis = trim(htmlspecialchars($_POST['commentaire']));
-        ReviewModel::createReview($note, $descriptionAvis, $idCommande);
+        ReviewRepository::createReview($note, $descriptionAvis, $idCommande);
         $_SESSION['success'] = "Votre avis a bien été déposé. Il sera visible dès sa validation par notre équipe !";
         Auth::redirect('/mon-espace/commandes');
     }

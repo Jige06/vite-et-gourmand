@@ -1,6 +1,6 @@
 <?php
 
-class MenuModel
+class MenuRepository
 {
 
     // Méthode qui permet de créer un nouveau menu

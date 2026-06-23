@@ -1,6 +1,6 @@
 <?php
 
-class EmployeModel
+class EmployeRepository
 {
     // Methode qui filtre la recherche des commandes (client et/ou statut)
     public static function getAllOrders($filters)

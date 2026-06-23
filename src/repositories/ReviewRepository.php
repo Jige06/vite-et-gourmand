@@ -1,6 +1,6 @@
 <?php
 
-class ReviewModel
+class ReviewRepository
 {
     // Méthode de création d'un avis client
     public static function createReview($note, $descriptionAvis, $idCommande)

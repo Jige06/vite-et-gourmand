@@ -22,8 +22,8 @@ spl_autoload_register(function ($class) {
     if (file_exists(__DIR__ . '/../src/controllers/' . $class . '.php')) {
         require_once __DIR__ . '/../src/controllers/' . $class . '.php';
     }
-    if (file_exists(__DIR__ . '/../src/models/' . $class . '.php')) {
-        require_once __DIR__ . '/../src/models/' . $class . '.php';
+    if (file_exists(__DIR__ . '/../src/repositories/' . $class . '.php')) {
+        require_once __DIR__ . '/../src/repositories/' . $class . '.php';
     }
 });
 

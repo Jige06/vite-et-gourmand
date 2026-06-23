@@ -106,7 +106,7 @@ vite-et-gourmand/
 │   ├── controllers/        # Contrôleurs (AuthController, OrderController...)
 │   ├── core/               # Classes fondamentales (DatabaseConnection...)
 │   ├── entities/           # Classes entités (User, Menu, Commande...)
-│   ├── models/             # Modèles (UserModel, MenuModel, OrderModel...)
+│   ├── repositories/       # Repositories (UserRepository, MenuRepository, OrderRepository...)
 │   └── views/              # Vues PHP
 ├── vendor/                 # Dépendances Composer
 ├── .env.example

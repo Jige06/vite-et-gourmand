@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class UserModel
+class UserRepository
 {
     // Méthode qui retourne les utilisateurs en cherchant par leur email
     public static function findByEmail($email)

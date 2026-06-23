@@ -23,7 +23,7 @@ class UserController
             $idUser = $_SESSION['id_user'];
 
             // Appel de la methode de mise à jour en BDD
-            $result = UserModel::updateProfil($idUser, $nom, $prenom, $email, $telephone, $adresse, $codePostal, $ville);
+            $result = UserRepository::updateProfil($idUser, $nom, $prenom, $email, $telephone, $adresse, $codePostal, $ville);
 
             // Si nouveau email saisi deja saisi en bdd --> message de refus de mis a jour
             if ($result === false) {

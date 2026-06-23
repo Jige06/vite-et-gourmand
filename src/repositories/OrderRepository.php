@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class OrderModel
+class OrderRepository
 {
     // Méthode de création d'une commande
     public static function createOrder($dateCommande, $nbrePers, $montantTotal, $prixLivraison, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser)
@@ -46,7 +46,7 @@ class OrderModel
         $mail->Port = $_ENV['MAIL_PORT'];
         $mail->Username = $_ENV['MAIL_USER'];
         $mail->Password = $_ENV['MAIL_PASS'];
-        $menu = MenuModel::getById($idMenu);
+        $menu = MenuRepository::getById($idMenu);
 
         $mail->setFrom($_ENV['MAIL_FROM'], 'Vite & Gourmand');
         $mail->addAddress($email, $nom . ' ' . $prenom);

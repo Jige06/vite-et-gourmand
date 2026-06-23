@@ -43,7 +43,7 @@ class AdminController
                     Auth::redirect('/admin');
                 }
 
-                $result = UserModel::createEmploye($nom, $prenom, $email, $password);
+                $result = UserRepository::createEmploye($nom, $prenom, $email, $password);
 
                 // Si l'email saisi existe deja en bdd --> message de refus
                 if ($result === false) {
@@ -52,17 +52,17 @@ class AdminController
                     return;
                 }
 
-                UserModel::sendNewEmployeMail($nom, $prenom, $email);
+                UserRepository::sendNewEmployeMail($nom, $prenom, $email);
 
                 $_SESSION['success'] = "Le compte employé a bien été créé.";
             } elseif ($action === 'desactiver') {
                 $idUser = $_POST['id_user'];
-                UserModel::deactivateUser($idUser);
+                UserRepository::deactivateUser($idUser);
                 $_SESSION['success'] = "Le compte employé a bien été desactivé.";
             }
             Auth::redirect('/admin');
         } else {
-            $employes = AdminModel::getEmployes();
+            $employes = AdminRepository::getEmployes();
             require_once(__DIR__ . '/../views/admin/index.php');
         }
     }
@@ -74,7 +74,7 @@ class AdminController
             Auth::redirect('/connexion');
             return;
         }
-        MongoDBModel::syncStats();
+        MongoDBRepository::syncStats();
 
         // Récupération des filtres depuis l'url (GET)
         $menuFiltre = isset($_GET['menu']) && $_GET['menu'] !== '' ? trim($_GET['menu']) : null;
@@ -82,11 +82,11 @@ class AdminController
         $dateFin = isset($_GET['date_fin']) && $_GET['date_fin'] !== '' ? trim($_GET['date_fin']) : null;
 
         // Récupération de tous les menus distincts pour le select
-        $collection = MongoDBModel::getInstance()->vite_gourmand->stats_commandes;
+        $collection = MongoDBRepository::getInstance()->vite_gourmand->stats_commandes;
         $menus = $collection->distinct('titre');
         sort($menus);
 
-        $stats = MongoDBModel::getStats($menuFiltre, $dateDebut, $dateFin);
+        $stats = MongoDBRepository::getStats($menuFiltre, $dateDebut, $dateFin);
 
         require_once(__DIR__ . '/../views/admin/stats.php');
     }

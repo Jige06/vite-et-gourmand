@@ -16,7 +16,7 @@ class ContactController
                 Auth::redirect('/contact');
             }
 
-            ContactModel::sendContactMail($titre, $description, $email);
+            ContactRepository::sendContactMail($titre, $description, $email);
             $_SESSION['success'] = "Votre message a bien été envoyé !";
             Auth::redirect('/contact');
         } else {
