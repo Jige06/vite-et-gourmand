@@ -179,4 +179,23 @@ class OrderRepository
         $statutCommande = $stmt->fetchAll();
         return $statutCommande;
     }
+
+    // Méthode qui récupère une commande unique par son id, avec son statut actuel
+    public static function getOrderById($idCommande)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT commande.*,
+        (SELECT statut_commande.libelle
+        FROM commande_statut_commande
+        JOIN statut_commande ON commande_statut_commande.Id_statut_commande = statut_commande.Id_statut_commande
+        WHERE commande_statut_commande.Id_commande = commande.Id_commande
+        ORDER BY date_changement DESC
+        LIMIT 1) AS statut_actuel
+        FROM commande
+        WHERE commande.Id_commande = ?");
+        $stmt->execute([$idCommande]);
+        $commande = $stmt->fetch();
+        return $commande;
+    }
 }

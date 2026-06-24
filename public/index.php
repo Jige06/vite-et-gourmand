@@ -29,6 +29,9 @@ spl_autoload_register(function ($class) {
     if (file_exists(__DIR__ . '/../src/entities/' . $class . '.php')) {
         require_once __DIR__ . '/../src/entities/' . $class . '.php';
     }
+    if (file_exists(__DIR__ . '/../src/services/' . $class . '.php')) {
+        require_once __DIR__ . '/../src/services/' . $class . '.php';
+    }
     if (file_exists(__DIR__ . '/../src/controllers/' . $class . '.php')) {
         require_once __DIR__ . '/../src/controllers/' . $class . '.php';
     }
@@ -66,5 +69,6 @@ $router->add('/admin', [AdminController::class, 'handleNewEmploye']);
 $router->add('/admin/stats', [AdminController::class, 'handleStats']);
 $router->add('/cgv', [LegalController::class, 'showCgv']);
 $router->add('/mentions-legales', [LegalController::class, 'showMentionsLegales']);
+$router->add('/commande/calculer-frais', [OrderController::class, 'calculerFrais']);
 
 $router->dispatch();

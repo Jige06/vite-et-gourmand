@@ -15,7 +15,7 @@ class OrderController
         // Récupération des infos de l'utilisateur
         $user = UserRepository::findByEmail($_SESSION['email']);
         // Récupération de l'id du menu choisi
-        $idMenu = isset($_GET['id_menu']) ? $_GET['id_menu'] : null;
+        $idMenu = filter_input(INPUT_GET, 'id_menu', FILTER_VALIDATE_INT) ?: null;
         // Affichage de la vue order
         require_once(__DIR__ . '/../views/commande/order.php');
     }
@@ -37,13 +37,11 @@ class OrderController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $dateCommande = date('Y-m-d');
-            $nbrePers = trim(htmlspecialchars($_POST['nbre_pers']));
-            $montantTotal = floatval($_POST['montant_total']);
-            $prixLiv = floatval($_POST['prix_livraison']);
+            $nbrePers = intval($_POST['nbre_pers']);
             $typeLiv = trim(htmlspecialchars($_POST['type_liv']));
             $adresseLiv = isset($_POST['adresse_liv']) ? trim(htmlspecialchars($_POST['adresse_liv'])) : null;
             $codePostalLiv = isset($_POST['codePostal_liv']) ? trim(htmlspecialchars($_POST['codePostal_liv'])) : null;
-            $villeLive = isset($_POST['ville_liv']) ? trim(htmlspecialchars($_POST['ville_liv'])) : null;
+            $villeLiv = isset($_POST['ville_liv']) ? trim(htmlspecialchars($_POST['ville_liv'])) : null;
             $heureLiv = trim(htmlspecialchars($_POST['heure_liv']));
             $dateLiv = trim(htmlspecialchars($_POST['date_liv']));
             $pretMat = isset($_POST['pret_materiel']) ? 1 : 0;
@@ -60,16 +58,38 @@ class OrderController
                 return;
             }
 
+            // Étape 1 : recalcul du prix du menu côté serveur (jamais confiance au client)
+            $montantTotal = CommandeService::calculerPrixMenu($idMenu, $nbrePers);
+            if ($montantTotal === null) {
+                $_SESSION['error'] = "Ce menu n'existe pas, ou le nombre de personnes est insuffisant.";
+                Auth::redirect('/commande');
+                return;
+            }
+
+            // Étape 2 : calcul des frais de livraison côté serveur, si livraison hors Bordeaux
+            $prixLiv = 0;
+            if ($typeLiv === 'Livraison') {
+                $adresseComplete = $adresseLiv . ', ' . $codePostalLiv . ' ' . $villeLiv;
+                $resultatLivraison = LivraisonService::calculerFraisLivraison($adresseComplete);
+
+                if ($resultatLivraison === null) {
+                    $_SESSION['error'] = "Impossible de calculer les frais de livraison. Vérifiez votre adresse.";
+                    Auth::redirect('/commande');
+                    return;
+                }
+                $prixLiv = $resultatLivraison['prix'];
+            }
+
+            $montantTotal += $prixLiv;
+
             // traiter la commande
-            $idCommande = OrderRepository::createOrder($dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser);
+            $idCommande = OrderRepository::createOrder($dateCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser);
 
             // Envoi du mail de confirmation de la commande
-            OrderRepository::sendConfirmationMail($nom, $prenom, $email, $idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLive, $heureLiv, $dateLiv, $idMenu);
+            OrderRepository::sendConfirmationMail($nom, $prenom, $email, $idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $idMenu);
 
             $_SESSION['success'] = "Votre commande a bien été enregistrée ! Vous recevrez un mail de confirmation.";
             Auth::redirect('/menus');
-
-
 
             // Sinon on affiche le formulaire
         } else {
@@ -90,18 +110,44 @@ class OrderController
         require_once(__DIR__ . '/../views/user/commandes.php');
     }
 
+    // Méthode qui permet d'annuler une commande lorsque son statut le permet
     public function deleteOrder()
     {
         if (!isset($_SESSION['id_user'])) {
             Auth::redirect('/connexion');
             return;
         }
-        $idCommand = $_POST['id_commande'];
+
+        $idCommand = intval($_POST['id_commande']);
+
+        // Étape 1 : la commande existe-t-elle vraiment ?
+        $commande = OrderRepository::getOrderById($idCommande);
+        if ($commande === false) {
+            $_SESSION['error'] = "Cette commande n'existe pas.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
+        // Étape 2 : la commande appartient-elle bien à l'utilisateur connecté ?
+        if ($commande['Id_Utilisateur'] != $_SESSION['id_user']) {
+            $_SESSION['error'] = "Vous n'êtes pas autorisé à annuler cette commande.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
+        // Étape 3 : le statut permet-il l'annulation ?
+        if ($commande['statut_actuel'] !== 'En attente de validation') {
+            $_SESSION['error'] = "Cette commande ne peut plus être annulée.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
         OrderRepository::cancelOrder($idCommand);
         $_SESSION['success'] = "Votre commande a bien été annulée !";
         Auth::redirect('/mon-espace/commandes');
     }
 
+    // Méthode qui permet de modifier une commande lorsque son statut le permet
     public function updateOrder()
     {
         if (!isset($_SESSION['id_user'])) {
@@ -121,6 +167,28 @@ class OrderController
             $dateLiv = trim(htmlspecialchars($_POST['date_liv']));
             $pretMat = isset($_POST['pret_materiel']) ? 1 : 0;
 
+            // Étape 1 : la commande existe-t-elle vraiment ?
+            $commande = OrderRepository::getOrderById($idCommande);
+            if ($commande === false) {
+                $_SESSION['error'] = "Cette commande n'existe pas.";
+                Auth::redirect('/mon-espace/commandes');
+                return;
+            }
+
+            // Étape 2 : la commande appartient-elle bien à l'utilisateur connecté ?
+            if ($commande['Id_Utilisateur'] != $_SESSION['id_user']) {
+                $_SESSION['error'] = "Vous n'êtes pas autorisé à modifier cette commande.";
+                Auth::redirect('/mon-espace/commandes');
+                return;
+            }
+
+            // Étape 3 : le statut permet-il la modification ?
+            if ($commande['statut_actuel'] !== 'En attente de validation') {
+                $_SESSION['error'] = "Cette commande ne peut plus être modifiée.";
+                Auth::redirect('/mon-espace/commandes');
+                return;
+            }
+
             OrderRepository::updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat);
             $_SESSION['success'] = "Votre commande a été mis à jour !";
             Auth::redirect('/mon-espace/commandes');
@@ -129,6 +197,7 @@ class OrderController
         }
     }
 
+    // Méthode qui permet de déposer un avis sur une commande
     public function leaveReview()
     {
         if (!isset($_SESSION['id_user'])) {
@@ -136,6 +205,29 @@ class OrderController
             return;
         }
         $idCommande = intval($_POST['id_commande']);
+
+        // Étape 1 : la commande existe-t-elle vraiment ?
+        $commande = OrderRepository::getOrderById($idCommande);
+        if ($commande === false) {
+            $_SESSION['error'] = "Cette commande n'existe pas.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
+        // Étape 2 : la commande appartient-elle bien à l'utilisateur connecté ?
+        if ($commande['Id_Utilisateur'] != $_SESSION['id_user']) {
+            $_SESSION['error'] = "Vous n'êtes pas autorisé à laisser un avis sur cette commande.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
+        // Étape 3 : le statut permet-il de déposer un avis ?
+        if ($commande['statut_actuel'] !== 'Terminé') {
+            $_SESSION['error'] = "Le statut de cette commande ne permet pas de déposer un avis.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
         $note = intval($_POST['note']);
         if ($note < 1 || $note > 5) {
             $_SESSION['error'] = "La note doit être comprise entre 1 et 5.";
@@ -146,5 +238,38 @@ class OrderController
         ReviewRepository::createReview($note, $descriptionAvis, $idCommande);
         $_SESSION['success'] = "Votre avis a bien été déposé. Il sera visible dès sa validation par notre équipe !";
         Auth::redirect('/mon-espace/commandes');
+    }
+
+    // Méthode appelée en fetch JS pour obtenir un aperçu des frais de livraison
+    public function calculerFrais()
+    {
+        if (!isset($_SESSION['id_user'])) {
+            header('Content-Type: application/json');
+            http_response_code(401);
+            echo json_encode(['erreur' => 'Non autorisé']);
+            return;
+        }
+
+        $adresseLiv = filter_input(INPUT_GET, 'adresse', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $codePostalLiv = filter_input(INPUT_GET, 'codePostal', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $villeLiv = filter_input(INPUT_GET, 'ville', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        if (empty($adresseLiv) || empty($codePostalLiv) || empty($villeLiv)) {
+            header('Content-Type: application/json');
+            echo json_encode(['erreur' => 'Adresse incomplète']);
+            return;
+        }
+
+        $adresseComplete = $adresseLiv . ', ' . $codePostalLiv . ' ' . $villeLiv;
+        $resultat = LivraisonService::calculerFraisLivraison($adresseComplete);
+
+        header('Content-Type: application/json');
+
+        if ($resultat === null) {
+            echo json_encode(['erreur' => 'Adresse introuvable']);
+            return;
+        }
+
+        echo json_encode($resultat);
     }
 }
