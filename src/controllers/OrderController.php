@@ -118,7 +118,7 @@ class OrderController
             return;
         }
 
-        $idCommand = intval($_POST['id_commande']);
+        $idCommande = intval($_POST['id_commande']);
 
         // Étape 1 : la commande existe-t-elle vraiment ?
         $commande = OrderRepository::getOrderById($idCommande);
@@ -142,7 +142,7 @@ class OrderController
             return;
         }
 
-        OrderRepository::cancelOrder($idCommand);
+        OrderRepository::cancelOrder($idCommande);
         $_SESSION['success'] = "Votre commande a bien été annulée !";
         Auth::redirect('/mon-espace/commandes');
     }
