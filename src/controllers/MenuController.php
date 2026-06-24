@@ -46,11 +46,11 @@ class MenuController
     public function filter()
     {
         $filters = [
-            'prix_min' => $_GET['prix_min'] ?? null,
-            'prix_max' => $_GET['prix_max'] ?? null,
-            'theme' => $_GET['theme'] ?? null,
-            'regime' => $_GET['regime'] ?? null,
-            'nb_personnes' => $_GET['nb_personnes'] ?? null,
+            'prix_min' => filter_input(INPUT_GET, 'prix_min', FILTER_VALIDATE_INT) ?: null,
+            'prix_max' => filter_input(INPUT_GET, 'prix_max', FILTER_VALIDATE_INT) ?: null,
+            'theme' => filter_input(INPUT_GET, 'theme', FILTER_VALIDATE_INT) ?: null,
+            'regime' => filter_input(INPUT_GET, 'regime', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
+            'nb_personnes' => filter_input(INPUT_GET, 'nb_personnes', FILTER_VALIDATE_INT) ?: null,
         ];
 
         $menus = MenuRepository::getByFilters($filters);
