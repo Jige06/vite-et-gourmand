@@ -93,15 +93,22 @@ class EmployeController
                 $conditions = trim($_POST['conditions']);
                 $regime = trim($_POST['regime']);
                 $idTheme = intval($_POST['Id_theme']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/menus/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
+
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/menus/uploads/';
+                $nomFichier = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nomFichier === null) {
+                    $_SESSION['error'] = "La photo est obligatoire et doit être une image valide (jpg, png, webp, max 6 Mo).";
+                    Auth::redirect('/employe/menus');
+                    return;
                 }
+
+                $photo = 'uploads/' . $nomFichier;
+
                 MenuRepository::createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
                 $_SESSION['success'] = "Le menu a bien été créé.";
+
             } elseif ($action === 'modifier') {
 
                 $idMenu = $_POST['Id_menu'];
@@ -113,16 +120,16 @@ class EmployeController
                 $conditions = trim($_POST['conditions']);
                 $regime = trim($_POST['regime']);
                 $idTheme = intval($_POST['Id_theme']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/menus/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
 
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/menus/uploads/';
+                $nouvellePhoto = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nouvellePhoto !== null) {
+                    $photo = 'uploads/' . $nouvellePhoto;
+                    
                 } else {
-
-                    // récupérer l'ancienne photo depuis la BDD
+                    // pas de nouveau fichier valide : on garde l'ancienne photo
                     $menuActuel = MenuRepository::getById($idMenu);
                     $photo = $menuActuel['photo'];
                 }
@@ -143,7 +150,6 @@ class EmployeController
         }
     }
 
-
     // Méthode CRUD pour gérer les plats (creation, modification, suppression) depuis l'espace employe
     public function handlePlats()
     {
@@ -160,13 +166,19 @@ class EmployeController
 
                 $titre = trim($_POST['titre']);
                 $typePlat = trim($_POST['type_plat']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/plats/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
+
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/plats/uploads/';
+                $nomFichier = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nomFichier === null) {
+                    $_SESSION['error'] = "La photo est obligatoire et doit être une image valide (jpg, png, webp, max 6 Mo).";
+                    Auth::redirect('/employe/plats');
+                    return;
                 }
+
+                $photo = 'uploads/' . $nomFichier;
+
                 PlatRepository::createPlat($titre, $typePlat, $photo);
                 $_SESSION['success'] = "Le plat a bien été créé.";
             } elseif ($action === 'modifier') {
@@ -174,13 +186,13 @@ class EmployeController
                 $idPlat = $_POST['Id_plat'];
                 $titre = trim($_POST['titre']);
                 $typePlat = trim($_POST['type_plat']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/plats/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
 
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/plats/uploads/';
+                $nouvellePhoto = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nouvellePhoto !== null) {
+                    $photo = 'uploads/' . $nouvellePhoto;
                 } else {
 
                     // récupérer l'ancienne photo depuis la BDD

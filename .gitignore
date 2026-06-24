@@ -1,3 +1,5 @@
 .env
 vendor/
 public/test.php
+public/assets/images/menus/uploads/
+public/assets/images/plats/uploads/

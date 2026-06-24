@@ -98,7 +98,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-modif-plat" action="/employe/plats" method="post">
+                    <form id="form-modif-plat" action="/employe/plats" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="modifier">
                         <input type="hidden" name="Id_plat" value="<?= $plat['Id_plat'] ?>">
                         <div class="mb-3">

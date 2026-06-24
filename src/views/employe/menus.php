@@ -12,6 +12,10 @@
             <div class="alert alert-success"><?= $_SESSION['success'];
                                                 unset($_SESSION['success']); ?></div>
         <?php endif; ?>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?= $_SESSION['error'];
+                                            unset($_SESSION['error']); ?></div>
+        <?php endif; ?>
         <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerMenu">
             + créer un menu
         </button>
@@ -140,7 +144,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-modif-menu" action="/employe/menus" method="post">
+                    <form id="form-modif-menu" action="/employe/menus" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="modifier">
                         <input type="hidden" name="Id_menu" value="<?= $menu['Id_menu'] ?>">
                         <div class="mb-3">
