@@ -26,21 +26,25 @@ class AdminController
                 ) {
                     $_SESSION['error'] = "Le nom et prénom ne doivent contenir que des lettres.";
                     Auth::redirect('/admin');
+                    return;
                 }
 
                 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $_SESSION['error'] = "L'adresse email n'est pas valide.";
                     Auth::redirect('/admin');
+                    return;
                 }
 
                 if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
                     $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
                     Auth::redirect('/admin');
+                    return;
                 }
 
                 if ($_POST['password'] !== $_POST['confirm_password']) {
                     $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
                     Auth::redirect('/admin');
+                    return;
                 }
 
                 $result = UserRepository::createEmploye($nom, $prenom, $email, $password);
@@ -56,7 +60,18 @@ class AdminController
 
                 $_SESSION['success'] = "Le compte employé a bien été créé.";
             } elseif ($action === 'desactiver') {
-                $idUser = $_POST['id_user'];
+                $idUser = filter_input(INPUT_POST, 'id_user', FILTER_VALIDATE_INT);
+                if ($idUser === false) {
+                    $_SESSION['error'] = "Une erreur s'est produite";
+                    Auth::redirect('/admin');
+                    return;
+                }
+                if ($idUser == $_SESSION['id_user']) {
+                    $_SESSION['error'] = "Ce compte ne peut pas être désactivé.";
+                    Auth::redirect('/admin');
+                    return;
+                }
+
                 UserRepository::deactivateUser($idUser);
                 $_SESSION['success'] = "Le compte employé a bien été desactivé.";
             }
@@ -77,13 +92,26 @@ class AdminController
         MongoDBRepository::syncStats();
 
         // Récupération des filtres depuis l'url (GET)
-        $menuFiltre = isset($_GET['menu']) && $_GET['menu'] !== '' ? trim($_GET['menu']) : null;
-        $dateDebut = isset($_GET['date_debut']) && $_GET['date_debut'] !== '' ? trim($_GET['date_debut']) : null;
-        $dateFin = isset($_GET['date_fin']) && $_GET['date_fin'] !== '' ? trim($_GET['date_fin']) : null;
+        $menuFiltre = isset($_GET['menu']) && is_string($_GET['menu']) && $_GET['menu'] !== '' ? trim($_GET['menu']) : null;
+        $dateDebut = isset($_GET['date_debut']) && is_string($_GET['date_debut']) && $_GET['date_debut'] !== '' ? trim($_GET['date_debut']) : null;
+        if ($dateDebut !== null && DateTime::createFromFormat('Y-m-d', $dateDebut) === false) {
+            $dateDebut = null;
+        }
+        $dateFin = isset($_GET['date_fin']) && is_string($_GET['date_fin']) && $_GET['date_fin'] !== '' ? trim($_GET['date_fin']) : null;
+        if ($dateFin !== null && DateTime::createFromFormat('Y-m-d', $dateFin) === false) {
+            $dateFin = null;
+        }
+        if ($dateDebut !== null && $dateFin !== null && $dateDebut > $dateFin) {
+            $_SESSION['error'] = "La date de début doit être antérieure à la date de fin";
+            Auth::redirect('/admin/stats');
+            return;
+        }
 
         // Récupération de tous les menus distincts pour le select
         $collection = MongoDBRepository::getInstance()->vite_gourmand->stats_commandes;
         $menus = $collection->distinct('titre');
+        $menuFiltre = in_array($menuFiltre, $menus) ? $menuFiltre : null;
+
         sort($menus);
 
         $stats = MongoDBRepository::getStats($menuFiltre, $dateDebut, $dateFin);

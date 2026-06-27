@@ -4,6 +4,11 @@
 <div class="container mt-4">
     <h1 class="text-center mb-4">Statistiques</h1>
 
+    <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?= $_SESSION['error'];
+                                            unset($_SESSION['error']); ?></div>
+        <?php endif; ?>
+
     <!-- Formulaire de filtres -->
     <form method="GET" action="/admin/stats" class="card p-4 mb-5 shadow-sm">
         <div class="row g-3 align-items-end">
