@@ -27,7 +27,7 @@
             <option value="En préparation">En préparation</option>
             <option value="En cours de livraison">En cours de livraison</option>
             <option value="Livré">Livré</option>
-            <option value="En attente de retour matériel">En attente de retour matériel</option>
+            <option value="En attente du retour matériel">En attente du retour matériel</option>
             <option value="Terminé">Terminé</option>
             <option value="Annulé">Annulé</option>
         </select>
@@ -66,7 +66,7 @@
                                 <option value="En préparation">En préparation</option>
                                 <option value="En cours de livraison">En cours de livraison</option>
                                 <option value="Livré">Livré</option>
-                                <option value="En attente de retour matériel">En attente de retour matériel</option>
+                                <option value="En attente du retour matériel">En attente du retour matériel</option>
                                 <option value="Terminé">Terminé</option>
                                 <option value="Annulé">Annulé</option>
                             </select>

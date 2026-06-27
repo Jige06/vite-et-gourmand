@@ -2,7 +2,7 @@
 
 class EmployeController
 {
-    // Méthode qui appelle le model pour récuperer toutes les commandes
+    // Méthode qui appelle le repository pour récuperer toutes les commandes
     public function showOrders()
     {
         // Vérification du rôle pour acceder à l'espace employé
@@ -11,16 +11,19 @@ class EmployeController
             exit;
         }
 
+        $statuts = ['En attente de validation', 'Accepté', 'En préparation', 'En cours de livraison', 'Livré', 'En attente du retour matériel', 'Terminé', 'Annulé'];
+        $statutDemande = $_GET['statut'] ?? null;
         $filters = [
-            'statut' => $_GET['statut'] ?? null,
-            'client' => $_GET['client'] ?? null,
+            'statut' => in_array($statutDemande, $statuts) ? $statutDemande : null,
+            'client' => filter_input(INPUT_GET, 'client', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
         ];
         $orders = EmployeRepository::getAllOrders($filters);
 
         require_once(__DIR__ . '/../views/employe/commandes.php');
     }
 
-    // Méthode qui appelle le modele pour mettre a jour le statut d'une commande
+
+    // Méthode qui appelle le repository pour mettre a jour le statut d'une commande
     public static function handleUpdateStatus()
     {
         if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
@@ -28,8 +31,16 @@ class EmployeController
             exit;
         }
 
-        $idCommande = $_POST['Id_Commande'];
-        $nouveauStatut = $_POST['nouveau_statut'];
+        $idCommande = filter_input(INPUT_POST, 'Id_Commande', FILTER_VALIDATE_INT);
+        $statuts = ['En attente de validation', 'Accepté', 'En préparation', 'En cours de livraison', 'Livré', 'En attente du retour matériel', 'Terminé', 'Annulé'];
+        $nouveauStatut = $_POST['nouveau_statut'] ?? null;
+        $nouveauStatut = in_array($nouveauStatut, $statuts) ? $nouveauStatut : null;
+
+        if ($idCommande === false || $nouveauStatut === null) {
+            $_SESSION['error'] = "Une erreur s'est produite";
+            Auth::redirect('/employe');
+            return;
+        }
 
         $result = EmployeRepository::updateStatus($idCommande, $nouveauStatut);
 
@@ -44,7 +55,7 @@ class EmployeController
         Auth::redirect('/employe');
     }
 
-    // Méthode qui appelle le model pour changer le statut d'un avis client (validé/refusé)
+    // Méthode qui appelle le repository pour changer le statut d'un avis client (validé/refusé)
     public function handleReviews()
     {
         if (
@@ -58,9 +69,18 @@ class EmployeController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // traitement du changement de statut
-            $idAvis = $_POST['id_avis'];
-            $statut = $_POST['statut'];
-            ReviewRepository::updateReviewStatus($idAvis, $statut);
+            $idAvis = filter_input(INPUT_POST, 'id_avis', FILTER_VALIDATE_INT);
+            $statutsAvis = ['Validé', 'Refusé'];
+            $nouveauStatutAvis = $_POST['statut'] ?? null;
+            $nouveauStatutAvis = in_array($nouveauStatutAvis, $statutsAvis) ? $nouveauStatutAvis : null;
+
+            if ($idAvis === false || $nouveauStatutAvis === null) {
+            $_SESSION['error'] = "Une erreur s'est produite";
+            Auth::redirect('/employe');
+            return;
+        }
+
+            ReviewRepository::updateReviewStatus($idAvis, $nouveauStatutAvis);
             $_SESSION['success'] = "L'avis a bien été mis à jour";
             Auth::redirect('/employe/avis');
         } else {
@@ -108,7 +128,6 @@ class EmployeController
 
                 MenuRepository::createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
                 $_SESSION['success'] = "Le menu a bien été créé.";
-
             } elseif ($action === 'modifier') {
 
                 $idMenu = $_POST['Id_menu'];
@@ -127,7 +146,6 @@ class EmployeController
 
                 if ($nouvellePhoto !== null) {
                     $photo = 'uploads/' . $nouvellePhoto;
-                    
                 } else {
                     // pas de nouveau fichier valide : on garde l'ancienne photo
                     $menuActuel = MenuRepository::getById($idMenu);
