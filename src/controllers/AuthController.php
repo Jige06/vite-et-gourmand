@@ -104,38 +104,44 @@ class AuthController
 
             // Vérification que les champs ne contiennent que des lettres
             if (
-                !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $nom) ||
-                !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $prenom) ||
-                !preg_match('/^[a-zA-ZÀ-ÿ\- ]+$/', $ville)
+                !Validator::nomValide($nom) ||
+                !Validator::nomValide($prenom) ||
+                !Validator::nomValide($ville)
             ) {
                 $_SESSION['error'] = "Le nom, prénom et ville ne doivent contenir que des lettres.";
                 Auth::redirect('/inscription');
+                return;
             }
 
             // Vérification du format de l'email
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (!Validator::emailValide($email)) {
                 $_SESSION['error'] = "L'adresse email n'est pas valide.";
                 Auth::redirect('/inscription');
+                return;
             }
             // Vérification que le code postal ne contient que 5 chiffres
-            if (!preg_match('/^[0-9]{5}$/', $codePostal)) {
+            if (!Validator::codePostalValide($codePostal)) {
                 $_SESSION['error'] = "Le code postal doit contenir 5 chiffres.";
                 Auth::redirect('/inscription');
+                return;
             }
             // Vérification que le téléphone ne contient que 10 chiffres
-            if (!preg_match('/^[0-9]{10}$/', $telephone)) {
+            if (!Validator::telephoneValide($telephone)) {
                 $_SESSION['error'] = "Le numéro de téléphone doit contenir 10 chiffres.";
                 Auth::redirect('/inscription');
+                return;
             }
             // Vérification que le mot de passe a le bon format (sécurité)
-            if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
+            if (!Validator::motDePasseValide($password)) {
                 $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
                 Auth::redirect('/inscription');
+                return;
             }
             // Vérification que le mot de passe est indique à la 1ere saisi
             if ($_POST['password'] !== $_POST['confirm_password']) {
                 $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
                 Auth::redirect('/inscription');
+                return;
             }
 
             // on cherche l'utilisateur dans la bdd
