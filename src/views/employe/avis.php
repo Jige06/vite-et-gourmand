@@ -18,11 +18,13 @@
                 <p><?= htmlspecialchars($unAvis['description_avis']) ?></p>
                 <div class="d-flex gap-2 justify-content-center">
                     <form method="POST" action="/employe/avis">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="id_avis" value="<?= $unAvis['Id_avis'] ?>">
                         <input type="hidden" name="statut" value="Validé">
                         <button type="submit" class="btn btn-success">valider</button>
                     </form>
                     <form method="POST" action="/employe/avis">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="id_avis" value="<?= $unAvis['Id_avis'] ?>">
                         <input type="hidden" name="statut" value="Refusé">
                         <button type="submit" class="btn btn-danger">refuser</button>

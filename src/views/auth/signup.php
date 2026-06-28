@@ -14,6 +14,7 @@
                                             unset($_SESSION['success']); ?></div>
     <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/inscription" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="connexion text-start mb-4">
             <label class="mb-1 d-block" for="nom">Nom</label>
             <input class="form-control" type="text" id="nom" name="nom" required placeholder="ex: Martin">

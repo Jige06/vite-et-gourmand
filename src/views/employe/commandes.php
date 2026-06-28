@@ -12,7 +12,8 @@
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+    <div class="alert alert-danger"><?= $_SESSION['error'];
+                                    unset($_SESSION['error']); ?></div>
 <?php endif; ?>
 
 <!-- Filtres des menus par statut ou par nom/prenon -->
@@ -58,6 +59,7 @@
                     <td><?= htmlspecialchars($order['statut_actuel']) ?></td>
                     <td>
                         <form class="container" method="POST" action="/employe/statut">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <input type="hidden" name="Id_Commande" value="<?= $order['Id_commande'] ?>">
                             <label for="statut-select">Nouveau statut&nbsp;:</label>
                             <select name="nouveau_statut" id="nouveau_statut">

@@ -11,6 +11,7 @@
     <?php endif; ?>
     <p class="text-center text-warning">Vous utilisez un mot de passe temporaire. Veuillez le modifier avant de continuer.</p>
     <form class="d-flex flex-column align-items-center" action="/changer-mot-de-passe" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="connexion text-start mb-4">
             <label class="mb-1 d-block" for="password">Nouveau mot de passe</label>
             <input class="form-control" type="password" id="password" name="password" required>

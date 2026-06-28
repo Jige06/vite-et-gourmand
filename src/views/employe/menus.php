@@ -84,6 +84,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-crea-menu" enctype="multipart/form-data" action="/employe/menus" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="creer">
                         <div class="mb-3">
                             <label class="mb-1 d-block">Nom du menu</label>
@@ -145,6 +146,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-modif-menu" action="/employe/menus" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="modifier">
                         <input type="hidden" name="Id_menu" value="<?= $menu['Id_menu'] ?>">
                         <div class="mb-3">
@@ -211,6 +213,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/employe/menus">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="supprimer">
                         <input type="hidden" name="Id_menu" id="id-menu-supprimer">
                         <button type="submit" class="btn btn-danger">supprimer</button>

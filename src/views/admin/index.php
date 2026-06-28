@@ -68,6 +68,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-crea-employe" action="/admin" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="creer">
                         <div class="mb-3">
                             <label class="mb-1 d-block">Nom</label>
@@ -120,6 +121,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/admin">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="desactiver">
                         <input type="hidden" name="id_user" id="id-utilisateur-desactiver">
                         <button type="submit" class="btn btn-danger">désactiver</button>

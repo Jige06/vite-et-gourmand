@@ -23,6 +23,7 @@
             </div>
             <div class="modal-body">
                 <form id="form-profil" action="/mon-espace/profil" method="post">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                     <div class="mb-3">
                         <label class="mb-1 d-block">Nom</label>
                         <input class="form-control" type="text" name="nom" value="<?= htmlspecialchars($user['nom']) ?>" required>
@@ -164,6 +165,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Retour</button>
                         <form action="/mon-espace/commandes/annuler" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
                             <button type="submit" class="btn btn-danger">confirmer l'annulation</button>
                         </form>
@@ -182,6 +185,8 @@
                     </div>
                     <div class="modal-body">
                         <form id="form-modifier-<?= $commande['Id_commande'] ?>" action="/mon-espace/commandes/modifier" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
 
                             <div class="livraison text-start mb-4 ">
@@ -194,17 +199,17 @@
 
                             <div class="livraison livraison-param text-start mb-4">
                                 <label class="mb-1 d-block" for="adresse_liv">Adresse de livraison</label>
-                                <input class="form-control" type="text" id="adresse_liv" name="adresse_liv" value="<?= htmlspecialchars($commande['adresse_livraison']) ?>">
+                                <input class="form-control" type="text" id="adresse_liv" name="adresse_liv" value="<?= htmlspecialchars($commande['adresse_livraison'] ?? '') ?>">
                             </div>
 
                             <div class="livraison livraison-param text-start mb-4">
                                 <label class="mb-1 d-block" for="codePostal">Code postal</label>
-                                <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" value="<?= htmlspecialchars($commande['code_postal_livraison']) ?>">
+                                <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" value="<?= htmlspecialchars($commande['code_postal_livraison'] ?? '') ?>">
                             </div>
 
                             <div class="livraison livraison-param text-start mb-4">
                                 <label class="mb-1 d-block" for="ville_liv">Ville</label>
-                                <input class="form-control" type="text" id="ville_liv" name="ville_liv" value="<?= htmlspecialchars($commande['ville_livraison']) ?>">
+                                <input class="form-control" type="text" id="ville_liv" name="ville_liv" value="<?= htmlspecialchars($commande['ville_livraison'] ?? '') ?>">
                             </div>
 
                             <div id="error-date" class="alert alert-danger" style="display:none"></div>
@@ -298,6 +303,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="form-avis-<?= $commande['Id_commande'] ?>" action="/mon-espace/avis" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
                             <div class="mb-3">
                                 <label class="mb-1 d-block" for="prenom_avis">Prénom</label>

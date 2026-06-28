@@ -19,6 +19,7 @@
     </div>
 
     <form class="d-flex flex-column align-items-center" action="/contact" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="mb-3 col-12 col-md-8 col-lg-8 mx-auto">
             <label for="email" class="form-label">Votre email</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="email@exemple.com" required>

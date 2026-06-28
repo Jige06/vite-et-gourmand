@@ -11,6 +11,7 @@
                                         unset($_SESSION['error']); ?></div>
     <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/connexion" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="connexion text-start mb-4">
             <label class="mb-1 d-block" for="email">Email</label>
             <input class="form-control" type="email" id="email" name="email" required placeholder="exemple@exemple.com"
