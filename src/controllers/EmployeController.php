@@ -22,13 +22,18 @@ class EmployeController
         require_once(__DIR__ . '/../views/employe/commandes.php');
     }
 
-
     // Méthode qui appelle le repository pour mettre a jour le statut d'une commande
     public static function handleUpdateStatus()
     {
         if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
             header('Location: /connexion');
             exit;
+        }
+
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/employe');
+            return;
         }
 
         $idCommande = filter_input(INPUT_POST, 'Id_Commande', FILTER_VALIDATE_INT);
@@ -67,6 +72,11 @@ class EmployeController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe');
+                return;
+            }
 
             // traitement du changement de statut
             $idAvis = filter_input(INPUT_POST, 'id_avis', FILTER_VALIDATE_INT);
@@ -75,10 +85,10 @@ class EmployeController
             $nouveauStatutAvis = in_array($nouveauStatutAvis, $statutsAvis) ? $nouveauStatutAvis : null;
 
             if ($idAvis === false || $nouveauStatutAvis === null) {
-            $_SESSION['error'] = "Une erreur s'est produite";
-            Auth::redirect('/employe');
-            return;
-        }
+                $_SESSION['error'] = "Une erreur s'est produite";
+                Auth::redirect('/employe');
+                return;
+            }
 
             ReviewRepository::updateReviewStatus($idAvis, $nouveauStatutAvis);
             $_SESSION['success'] = "L'avis a bien été mis à jour";
@@ -101,6 +111,12 @@ class EmployeController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe/menus');
+                return;
+            }
+
             $action = $_POST['action'];
 
             if ($action === 'creer') {
@@ -178,6 +194,12 @@ class EmployeController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe/plats');
+                return;
+            }
+
             $action = $_POST['action'];
 
             if ($action === 'creer') {

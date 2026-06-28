@@ -11,6 +11,11 @@ class AdminController
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/admin');
+                return;
+            }
             $action = $_POST['action'];
 
             if ($action === 'creer') {

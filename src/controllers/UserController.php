@@ -13,6 +13,12 @@ class UserController
 
         // Récupération des données de l'utilisateur saisies dans le formulaire de modification
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/mon-espace/commandes');
+                return;
+            }
+
             $nom = trim(htmlspecialchars($_POST['nom']));
             $prenom = trim(htmlspecialchars($_POST['prenom']));
             $email = trim(htmlspecialchars($_POST['email']));

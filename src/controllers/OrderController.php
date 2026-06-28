@@ -35,13 +35,18 @@ class OrderController
 
         // Si le formulaire est soumis, on traite la commande
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/commande');
+                return;
+            }
 
             $dateCommande = date('Y-m-d');
             $nbrePers = intval($_POST['nbre_pers']);
             $typeLiv = trim(htmlspecialchars($_POST['type_liv']));
-            $adresseLiv = isset($_POST['adresse_liv']) ? trim(htmlspecialchars($_POST['adresse_liv'])) : null;
-            $codePostalLiv = isset($_POST['codePostal_liv']) ? trim(htmlspecialchars($_POST['codePostal_liv'])) : null;
-            $villeLiv = isset($_POST['ville_liv']) ? trim(htmlspecialchars($_POST['ville_liv'])) : null;
+            $adresseLiv = trim(htmlspecialchars($_POST['adresse_liv'] ?? '')) ?: null;
+            $codePostalLiv = trim(htmlspecialchars($_POST['codePostal_liv'] ?? '')) ?: null;
+            $villeLiv = trim(htmlspecialchars($_POST['ville_liv'] ?? '')) ?: null;
             $heureLiv = trim(htmlspecialchars($_POST['heure_liv']));
             $dateLiv = trim(htmlspecialchars($_POST['date_liv']));
             $pretMat = isset($_POST['pret_materiel']) ? 1 : 0;
@@ -97,6 +102,7 @@ class OrderController
         }
     }
 
+    // Méthode qui affiche les commandes d'un utiisateur
     public function showUserOrders()
     {
         $idUser = $_SESSION['id_user'];
@@ -115,6 +121,12 @@ class OrderController
     {
         if (!isset($_SESSION['id_user'])) {
             Auth::redirect('/connexion');
+            return;
+        }
+
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/mon-espace/commandes');
             return;
         }
 
@@ -157,12 +169,18 @@ class OrderController
 
         // Si le formulaire est soumis, on traite la commande
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/mon-espace/commandes');
+                return;
+            }
+
             $idCommande = intval($_POST['id_commande']);
             $nbrePers = trim(htmlspecialchars($_POST['nbre_pers']));
             $typeLiv = trim(htmlspecialchars($_POST['type_liv']));
-            $adresseLiv = isset($_POST['adresse_liv']) ? trim(htmlspecialchars($_POST['adresse_liv'])) : null;
-            $codePostalLiv = isset($_POST['codePostal_liv']) ? trim(htmlspecialchars($_POST['codePostal_liv'])) : null;
-            $villeLiv = isset($_POST['ville_liv']) ? trim(htmlspecialchars($_POST['ville_liv'])) : null;
+            $adresseLiv = trim(htmlspecialchars($_POST['adresse_liv'] ?? '')) ?: null;
+            $codePostalLiv = trim(htmlspecialchars($_POST['codePostal_liv'] ?? '')) ?: null;
+            $villeLiv = trim(htmlspecialchars($_POST['ville_liv'] ?? '')) ?: null;
             $heureLiv = trim(htmlspecialchars($_POST['heure_liv']));
             $dateLiv = trim(htmlspecialchars($_POST['date_liv']));
             $pretMat = isset($_POST['pret_materiel']) ? 1 : 0;
@@ -204,6 +222,13 @@ class OrderController
             Auth::redirect('/connexion');
             return;
         }
+
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/mon-espace/commandes');
+            return;
+        }
+
         $idCommande = intval($_POST['id_commande']);
 
         // Étape 1 : la commande existe-t-elle vraiment ?

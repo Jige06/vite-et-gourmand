@@ -11,6 +11,12 @@ class AuthController
     // Méthode qui permet de se connecter avec gestion des roles
     public function login()
     {
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/connexion');
+            return;
+        }
+
         // on récupère les données du formulaire et on les nettoie
         $email = trim(htmlspecialchars($_POST['email']));
         $password = trim($_POST['password']);
@@ -87,6 +93,12 @@ class AuthController
     // Méthode qui permet de se créer un compte (s'inscrire)
     public function signUp()
     {
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/inscription');
+            return;
+        }
+
         // on récupère les données du formulaire d'inscription
         $nom = trim(htmlspecialchars($_POST['nom']));
         $prenom = trim(htmlspecialchars($_POST['prenom']));
@@ -193,6 +205,12 @@ class AuthController
     // Méthode qui permet de reinitialiser le mot de passe
     public function resetPassword()
     {
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/reset');
+            return;
+        }
+
         // On récupére l'email saisi dans le formaulaire
         $email = trim(htmlspecialchars($_POST['email']));
 
@@ -236,6 +254,12 @@ class AuthController
     public function handleChangePassword()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/changer-mot-de-passe');
+                return;
+            }
+
             $password = trim($_POST['password']);
             $confirm = trim($_POST['confirm_password']);
 
