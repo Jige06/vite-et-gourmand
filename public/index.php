@@ -8,19 +8,6 @@ foreach ($env as $key => $value) {
     $_ENV[$key] = $value;
 }
 
-// Détection de l'environnement (local ou production)
-$isProduction = ($_ENV['APP_ENV'] ?? 'local') === 'production';
-
-// Configuration sécurisée du cookie de session, avant le démarrage de la session
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => $isProduction,
-    'samesite' => 'Lax',
-]);
-
-// Demarrage de la session utilisateur
-session_start();
-
 // Chargement des classes par autoload
 spl_autoload_register(function ($class) {
     if (file_exists(__DIR__ . '/../src/core/' . $class . '.php')) {
@@ -39,6 +26,22 @@ spl_autoload_register(function ($class) {
         require_once __DIR__ . '/../src/repositories/' . $class . '.php';
     }
 });
+
+// Détection de l'environnement (local ou production)
+$isProduction = ($_ENV['APP_ENV'] ?? 'local') === 'production';
+
+// Configuration sécurisée du cookie de session, avant le démarrage de la session
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => $isProduction,
+    'samesite' => 'Lax',
+]);
+
+// Demarrage de la session utilisateur
+session_start();
+
+// Génère le token CSRF de la session s'il n'existe pas encore, le rend disponible globalement
+Csrf::genererToken();
 
 // Définition des routes
 $router = new Router();
