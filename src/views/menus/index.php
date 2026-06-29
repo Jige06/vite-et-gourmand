@@ -61,17 +61,19 @@
 </div>
 
 <!-- Les cartes menus -->
-<div class="list-menus text-center mt-4 mb-4 ms-4 pt-4 pb-4">
-    <div class="row justify-content-center" id="menu-cards">
+<div class="list-menus text-center mt-4 mb-4 px-4 pt-4 pb-4">
+    <div class="row g-3 justify-content-center" id="menu-cards">
         <?php foreach ($menus as $menu): ?>
-            <div class="details-menu col-12 col-md-6 col-lg-4 mb-3 ms-4 mp-4 pt-2 pb-2">
-                <div class="carte-menu">
-                    <img class="card-img-menu" src="/assets/images/menus/<?= htmlspecialchars($menu['photo']) ?>" alt="photo du menu <?= htmlspecialchars($menu['titre']) ?>">
-                    <p><?= htmlspecialchars($menu['theme_libelle']) ?></p>
-                    <h3><?= htmlspecialchars($menu['titre']) ?></h3>
-                    <p><?= htmlspecialchars($menu['description_menu']) ?></p>
-                    <p><?= $menu['prix_par_pers'] ?> €/pers — min <?= $menu['nombre_pers_min'] ?> pers</p>
-                    <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'">voir le détail</button>
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <div class="details-menu h-100 pt-2 pb-2 px-3">
+                    <div class="carte-menu">
+                        <img class="card-img-menu" src="/assets/images/menus/<?= htmlspecialchars($menu['photo']) ?>" alt="photo du menu <?= htmlspecialchars($menu['titre']) ?>">
+                        <p><?= htmlspecialchars($menu['theme_libelle']) ?></p>
+                        <h3><?= htmlspecialchars($menu['titre']) ?></h3>
+                        <p><?= htmlspecialchars($menu['description_menu']) ?></p>
+                        <p><?= $menu['prix_par_pers'] ?> €/pers — min <?= $menu['nombre_pers_min'] ?> pers</p>
+                        <button class="detail-button" onclick="window.location.href='/menus/detail?id=<?= $menu['Id_menu'] ?>'">voir le détail</button>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
