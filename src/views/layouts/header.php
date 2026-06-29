@@ -17,6 +17,10 @@
     <meta name="keywords" content="traiteur bordeaux, menu traiteur, commande repas bordeaux, cuisine événementielle, traiteur événement, Julie José Bordeaux">
     <meta name="author" content="Vite & Gourmand">
     <meta name="robots" content="index, follow">
+    <?php
+    $urlCanonique = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    ?>
+    <link rel="canonical" href="<?= htmlspecialchars($urlCanonique) ?>">
     <!-- Balise link favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon-512.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
