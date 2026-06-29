@@ -23,7 +23,7 @@
 
     <!-- tableau des employés -->
     <div>
-        <table class="table table-hover table-borderless table-responsive-md">
+        <table class="table table-hover table-responsive-md">
             <thead>
                 <tr>
                     <th scope="col">Nom</th>
