@@ -89,7 +89,7 @@
                             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
                             <div class="password-input">
                                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">
-                                <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
+                                <button type="button" class="toggle-password" onclick="togglePassword('motdepasse')" aria-label="Afficher ou masquer le mot de passe">👁</button>
                             </div>
                         </div>
                         <div id="error-confirmation" class="alert alert-danger" style="display:none"></div>
@@ -97,7 +97,7 @@
                             <label class="mb-1 d-block" for="confirm_motdepasse">Confirmation de votre mot de passe</label>
                             <div class="password-input">
                                 <input class="form-control" type="password" id="confirm_motdepasse" name="confirm_password" required placeholder="Votre mot de passe">
-                                <span class="toggle-password" onclick="togglePassword('confirm_motdepasse')">👁</span>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirm_motdepasse')" aria-label="Afficher ou masquer le mot de passe">👁</button>
                             </div>
                         </div>
                     </form>

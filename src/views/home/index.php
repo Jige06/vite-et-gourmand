@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title-accueil container-fluid">
-    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="">
     <h1 class="text-center">Julie et José vous souhaitent la bienvenue chez</h1>
     <h2 class="text-center">Vite & Gourmand</h2>
     <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="submit">découvrir nos menus</button>

@@ -17,18 +17,18 @@
                 <?php $i = 0; ?>
                 <?php foreach ($plats as $plat): ?>
                     <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
-                        <img src="/assets/images/plats/<?= htmlspecialchars($plat['photo']) ?>" class="d-block w-100" alt="<?= pathinfo($plat['photo'], PATHINFO_FILENAME) ?>">
+                        <img src="/assets/images/plats/<?= htmlspecialchars($plat['photo']) ?>" class="d-block w-100" alt="<?= htmlspecialchars($plat['titre']) ?>">
                     </div>
                     <?php $i++; ?>
                 <?php endforeach; ?>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Précédente</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Suivante</span>
             </button>
         </div>
         <div class="list-details col-12 col-lg-6 pt-2">
@@ -40,7 +40,7 @@
             
         </div>
         <div class="alert alert-warning mt-3 mb-5">
-                <strong>⚠️</strong>
+                <strong aria-label="Attention" role="img">⚠️</strong>
                 <?= htmlspecialchars($details['conditions']) ?>
             </div>
     </div>

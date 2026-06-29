@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title-accueil container-fluid">
-    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="">
     <h1 class="text-center">mon espace</h1>
 </div>
 

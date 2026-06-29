@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title container-fluid">
-    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="">
     <h1 class="text-center">Changer mon mot de passe</h1>
 </div>
 
@@ -17,13 +17,13 @@
         <div class="connexion text-start mb-4">
             <label class="mb-1 d-block" for="password">Nouveau mot de passe</label>
             <input class="form-control" type="password" id="password" name="password" required>
-            <span onclick="togglePassword('password')">👁</span>
+            <button type="button" onclick="togglePassword('password')" aria-label="Afficher ou masquer le mot de passe">👁</button>
         </div>
         <div id="error-confirmation" class="alert alert-danger" style="display:none"></div>
         <div class="connexion text-start mb-4">
             <label class="mb-1 d-block" for="confirm_password">Confirmer le mot de passe</label>
             <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
-            <span onclick="togglePassword('confirm_password')">👁</span>
+            <button type="button" onclick="togglePassword('confirm_password')" aria-label="Afficher ou masquer le mot de passe">👁</button>
         </div>
         <button class="connect-button mb-3 mt-3" type="submit">modifier mon mot de passe</button>
     </form>
