@@ -8,7 +8,7 @@
   --couleur-secondary: #e67e22;
   --couleur-dark: #0f172a;
   --couleur-bg-dark: #1e293b;
-  --font-titre: "Playfair Display", serif;
+  --font-titre: "Nunito", serif;
   --font-texte: "Montserrat", sans-serif;
 }
 
@@ -72,8 +72,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -250%);
+  transform: translate(-50%, -50%);
   z-index: 1;
+  width: 100%;
+  text-align: center;
 }
 
 .big-title {
@@ -86,12 +88,13 @@
 .box-connexion {
   padding: 3rem;
   margin: 3rem auto 3rem auto;
-  width: 50%;
+  width: 90%;
+  max-width: 500px;
   border-radius: 8px;
 }
 
 .box-connexion .form-control {
-  width: 350px;
+  width: 100%;
 }
 
 .box-connexion label,
@@ -122,11 +125,6 @@
   box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
 }
 
-.password .connexion {
-  width: 300px;
-  display: inline-block;
-}
-
 .forgot-password {
   font-size: 0.8rem;
 }
@@ -151,7 +149,8 @@
   z-index: 0;
 }
 .big-title-accueil h1,
-.big-title-accueil h2 {
+.big-title-accueil h2,
+.big-title-accueil h3 {
   font-family: var(--font-titre);
   color: white !important;
   font-size: 2.5rem !important;
@@ -159,6 +158,7 @@
 
 .big-title-accueil h1,
 .big-title-accueil h2,
+.big-title-accueil h3,
 .big-title-accueil button {
   position: relative;
   z-index: 1;
@@ -192,25 +192,25 @@
 }
 
 .titre-realisation {
-  color:  rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .titre-presentation,
 .titre-avis {
   font-family: var(--font-texte);
-  color: var(--couleur-primary);
+  color: var(--couleur-dark);
   width: 70%;
   margin: 10px auto;
 }
 .text-realisation {
   font-size: 1.2rem;
-  color:  rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8);
 }
-
 
 .text-presentation {
   font-family: var(--font-texte);
-  color: var(--couleur-primary);
+  font-weight: 500;
+  color: var(--couleur-dark);
   width: 90%;
   margin: 10px auto;
 }
@@ -266,7 +266,7 @@
 }
 
 .titre-h2-bleu {
-  color: var(--couleur-primary);
+  color: var(--couleur-dark);
 }
 
 .password-input {
@@ -287,7 +287,6 @@
 }
 
 .details-menu {
-  max-width: 400px;
   background-color: var(--couleur-bg-dark);
   border-radius: 8px;
   font-family: var(--font-texte);
@@ -302,9 +301,9 @@
 
 .card-img-menu {
   border-radius: 8px;
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
 .card-title {
@@ -354,16 +353,16 @@ th {
 }
 
 .contact {
-    background-color: var(--couleur-bg-dark) !important;
-    border-radius: 8px;
-    padding: 2rem;
-    width: 90%;
-    max-width: 700px;
-    margin: 0 auto;
+  background-color: var(--couleur-bg-dark) !important;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .contact label {
-    color: var(--couleur-secondary) !important;
+  color: var(--couleur-secondary) !important;
 }
 
 .cgv,
@@ -385,7 +384,7 @@ th {
 
 .table th,
 .table td {
-    padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.5rem;
 }
 
 .details-container {
@@ -396,12 +395,30 @@ th {
 
 .carousel-inner {
   border-radius: 8px;
+  height: 100%;
+}
+
+.carousel-item {
+  height: 100%;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+  .carousel {
+    height: 300px;
+    margin-bottom: 1rem;
+  }
 }
 
 .list-details {
   font-family: var(--font-texte);
-  font-size: 1rem;
-  color: var(--couleur-secondary);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
   text-align: left;
   border: 1px solid var(--couleur-bg-dark);
   border-radius: 8px;
@@ -409,7 +426,29 @@ th {
 }
 
 .style-details {
-    font-weight: bold;
-    text-decoration: underline;
-    text-align: center;
+  font-weight: bold;
+  text-align: center;
+}
+
+.liste-allergene {
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 1.2rem;
+  margin-top: -0.8rem;
+  text-align: center;
+}
+
+.type-plat {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--couleur-secondary);
+  margin-bottom: -0.2rem;
+}
+
+.tarif {
+  margin-top: 2.5rem;
+}
+
+.nom-plat {
+  text-align: center;
 }

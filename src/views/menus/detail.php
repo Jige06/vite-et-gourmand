@@ -11,9 +11,9 @@
 <div class="details-container mt-4 mb-4 pb-4">
     <button onclick="window.location.href='/menus'" class="big-title-button mb-3 mt-3" type="button">retour aux menus</button>
 
-    <div class="row align-items-center">
-        <div id="carouselExampleFade" class="carousel slide carousel-fade col-12 col-lg-6" data-bs-ride="carousel">
-            <div class="carousel-inner">
+    <div class="row align-items-strech">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade col-12 col-lg-6 mb-3 mb-lg-0" data-bs-ride="carousel">
+            <div class="carousel-inner h-100">
                 <?php $i = 0; ?>
                 <?php foreach ($plats as $plat): ?>
                     <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
@@ -31,18 +31,19 @@
                 <span class="visually-hidden">Suivante</span>
             </button>
         </div>
-        <div class="list-details col-12 col-lg-6 pt-2">
+        <div class="list-details col-12 col-lg-6 pt-2 h-100">
             <?php foreach ($plats as $plat): ?>
-                <p><span class="style-details"><?= htmlspecialchars($plat['type_plat']) ?><br></span> <?= htmlspecialchars($plat['titre']) ?> (allergènes: <?php foreach ($plat['allergenes'] as $allergene): ?> <?= htmlspecialchars($allergene['nom']) ?><?php endforeach; ?>)</p>
+                <p class="type-plat"><span class="style-details"><?= htmlspecialchars($plat['type_plat']) ?></span></p>
+                <p class="nom-plat"><?= htmlspecialchars($plat['titre']) ?> </p><?php if (!empty($plat['allergenes'])): ?><span class="liste-allergene">(allergènes: <?php foreach ($plat['allergenes'] as $allergene): ?><?= htmlspecialchars($allergene['nom']) ?> <?php endforeach; ?>)</span><?php endif; ?>
             <?php endforeach; ?>
-            <p><span class="style-details"><br>Tarif:</span> <?= $details['prix_par_pers'] ?> € / pers<br><span class="style-details">Commande min:</span> <?= $details['nombre_pers_min'] ?> pers</p>
+            <p class="tarif"><span class="style-details">Tarif:</span> <?= $details['prix_par_pers'] ?> € / pers<br><span class="style-details">Commande min:</span> <?= $details['nombre_pers_min'] ?> pers</p>
             <p><span class="style-details">Stock disponible:</span> <?= htmlspecialchars($details['quantite_restante']) ?></p>
-            
+
         </div>
         <div class="alert alert-warning mt-3 mb-5">
-                <strong aria-label="Attention" role="img">⚠️</strong>
-                <?= htmlspecialchars($details['conditions']) ?>
-            </div>
+            <strong aria-label="Attention" role="img">⚠</strong>
+            <?= htmlspecialchars($details['conditions']) ?>
+        </div>
     </div>
 
 
