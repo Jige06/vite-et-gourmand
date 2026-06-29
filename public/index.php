@@ -75,5 +75,6 @@ $router->add('/admin/stats', [AdminController::class, 'handleStats']);
 $router->add('/cgv', [LegalController::class, 'showCgv']);
 $router->add('/mentions-legales', [LegalController::class, 'showMentionsLegales']);
 $router->add('/commande/calculer-frais', [OrderController::class, 'calculerFrais']);
+$router->add('/sitemap.xml', [SitemapController::class, 'generate']);
 
 $router->dispatch();
