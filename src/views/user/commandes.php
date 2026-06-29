@@ -24,33 +24,37 @@
             <div class="modal-body">
                 <form id="form-profil" action="/mon-espace/profil" method="post">
                     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                    <div id="error-nom" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Nom</label>
-                        <input class="form-control" type="text" name="nom" value="<?= htmlspecialchars($user['nom']) ?>" required>
+                        <input id="nom" class="form-control" type="text" name="nom" value="<?= htmlspecialchars($user['nom']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Prénom</label>
-                        <input class="form-control" type="text" name="prenom" value="<?= htmlspecialchars($user['prenom']) ?>" required>
+                        <input id="prenom" class="form-control" type="text" name="prenom" value="<?= htmlspecialchars($user['prenom']) ?>" required>
                     </div>
+                    <div id="error-email" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Email</label>
-                        <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+                        <input id="email" class="form-control" type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
                     </div>
+                    <div id="error-telephone" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Téléphone</label>
-                        <input class="form-control" type="text" name="telephone" value="<?= htmlspecialchars($user['telephone']) ?>" required>
+                        <input id="telephone" class="form-control" type="text" name="telephone" value="<?= htmlspecialchars($user['telephone']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Adresse</label>
-                        <input class="form-control" type="text" name="adresse" value="<?= htmlspecialchars($user['adresse']) ?>" required>
+                        <input id="adresse" class="form-control" type="text" name="adresse" value="<?= htmlspecialchars($user['adresse']) ?>" required>
                     </div>
+                    <div id="error-code-postal" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Code postal</label>
-                        <input class="form-control" type="text" name="code_postal" value="<?= htmlspecialchars($user['code_postal']) ?>" required>
+                        <input id="codePostal" class="form-control" type="text" name="code_postal" value="<?= htmlspecialchars($user['code_postal']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Ville</label>
-                        <input class="form-control" type="text" name="ville" value="<?= htmlspecialchars($user['ville']) ?>" required>
+                        <input id="ville" class="form-control" type="text" name="ville" value="<?= htmlspecialchars($user['ville']) ?>" required>
                     </div>
                 </form>
             </div>

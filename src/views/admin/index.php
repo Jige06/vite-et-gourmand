@@ -70,19 +70,21 @@
                     <form id="form-crea-employe" action="/admin" method="post">
                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="creer">
+                        <div id="error-nom" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block">Nom</label>
-                            <input class="form-control" type="text" name="nom" required>
+                            <input id="nom" class="form-control" type="text" name="nom" required>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1 d-block">Prénom</label>
-                            <input class="form-control" type="text" name="prenom" required>
+                            <input id="prenom" class="form-control" type="text" name="prenom" required>
                         </div>
+                        <div id="error-email" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block">email</label>
-                            <input class="form-control" type="email" name="email" required>
+                            <input id="email" class="form-control" type="email" name="email" required>
                         </div>
-
+                        <div id="error-mot-de-passe" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
                             <div class="password-input">
@@ -90,6 +92,7 @@
                                 <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
                             </div>
                         </div>
+                        <div id="error-confirmation" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block" for="confirm_motdepasse">Confirmation de votre mot de passe</label>
                             <div class="password-input">

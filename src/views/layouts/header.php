@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <title>Vite & Gourmand</title>
     <script src="/assets/js/app.js" defer></script>
+    <script src="/assets/js/validation.js" defer></script>
 </head>
 
 <body>
