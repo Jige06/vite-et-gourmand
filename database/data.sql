@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 -- Insertion des données dans la base de données
 
 -- Table roles
