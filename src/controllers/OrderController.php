@@ -75,7 +75,7 @@ class OrderController
             $prixLiv = 0;
             if ($typeLiv === 'Livraison') {
                 $adresseComplete = $adresseLiv . ', ' . $codePostalLiv . ' ' . $villeLiv;
-                $resultatLivraison = LivraisonService::calculerFraisLivraison($adresseComplete);
+                $resultatLivraison = LivraisonService::calculerFraisLivraison($adresseComplete, $codePostalLiv);
 
                 if ($resultatLivraison === null) {
                     $_SESSION['error'] = "Impossible de calculer les frais de livraison. Vérifiez votre adresse.";
@@ -286,7 +286,7 @@ class OrderController
         }
 
         $adresseComplete = $adresseLiv . ', ' . $codePostalLiv . ' ' . $villeLiv;
-        $resultat = LivraisonService::calculerFraisLivraison($adresseComplete);
+        $resultat = LivraisonService::calculerFraisLivraison($adresseComplete, $codePostalLiv);
 
         header('Content-Type: application/json');
 

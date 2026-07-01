@@ -6,8 +6,13 @@ class LivraisonService
     private const COORDS_VITE_GOURMAND = [-0.5763, 44.8404];
 
     // Méthode qui calcule les frais de livraison à partir d'une adresse complète
-    public static function calculerFraisLivraison($adresseComplete)
+    public static function calculerFraisLivraison($adresseComplete, $codePostalLiv)
     {
+        $codePostaux = ['33000', '33100', '33200', '33300', '33800'];
+        if (in_array($codePostalLiv, $codePostaux)) {
+            return ['prix' => 0, 'distance' => 0];
+        }
+
         $apiKey = $_ENV['ORS_API_KEY'];
 
         // Étape 1 : géocodage de l'adresse du client (texte -> coordonnées GPS)
