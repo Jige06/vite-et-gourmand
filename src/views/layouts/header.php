@@ -59,8 +59,10 @@
                             <?php if ($_SESSION['role'] === 'Administrateur'): ?>
                                 <li class="nav-item"><a class="nav-link" href="/admin">espace admin</a></li>
                                 <li class="nav-item"><a class="nav-link" href="/employe">espace employé</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mes commandes</a></li>
                             <?php elseif ($_SESSION['role'] === 'Employé'): ?>
                                 <li class="nav-item"><a class="nav-link" href="/employe">espace employé</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mes commandes</a></li>
                             <?php else: ?>
                                 <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mon espace</a></li>
                             <?php endif; ?>
