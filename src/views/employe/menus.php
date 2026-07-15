@@ -126,6 +126,23 @@
                         </div>
                         <label class="mb-1 d-block">Photo</label>
                         <input class="form-control" type="file" name="photo" accept="image/*" required>
+                        <div class="mb-3">
+                            <label class="mb-1 d-block fw-bold">Composition du menu</label>
+                            <?php foreach ($platsByType as $type => $plats): ?>
+                                <p class="mt-2 mb-1"><strong><?= htmlspecialchars($type) ?></strong></p>
+                                <?php foreach ($plats as $plat): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                            name="plat_<?= $type ?>"
+                                            value="<?= $plat['Id_plat'] ?>"
+                                            id="plat_<?= $plat['Id_plat'] ?>">
+                                        <label class="form-check-label" for="plat_<?= $plat['Id_plat'] ?>">
+                                            <?= htmlspecialchars($plat['titre']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -189,6 +206,25 @@
                         </div>
                         <label class="mb-1 d-block">Photo</label>
                         <input class="form-control" type="file" name="photo" accept="image/*">
+                        <div class="mb-3">
+                            <label class="mb-1 d-block fw-bold">Composition du menu</label>
+                            <?php $idPlatsMenu = array_column($menu['plats'], 'Id_plat'); ?>
+                            <?php foreach ($platsByType as $type => $plats): ?>
+                                <p class="mt-2 mb-1"><strong><?= htmlspecialchars($type) ?></strong></p>
+                                <?php foreach ($plats as $plat): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                            name="plat_<?= $type ?>"
+                                            value="<?= $plat['Id_plat'] ?>"
+                                            id="modif_<?= $menu['Id_menu'] ?>_plat_<?= $plat['Id_plat'] ?>"
+                                            <?= in_array($plat['Id_plat'], $idPlatsMenu) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="modif_<?= $menu['Id_menu'] ?>_plat_<?= $plat['Id_plat'] ?>">
+                                            <?= htmlspecialchars($plat['titre']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">

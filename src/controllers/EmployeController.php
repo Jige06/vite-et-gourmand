@@ -11,7 +11,16 @@ class EmployeController
             exit;
         }
 
-        $statuts = ['En attente de validation', 'Accepté', 'En préparation', 'En cours de livraison', 'Livré', 'En attente du retour matériel', 'Terminé', 'Annulé'];
+        $statuts = [
+            'En attente de validation',
+            'Accepté',
+            'En préparation',
+            'En cours de livraison',
+            'Livré',
+            'En attente du retour matériel',
+            'Terminé',
+            'Annulé'
+        ];
         $statutDemande = $_GET['statut'] ?? null;
         $filters = [
             'statut' => in_array($statutDemande, $statuts) ? $statutDemande : null,
@@ -37,7 +46,16 @@ class EmployeController
         }
 
         $idCommande = filter_input(INPUT_POST, 'Id_Commande', FILTER_VALIDATE_INT);
-        $statuts = ['En attente de validation', 'Accepté', 'En préparation', 'En cours de livraison', 'Livré', 'En attente du retour matériel', 'Terminé', 'Annulé'];
+        $statuts = [
+            'En attente de validation',
+            'Accepté',
+            'En préparation',
+            'En cours de livraison',
+            'Livré',
+            'En attente du retour matériel',
+            'Terminé',
+            'Annulé'
+        ];
         $nouveauStatut = $_POST['nouveau_statut'] ?? null;
         $nouveauStatut = in_array($nouveauStatut, $statuts) ? $nouveauStatut : null;
 
@@ -142,7 +160,26 @@ class EmployeController
 
                 $photo = 'uploads/' . $nomFichier;
 
-                MenuRepository::createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
+                $idMenu = MenuRepository::createMenu(
+                    $titre,
+                    $descriptionMenu,
+                    $prixParPers,
+                    $nbrePersMin,
+                    $quantiteRestante,
+                    $conditions,
+                    $regime,
+                    $photo,
+                    $idTheme
+                );
+
+                $idEntree = trim($_POST['plat_Entrée']) ?? null;
+                $idPlat = trim($_POST['plat_Plat']) ?? null;
+                $idFromage = trim($_POST['plat_Fromage']) ?? null;
+                $idDessert = trim($_POST['plat_Dessert']) ?? null;
+                $idPlats = array_filter([$idEntree, $idPlat, $idFromage, $idDessert]);
+
+                MenuRepository::associerPlats($idMenu, $idPlats);
+
                 $_SESSION['success'] = "Le menu a bien été créé.";
             } elseif ($action === 'modifier') {
 
@@ -168,18 +205,52 @@ class EmployeController
                     $photo = $menuActuel['photo'];
                 }
 
-                MenuRepository::updateMenu($idMenu, $titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
+                MenuRepository::updateMenu(
+                    $idMenu,
+                    $titre,
+                    $descriptionMenu,
+                    $prixParPers,
+                    $nbrePersMin,
+                    $quantiteRestante,
+                    $conditions,
+                    $regime,
+                    $photo,
+                    $idTheme
+                );
+
+                $idEntree = $_POST['plat_Entrée'] ?? null;
+                $idPlat = $_POST['plat_Plat'] ?? null;
+                $idFromage = $_POST['plat_Fromage'] ?? null;
+                $idDessert = $_POST['plat_Dessert'] ?? null;
+                $idPlats = array_filter([$idEntree, $idPlat, $idFromage, $idDessert]);
+
+                MenuRepository::supprimerPlats($idMenu);
+                MenuRepository::associerPlats($idMenu, $idPlats);
+
                 $_SESSION['success'] = "Le menu a bien été modifié.";
             } elseif ($action === 'supprimer') {
 
                 $idMenu = $_POST['Id_menu'];
+                MenuRepository::supprimerPlats($idMenu);
                 MenuRepository::deleteMenu($idMenu);
                 $_SESSION['success'] = "Le menu a bien été supprimé.";
             }
             Auth::redirect('/employe/menus');
         } else {
             $menus = MenuRepository::getAllMenu();
+            foreach ($menus as &$menu) {
+                $menu['plats'] = MenuRepository::getPlatsByMenu($menu['Id_menu']);
+            }
+            unset($menu);
+            
             $themes = MenuRepository::getAllThemes();
+            $plats = PlatRepository::getAllPlats();
+
+            // Regroupement des plats par type pour l'affichage dans la vue
+            $platsByType = [];
+            foreach ($plats as $plat) {
+                $platsByType[$plat['type_plat']][] = $plat;
+            }
             require_once(__DIR__ . '/../views/employe/menus.php');
         }
     }

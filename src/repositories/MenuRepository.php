@@ -23,6 +23,8 @@ class MenuRepository
         $stmt->bindValue(':Id_theme', $idTheme);
 
         $stmt->execute();
+        $idMenu = $pdo->lastInsertId();
+        return $idMenu;
     }
 
     // Méthode qui permet de modifier un menu existant
@@ -55,7 +57,7 @@ class MenuRepository
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
-        $stmt = $pdo->prepare("DELETE FROM menu where Id_menu = ?");
+        $stmt = $pdo->prepare("DELETE FROM menu WHERE Id_menu = ?");
         $stmt->execute([$idMenu]);
     }
 
@@ -202,5 +204,25 @@ class MenuRepository
         $stmt = $pdo->prepare("SELECT allergene.* FROM allergene JOIN plat_allergene ON allergene.Id_allergene = plat_allergene.Id_allergene WHERE plat_allergene.Id_plat = ?");
         $stmt->execute([$idPlat]);
         return $stmt->fetchAll();
+    }
+
+    public static function associerPlats($idMenu, $idPlats)
+    {
+        $pdo = DatabaseConnection::getInstance();
+        
+        $stmt = $pdo->prepare("INSERT INTO menu_plat (Id_menu, Id_plat) VALUES (:Id_menu, :Id_plat)");
+        foreach ($idPlats as $idPlat) {
+        $stmt->bindValue(':Id_menu', $idMenu);
+        $stmt->bindValue(':Id_plat', $idPlat);
+        $stmt->execute();
+        }
+    }
+
+    public static function supprimerPlats($idMenu) {
+
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("DELETE FROM menu_plat WHERE Id_menu = ?");
+        $stmt->execute([$idMenu]);
     }
 }
