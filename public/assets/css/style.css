@@ -44,6 +44,10 @@
   font-size: 1.1rem;
 }
 
+.colonne {
+  column-count: 2;
+}
+
 .container-fluid {
   padding: 0;
   background-color: var(--couleur-dark);

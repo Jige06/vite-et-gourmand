@@ -242,7 +242,7 @@ class EmployeController
                 $menu['plats'] = MenuRepository::getPlatsByMenu($menu['Id_menu']);
             }
             unset($menu);
-            
+
             $themes = MenuRepository::getAllThemes();
             $plats = PlatRepository::getAllPlats();
 
@@ -323,6 +323,39 @@ class EmployeController
         } else {
             $plats = PlatRepository::getAllPlats();
             require_once(__DIR__ . '/../views/employe/plats.php');
+        }
+    }
+
+    public function handleHoraires()
+    {
+        // Vérification du rôle pour acceder à l'espace employé
+        if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
+            header('Location: /connexion');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe/horaires');
+                return;
+            }
+
+            $action = $_POST['action'];
+
+            if ($action === 'modifier') {
+
+                foreach ($_POST['heure_ouverture'] as $idHoraire => $heureOuverture) {
+                    $heureFermeture = $_POST['heure_fermeture'][$idHoraire];
+                    HoraireRepository::updateHoraire($idHoraire, $heureOuverture, $heureFermeture);
+                }
+
+                $_SESSION['success'] = "Les horaires ont bien été modifiés.";
+            }
+            Auth::redirect('/employe/horaires');
+        } else {
+            $horaires = HoraireRepository::getAllHoraire();
+            require_once(__DIR__ . '/../views/employe/horaires.php');
         }
     }
 }

@@ -70,6 +70,7 @@ $router->add('/employe/statut', [EmployeController::class, 'handleUpdateStatus']
 $router->add('/employe/menus', [EmployeController::class, 'handleMenus']);
 $router->add('/employe/plats', [EmployeController::class, 'handlePlats']);
 $router->add('/employe/avis', [EmployeController::class, 'handleReviews']);
+$router->add('/employe/horaires', [EmployeController::class, 'handleHoraires']);
 $router->add('/admin', [AdminController::class, 'handleNewEmploye']);
 $router->add('/admin/stats', [AdminController::class, 'handleStats']);
 $router->add('/cgv', [LegalController::class, 'showCgv']);
