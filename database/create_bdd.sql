@@ -65,6 +65,8 @@ CREATE TABLE utilisateur(
    Id_role INT NOT NULL,
    -- Colonne ajoutée en cours de developpement
    must_change_password BOOLEAN NOT NULL DEFAULT 0,
+   reset_token VARCHAR(64) NULL,
+   reset_token_expiry DATETIME NULL,
    PRIMARY KEY(Id_Utilisateur),
    UNIQUE(email),
    FOREIGN KEY(Id_role) REFERENCES roles(Id_role)

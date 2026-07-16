@@ -10,8 +10,10 @@ class MenuRepository
         $pdo = DatabaseConnection::getInstance();
 
         // Requête préparée
-        $stmt = $pdo->prepare("INSERT INTO menu (titre, description_menu, prix_par_pers, nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
-        VALUES (:titre, :description_menu, :prix_par_pers, :nombre_pers_min, :quantite_restante, :conditions, :regime, :photo, :Id_theme)");
+        $stmt = $pdo->prepare("INSERT INTO menu (titre, description_menu, prix_par_pers,
+        nombre_pers_min, quantite_restante, conditions, regime, photo, Id_theme)
+        VALUES (:titre, :description_menu, :prix_par_pers,
+        :nombre_pers_min, :quantite_restante, :conditions, :regime, :photo, :Id_theme)");
         $stmt->bindValue(':titre', $titre);
         $stmt->bindValue(':description_menu', $descriptionMenu);
         $stmt->bindValue(':prix_par_pers', $prixParPers);
@@ -35,7 +37,9 @@ class MenuRepository
 
         // Requête préparée
         $stmt = $pdo->prepare("UPDATE menu
-        SET titre = :titre, description_menu = :description_menu, prix_par_pers = :prix_par_pers, nombre_pers_min = :nombre_pers_min, quantite_restante = :quantite_restante, conditions = :conditions, regime = :regime, photo = :photo, Id_theme = :Id_theme
+        SET titre = :titre, description_menu = :description_menu, prix_par_pers = :prix_par_pers,
+        nombre_pers_min = :nombre_pers_min, quantite_restante = :quantite_restante,
+        conditions = :conditions, regime = :regime, photo = :photo, Id_theme = :Id_theme
         WHERE Id_menu = :idMenu");
         $stmt->bindValue(':idMenu', $idMenu);
         $stmt->bindValue(':titre', $titre);
@@ -155,7 +159,6 @@ class MenuRepository
         return $stmt->fetchAll();
     }
 
-
     // Méthode qui permet de récupérer le nombre min de personne des menus
     public static function getMinPersonnes()
     {
@@ -191,7 +194,8 @@ class MenuRepository
     {
         $pdo = DatabaseConnection::getInstance();
 
-        $stmt = $pdo->prepare("SELECT plat.* FROM plat JOIN menu_plat ON plat.Id_plat = menu_plat.Id_plat WHERE menu_plat.Id_menu = ?");
+        $stmt = $pdo->prepare("SELECT plat.* FROM plat JOIN menu_plat
+        ON plat.Id_plat = menu_plat.Id_plat WHERE menu_plat.Id_menu = ?");
         $stmt->execute([$idMenu]);
         return $stmt->fetchAll();
     }
@@ -201,24 +205,29 @@ class MenuRepository
     {
         $pdo = DatabaseConnection::getInstance();
 
-        $stmt = $pdo->prepare("SELECT allergene.* FROM allergene JOIN plat_allergene ON allergene.Id_allergene = plat_allergene.Id_allergene WHERE plat_allergene.Id_plat = ?");
+        $stmt = $pdo->prepare("SELECT allergene.* FROM allergene JOIN plat_allergene
+        ON allergene.Id_allergene = plat_allergene.Id_allergene
+        WHERE plat_allergene.Id_plat = ?");
         $stmt->execute([$idPlat]);
         return $stmt->fetchAll();
     }
 
+    // Méthode qui  insère les associations dans menu_plat
     public static function associerPlats($idMenu, $idPlats)
     {
         $pdo = DatabaseConnection::getInstance();
-        
+
         $stmt = $pdo->prepare("INSERT INTO menu_plat (Id_menu, Id_plat) VALUES (:Id_menu, :Id_plat)");
         foreach ($idPlats as $idPlat) {
-        $stmt->bindValue(':Id_menu', $idMenu);
-        $stmt->bindValue(':Id_plat', $idPlat);
-        $stmt->execute();
+            $stmt->bindValue(':Id_menu', $idMenu);
+            $stmt->bindValue(':Id_plat', $idPlat);
+            $stmt->execute();
         }
     }
 
-    public static function supprimerPlats($idMenu) {
+    // Méthode qui supprime les associations avant modification/suppression
+    public static function supprimerPlats($idMenu)
+    {
 
         $pdo = DatabaseConnection::getInstance();
 
