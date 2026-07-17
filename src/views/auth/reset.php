@@ -5,14 +5,7 @@
     <h1 class="text-center">Changer mon mot de passe</h1>
 </div>
 <div class="box-connexion container-fluid">
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger"><?= $_SESSION['error'];
-                                        unset($_SESSION['error']); ?></div>
-    <?php endif; ?>
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-info"><?= $_SESSION['success'];
-                                        unset($_SESSION['success']); ?></div>
-    <?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
     <form class="d-flex flex-column align-items-center" action="/mot-de-passe-oublie" method="post">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">

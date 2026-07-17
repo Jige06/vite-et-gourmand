@@ -8,10 +8,7 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= $_SESSION['success'];
-                                                unset($_SESSION['success']); ?></div>
-        <?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
         <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerPlat">
             + créer un plat
         </button>

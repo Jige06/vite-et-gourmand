@@ -4,10 +4,7 @@
     <h1 class="text-center">Changer mon mot de passe</h1>
 </div>
 <div class="box-connexion container-fluid">
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger"><?= $_SESSION['error'];
-                                        unset($_SESSION['error']); ?></div>
-    <?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
     <p class="text-center">Veuillez saisir votre nouveau mot de passe.</p>
     <form id="form-change-password" class="d-flex flex-column align-items-center" action="/reset-password?token=<?= htmlspecialchars($token) ?>" method="post">
         <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">

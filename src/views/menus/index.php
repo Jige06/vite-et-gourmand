@@ -5,10 +5,7 @@
     <h1 class="text-center">Vite & Gourmand</h1>
     <button onclick="window.location.href='/commande'" class="big-title-button mb-3 mt-3" type="submit">passer une commande</button>
 </div>
-<?php if (isset($_SESSION['success'])): ?>
-    <div class="alert alert-success"><?= $_SESSION['success'];
-                                        unset($_SESSION['success']); ?></div>
-<?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
 <div class="menus container-fluid text-center mb-4 mt-4 pt-4 pb-4">
     <div class="titre-h2-bleu  pb-4 pt-4">
         <h2>nos menus</h2>

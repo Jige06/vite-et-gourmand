@@ -5,14 +5,7 @@
     <h1 class="text-center">Inscription</h1>
 </div>
 <div class="box-connexion container-fluid">
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger"><?= $_SESSION['error'];
-                                        unset($_SESSION['error']); ?></div>
-    <?php endif; ?>
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success"><?= $_SESSION['success'];
-                                            unset($_SESSION['success']); ?></div>
-    <?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
     <form id="form-inscription" class="d-flex flex-column align-items-center" action="/inscription" method="post">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div id="error-nom" class="alert alert-danger" style="display:none"></div>
