@@ -64,7 +64,6 @@ CREATE TABLE utilisateur(
    actif BOOLEAN NOT NULL DEFAULT 1,
    Id_role INT NOT NULL,
    -- Colonne ajoutée en cours de developpement
-   must_change_password BOOLEAN NOT NULL DEFAULT 0,
    reset_token VARCHAR(64) NULL,
    reset_token_expiry DATETIME NULL,
    PRIMARY KEY(Id_Utilisateur),

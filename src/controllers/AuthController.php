@@ -50,12 +50,6 @@ class AuthController
                 $_SESSION['prenom'] = $user['prenom'];
                 $_SESSION['email'] = $user['email'];
 
-                // Vérification si l'utilisateur doit changer son mot de passe
-                if ($user['must_change_password'] == 1) {
-                    Auth::redirect('/changer-mot-de-passe');
-                    return;
-                }
-
                 switch ($_SESSION['role']) {
                     case 'Administrateur':
                         Auth::redirect('/admin');
@@ -203,40 +197,44 @@ class AuthController
     }
 
     // Méthode qui permet de reinitialiser le mot de passe
-    public function resetPassword()
+    public function handleForgotPassword()
     {
-        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
-            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
-            Auth::redirect('/reset');
-            return;
-        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/mot-de-passe-oublie');
+                return;
+            }
 
-        // On récupére l'email saisi dans le formaulaire
-        $email = trim(htmlspecialchars($_POST['email']));
+            // On récupére l'email saisi dans le formaulaire
+            $email = trim(htmlspecialchars($_POST['email']));
 
-        if (!empty($email)) {
-            // On vérifie que c'est bien au format email
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $user = UserRepository::findByEmail($email);
-                if ($user !== null) {
+            if (!empty($email)) {
+                // On vérifie que c'est bien au format email
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $user = UserRepository::findByEmail($email);
+                    if ($user !== null) {
 
-                    // Génération d'un mot de passe temporaire
-                    $tempPassword = UserRepository::generateTempPassword();
-                    // enregistrement du temppassword en bdd;
-                    UserRepository::updateTempPassword($email, $tempPassword);
-                    UserRepository::updateMustChangePassword($email, 1);
-                    // envoi du mail avec le mot de passe temporaire
-                    UserRepository::sendResetMail($user['nom'], $user['prenom'], $email, $tempPassword);
+                        // Génération d'un token et sa date d'expiration
+                        $token = bin2hex(random_bytes(32));
+                        $expiry = date('Y-m-d H:i:s', time() + 3600);
+                        // enregistrement du token en bdd;
+                        UserRepository::saveResetToken($email, $token, $expiry);
+                        // envoi du mail avec le mot de passe temporaire
+                        UserRepository::sendResetMail($user['nom'], $user['prenom'], $email, $token);
+                    }
+                    $_SESSION['success'] = "Si un compte existe avec cet email, vous recevrez un lien de reinitialisation.";
+                    Auth::redirect('/connexion');
+                } else {
+                    $_SESSION['error'] = "L'adresse email n'est pas valide.";
+                    Auth::redirect('/mot-de-passe-oublie');
                 }
-                $_SESSION['message'] = "Si un compte existe avec cet email, vous recevrez un mot de passe temporaire. Vous devrez le modifier lors de votre prochaine connexion";
-                Auth::redirect('/connexion');
             } else {
-                $_SESSION['error'] = "L'adresse email n'est pas valide.";
-                Auth::redirect('/reset');
+                $_SESSION['success'] = "Veuillez saisir votre email.";
+                Auth::redirect('/mot-de-passe-oublie');
             }
         } else {
-            $_SESSION['message'] = "Veuillez saisir votre email.";
-            Auth::redirect('/reset');
+            require_once(__DIR__ . '/../views/auth/reset.php');
         }
     }
 
@@ -244,55 +242,57 @@ class AuthController
     public function handleResetPassword()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->resetPassword();
-        } else {
-            $this->showResetPassword();
-        }
-    }
-
-    // Méthode qui gère la demande de modification de password apres reset
-    public function handleChangePassword()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
                 $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
-                Auth::redirect('/changer-mot-de-passe');
+                Auth::redirect('/connexion');
                 return;
             }
 
-            $password = trim($_POST['password']);
-            $confirm = trim($_POST['confirm_password']);
+            $token = $_POST['token'] ?? null;
+            $password = $_POST['password'];
+            $confirm = $_POST['confirm_password'];
 
-            if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{10,}$/', $password)) {
-                $_SESSION['error'] = "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
-                Auth::redirect('/changer-mot-de-passe');
+            // Vérifie le token
+            $user = UserRepository::findResetToken($token);
+            if ($user === null) {
+                $_SESSION['error'] = "Ce lien est invalide ou a expiré.";
+                Auth::redirect('/connexion');
                 return;
             }
+
+            // Vérifie que les mots de passe correspondent
             if ($password !== $confirm) {
                 $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
-                Auth::redirect('/changer-mot-de-passe');
+                Auth::redirect('/reset-password?token=' . $token);
                 return;
             }
 
+            // Hashe le mot de passe saisi par l'utilisateur
             $hash = password_hash($password, PASSWORD_BCRYPT);
-            UserRepository::updatePassword($_SESSION['email'], $hash);
-            UserRepository::updateMustChangePassword($_SESSION['email'], 0);
 
-            $_SESSION['success'] = "Votre mot de passe a été modifié avec succès !";
+            // Met à jour le mot de passe en BDD
+            UserRepository::updatePassword($user['email'], $hash);
+            // Efface le token
+            UserRepository::clearResetToken($user['email']);
 
-            switch ($_SESSION['role']) {
-                case 'Administrateur':
-                    Auth::redirect('/admin');
-                    break;
-                case 'Employé':
-                    Auth::redirect('/employe');
-                    break;
-                default:
-                    Auth::redirect('/');
-                    break;
-            }
+            $_SESSION['success'] = "Votre mot de passe a été réinitialisé avec succés !";
+            Auth::redirect('/connexion');
         } else {
-            require_once(__DIR__ . '/../views/auth/changePassword.php');
+            $token = $_GET['token'] ?? null;
+
+            if ($token === null) {
+                Auth::redirect('/connexion');
+                return;
+            }
+
+            $user = UserRepository::findResetToken($token);
+
+            if ($user === null) {
+                $_SESSION['error'] = "Ce lien est invalide ou a expiré.";
+                Auth::redirect('/connexion');
+                return;
+            }
+            require_once(__DIR__ . '/../views/auth/reset-password.php');
         }
     }
 

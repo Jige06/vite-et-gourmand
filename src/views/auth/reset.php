@@ -9,9 +9,9 @@
         <div class="alert alert-danger"><?= $_SESSION['error'];
                                         unset($_SESSION['error']); ?></div>
     <?php endif; ?>
-    <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-info"><?= $_SESSION['message'];
-                                        unset($_SESSION['message']); ?></div>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-info"><?= $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></div>
     <?php endif; ?>
     <form class="d-flex flex-column align-items-center" action="/mot-de-passe-oublie" method="post">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
@@ -20,7 +20,7 @@
             <input class="form-control" type="email" id="email" name="email" required placeholder="exemple@exemple.com">
         </div>
 
-        <button class="connect-button mb-3 mt-3" type="submit">recevoir mon mot de passe temporaire</button>
+        <button class="connect-button mb-3 mt-3" type="submit">recevoir mon lien de réinitialisation</button>
         <div class=" mt-1">
             <p>Vous vous rappelez de votre mot de passe ! <a href="/connexion">Se connecter</a></p>
         </div>

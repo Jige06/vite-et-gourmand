@@ -8,8 +8,9 @@
         <div class="alert alert-danger"><?= $_SESSION['error'];
                                         unset($_SESSION['error']); ?></div>
     <?php endif; ?>
-    <p class="text-center text-warning">Vous utilisez un mot de passe temporaire. Veuillez le modifier avant de continuer.</p>
-    <form id="form-change-password" class="d-flex flex-column align-items-center" action="/changer-mot-de-passe" method="post">
+    <p class="text-center">Veuillez saisir votre nouveau mot de passe.</p>
+    <form id="form-change-password" class="d-flex flex-column align-items-center" action="/reset-password?token=<?= htmlspecialchars($token) ?>" method="post">
+        <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div id="error-mot-de-passe" class="alert alert-danger" style="display:none"></div>
         <div class="col-12 col-md-8 col-lg-6 mx-auto text-start mb-4">
