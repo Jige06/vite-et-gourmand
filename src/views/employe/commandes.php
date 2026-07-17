@@ -37,8 +37,8 @@
 </div>
 
 <!-- Tableau des commandes -->
-<div class="container mb-4 table-responsive">
-    <table class="table table-hover table-borderless table-responsive-md">
+<div class="container-fluid mb-4 table-responsive">
+    <table class="table table-hover table-striped table-responsive-md">
         <thead>
             <tr>
                 <th scope="col">N° de commande</th>
@@ -47,6 +47,9 @@
                 <th scope="col">Montant total</th>
                 <th scope="col">Statut actuel</th>
                 <th scope="col">Statut à changer</th>
+                <th scope="col">Motif</th>
+                <th scope="col">Mode de contact</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -72,9 +75,22 @@
                                 <option value="Terminé">Terminé</option>
                                 <option value="Annulé">Annulé</option>
                             </select>
-                            <button class="connect-button ms-4" type="submit">valider</button>
-                        </form>
                     </td>
+                    <td>
+                        <textarea name="motif" rows="2" cols="20" required></textarea>
+                    </td>
+                    <td>
+                        <label for="mode_contact">Mode de contact&nbsp;:</label>
+                        <select name="mode_contact" id="mode_contact" required>
+                            <option value=""></option>
+                            <option value="Téléphone">Téléphone</option>
+                            <option value="Mail">Mail</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="connect-button ms-4" type="submit">valider</button>
+                    </td>
+                    </form>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -147,6 +147,8 @@ CREATE TABLE commande_statut_commande(
    Id_commande INT,
    Id_statut_commande INT,
    date_changement DATETIME NOT NULL,
+   motif VARCHAR(255) NULL,
+   mode_contact VARCHAR(50) NULL,
    PRIMARY KEY(Id_commande, Id_statut_commande),
    FOREIGN KEY(Id_commande) REFERENCES commande(Id_commande),
    FOREIGN KEY(Id_statut_commande) REFERENCES statut_commande(Id_statut_commande)

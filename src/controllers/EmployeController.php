@@ -59,13 +59,19 @@ class EmployeController
         $nouveauStatut = $_POST['nouveau_statut'] ?? null;
         $nouveauStatut = in_array($nouveauStatut, $statuts) ? $nouveauStatut : null;
 
-        if ($idCommande === false || $nouveauStatut === null) {
-            $_SESSION['error'] = "Une erreur s'est produite";
+        $motif = trim(htmlspecialchars($_POST['motif'] ?? ''));
+        $motif = $motif !== '' ? $motif : null;
+        $modesContact = ['Téléphone', 'Mail'];
+        $modeContact = trim(htmlspecialchars($_POST['mode_contact']));
+        $modeContact = in_array($modeContact, $modesContact) ? $modeContact : null;
+
+        if ($idCommande === false || $nouveauStatut === null || $motif === null || $modeContact === null) {
+            $_SESSION['error'] = "Veuillez renseigner le motif et le mode de contact.";
             Auth::redirect('/employe');
             return;
         }
 
-        $result = EmployeRepository::updateStatus($idCommande, $nouveauStatut);
+        $result = EmployeRepository::updateStatus($idCommande, $nouveauStatut, $motif, $modeContact);
 
         // Si nouveau statut saisi a deja été passé --> message de refus de ce statut
         if ($result === false) {
