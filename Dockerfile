@@ -1,27 +1,33 @@
 FROM php:8.2-apache
 
-# Installation des extensions PHP nécessaires
 RUN apt-get update && apt-get install -y \
     libzip-dev \
+    libssl-dev \
+    libzstd-dev \
     zip \
-    && docker-php-ext-install pdo pdo_mysql zip
+    curl \
+    && docker-php-ext-install pdo pdo_mysql zip \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb \
+    && a2enmod rewrite
 
-# Installation de l'extension MongoDB
-RUN pecl install mongodb && docker-php-ext-enable mongodb
+# Installation de Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Activation du module rewrite Apache
-RUN a2enmod rewrite
-
-# Copie du projet dans /var/www/html
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html
 
-# Configuration Apache - document roo sur le dossier public/
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+# Installation des dépendances Composer
+RUN cd /var/www/html && composer install --no-dev --optimize-autoloader
 
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# Permissions
 RUN chown -R www-data:www-data /var/www/html
 
+RUN echo '#!/bin/bash\n\
+find /etc/apache2/mods-enabled/ -name "mpm_*.load" -delete\n\
+find /etc/apache2/mods-enabled/ -name "mpm_*.conf" -delete\n\
+ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load\n\
+ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf\n\
+apache2-foreground' > /start.sh && chmod +x /start.sh
+
 EXPOSE 80
+CMD ["/start.sh"]
