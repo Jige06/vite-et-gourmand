@@ -167,47 +167,47 @@ INSERT INTO commande(date_commande, nbre_pers, montant_total, prix_livraison, ty
 
 -- Table commande_statut_commande
 -- Commande 1 (Pierre) : Terminée
-INSERT INTO commande_statut_commande VALUES(1, 1, '2025-04-01 10:00:00');
-INSERT INTO commande_statut_commande VALUES(1, 2, '2025-04-02 09:00:00');
-INSERT INTO commande_statut_commande VALUES(1, 3, '2025-04-10 14:00:00');
-INSERT INTO commande_statut_commande VALUES(1, 7, '2025-04-15 13:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(1, 1, '2025-04-01 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(1, 2, '2025-04-02 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(1, 3, '2025-04-10 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(1, 7, '2025-04-15 13:00:00');
 
 -- Commande 2 (Pierre) : En attente retour matériel
-INSERT INTO commande_statut_commande VALUES(2, 1, '2025-04-10 11:00:00');
-INSERT INTO commande_statut_commande VALUES(2, 2, '2025-04-11 10:00:00');
-INSERT INTO commande_statut_commande VALUES(2, 3, '2025-04-20 14:00:00');
-INSERT INTO commande_statut_commande VALUES(2, 4, '2025-04-24 10:00:00');
-INSERT INTO commande_statut_commande VALUES(2, 5, '2025-04-25 19:30:00');
-INSERT INTO commande_statut_commande VALUES(2, 6, '2025-04-25 20:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(2, 1, '2025-04-10 11:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(2, 2, '2025-04-11 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(2, 3, '2025-04-20 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(2, 4, '2025-04-24 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(2, 5, '2025-04-25 19:30:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(2, 6, '2025-04-25 20:00:00');
 
 -- Commande 3 (Pierre) : En attente de validation
-INSERT INTO commande_statut_commande VALUES(3, 1, '2025-05-01 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(3, 1, '2025-05-01 09:00:00');
 
 -- Commande 4 (Jean-Guy) : Terminée
-INSERT INTO commande_statut_commande VALUES(4, 1, '2025-03-15 10:00:00');
-INSERT INTO commande_statut_commande VALUES(4, 2, '2025-03-16 09:00:00');
-INSERT INTO commande_statut_commande VALUES(4, 3, '2025-03-25 14:00:00');
-INSERT INTO commande_statut_commande VALUES(4, 7, '2025-04-01 13:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(4, 1, '2025-03-15 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(4, 2, '2025-03-16 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(4, 3, '2025-03-25 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(4, 7, '2025-04-01 13:00:00');
 
 -- Commande 5 (Jean-Guy) : Acceptée
-INSERT INTO commande_statut_commande VALUES(5, 1, '2025-04-20 11:00:00');
-INSERT INTO commande_statut_commande VALUES(5, 2, '2025-04-21 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(5, 1, '2025-04-20 11:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(5, 2, '2025-04-21 10:00:00');
 
-INSERT INTO commande_statut_commande VALUES(6, 1, '2025-02-10 10:00:00');
-INSERT INTO commande_statut_commande VALUES(6, 2, '2025-02-11 09:00:00');
-INSERT INTO commande_statut_commande VALUES(6, 7, '2025-02-20 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(6, 1, '2025-02-10 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(6, 2, '2025-02-11 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(6, 7, '2025-02-20 14:00:00');
 
-INSERT INTO commande_statut_commande VALUES(7, 1, '2025-02-15 10:00:00');
-INSERT INTO commande_statut_commande VALUES(7, 2, '2025-02-16 09:00:00');
-INSERT INTO commande_statut_commande VALUES(7, 7, '2025-03-01 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(7, 1, '2025-02-15 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(7, 2, '2025-02-16 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(7, 7, '2025-03-01 14:00:00');
 
-INSERT INTO commande_statut_commande VALUES(8, 1, '2025-01-10 10:00:00');
-INSERT INTO commande_statut_commande VALUES(8, 2, '2025-01-11 09:00:00');
-INSERT INTO commande_statut_commande VALUES(8, 7, '2025-01-20 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(8, 1, '2025-01-10 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(8, 2, '2025-01-11 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(8, 7, '2025-01-20 14:00:00');
 
-INSERT INTO commande_statut_commande VALUES(9, 1, '2025-01-20 10:00:00');
-INSERT INTO commande_statut_commande VALUES(9, 2, '2025-01-21 09:00:00');
-INSERT INTO commande_statut_commande VALUES(9, 7, '2025-02-05 14:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(9, 1, '2025-01-20 10:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(9, 2, '2025-01-21 09:00:00');
+INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement) VALUES(9, 7, '2025-02-05 14:00:00');
 
 -- Table des avis
 INSERT INTO avis(note, description_avis, statut, Id_commande)
