@@ -17,6 +17,10 @@
     <meta name="keywords" content="traiteur bordeaux, menu traiteur, commande repas bordeaux, cuisine événementielle, traiteur événement, Julie José Bordeaux">
     <meta name="author" content="Vite & Gourmand">
     <meta name="robots" content="index, follow">
+    <?php
+    $urlCanonique = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    ?>
+    <link rel="canonical" href="<?= htmlspecialchars($urlCanonique) ?>">
     <!-- Balise link favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon-512.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +32,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <title>Vite & Gourmand</title>
     <script src="/assets/js/app.js" defer></script>
+    <script src="/assets/js/validation.js" defer></script>
 </head>
 
 <body>
@@ -54,8 +59,10 @@
                             <?php if ($_SESSION['role'] === 'Administrateur'): ?>
                                 <li class="nav-item"><a class="nav-link" href="/admin">espace admin</a></li>
                                 <li class="nav-item"><a class="nav-link" href="/employe">espace employé</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mes commandes</a></li>
                             <?php elseif ($_SESSION['role'] === 'Employé'): ?>
                                 <li class="nav-item"><a class="nav-link" href="/employe">espace employé</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mes commandes</a></li>
                             <?php else: ?>
                                 <li class="nav-item"><a class="nav-link" href="/mon-espace/commandes">mon espace</a></li>
                             <?php endif; ?>

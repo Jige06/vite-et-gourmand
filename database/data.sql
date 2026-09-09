@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 -- Insertion des données dans la base de données
 
 -- Table roles
@@ -30,13 +31,13 @@ INSERT INTO allergene(nom) VALUES('Crustacés');
 INSERT INTO allergene(nom) VALUES('Fruits à coques');
 
 -- Table horaire
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Lundi', '9:00', '19:00');
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Mardi', '9:00', '19:00');
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Mercredi', '9:00', '19:00');
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Jeudi', '9:00', '19:00');
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Vendredi', '9:00', '16:00');
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Samedi', '9:00', '16:00');
-INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Dimanche', '9:00', '12:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Lundi', '09:00', '19:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Mardi', '09:00', '19:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Mercredi', '09:00', '19:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Jeudi', '09:00', '19:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Vendredi', '09:00', '16:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Samedi', '09:00', '16:00');
+INSERT INTO horaire(jour, heure_ouverture, heure_fermeture) VALUES('Dimanche', '09:00', '12:00');
 
 -- Table utilisateur
 INSERT INTO utilisateur(nom, prenom, email, mot_de_passe, telephone, adresse, code_postal, ville, actif, Id_role)

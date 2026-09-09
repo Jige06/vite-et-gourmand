@@ -8,10 +8,7 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= $_SESSION['success'];
-                                                unset($_SESSION['success']); ?></div>
-        <?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
         <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerPlat">
             + créer un plat
         </button>
@@ -62,6 +59,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-crea-plat" enctype="multipart/form-data" action="/employe/plats" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="creer">
                         <div class="mb-3">
                             <label class="mb-1 d-block">Nom du plat</label>
@@ -98,7 +96,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-modif-plat" action="/employe/plats" method="post">
+                    <form id="form-modif-plat" action="/employe/plats" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="modifier">
                         <input type="hidden" name="Id_plat" value="<?= $plat['Id_plat'] ?>">
                         <div class="mb-3">
@@ -142,6 +141,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/employe/plats">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="supprimer">
                         <input type="hidden" name="Id_plat" id="id-plat-supprimer">
                         <button type="submit" class="btn btn-danger">supprimer</button>

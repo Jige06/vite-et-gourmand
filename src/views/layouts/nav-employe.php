@@ -4,5 +4,6 @@
         <a href="/employe/menus" class="connect-button">menus</a>
         <a href="/employe/plats" class="connect-button">plats</a>
         <a href="/employe/avis" class="connect-button">avis</a>
+        <a href="/employe/horaires" class="connect-button">horaires</a>
     </div>
 </div>

@@ -1,12 +1,13 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title container-fluid">
-    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="">
     <h1 class="text-center">Commande</h1>
 </div>
 
 <div class="form-container">
     <form class="d-flex flex-column align-items-center" action="/commande" method="post">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <!-- Étape 1 : Informations de commande -->
         <div class="form-user mt-4 mb-4" id="form-user">
 

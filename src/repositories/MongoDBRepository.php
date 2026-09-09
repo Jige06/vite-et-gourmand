@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use MongoDB\Client;
 
-class MongoDBModel
+class MongoDBRepository
 {
 
     // Variable statique qui va stocker la connexion MongoDB 

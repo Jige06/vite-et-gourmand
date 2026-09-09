@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class OrderModel
+class OrderRepository
 {
     // Méthode de création d'une commande
     public static function createOrder($dateCommande, $nbrePers, $montantTotal, $prixLivraison, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat, $idMenu, $idUser)
@@ -46,7 +46,7 @@ class OrderModel
         $mail->Port = $_ENV['MAIL_PORT'];
         $mail->Username = $_ENV['MAIL_USER'];
         $mail->Password = $_ENV['MAIL_PASS'];
-        $menu = MenuModel::getById($idMenu);
+        $menu = MenuRepository::getById($idMenu);
 
         $mail->setFrom($_ENV['MAIL_FROM'], 'Vite & Gourmand');
         $mail->addAddress($email, $nom . ' ' . $prenom);
@@ -178,5 +178,24 @@ class OrderModel
         $stmt->execute([$idCommande]);
         $statutCommande = $stmt->fetchAll();
         return $statutCommande;
+    }
+
+    // Méthode qui récupère une commande unique par son id, avec son statut actuel
+    public static function getOrderById($idCommande)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare("SELECT commande.*,
+        (SELECT statut_commande.libelle
+        FROM commande_statut_commande
+        JOIN statut_commande ON commande_statut_commande.Id_statut_commande = statut_commande.Id_statut_commande
+        WHERE commande_statut_commande.Id_commande = commande.Id_commande
+        ORDER BY date_changement DESC
+        LIMIT 1) AS statut_actuel
+        FROM commande
+        WHERE commande.Id_commande = ?");
+        $stmt->execute([$idCommande]);
+        $commande = $stmt->fetch();
+        return $commande;
     }
 }

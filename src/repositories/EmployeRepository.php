@@ -1,6 +1,6 @@
 <?php
 
-class EmployeModel
+class EmployeRepository
 {
     // Methode qui filtre la recherche des commandes (client et/ou statut)
     public static function getAllOrders($filters)
@@ -38,7 +38,7 @@ class EmployeModel
         return $orders;
     }
 
-    public static function updateStatus($idCommande, $nouveauStatut)
+    public static function updateStatus($idCommande, $nouveauStatut, $motif, $modeContact)
     {
         $pdo = DatabaseConnection::getInstance();
 
@@ -57,10 +57,12 @@ class EmployeModel
         }
 
         // Insertion du nouveau statut en bdd 
-        $stmt = $pdo->prepare("INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement)
-        VALUES (:Id_commande, :statut_commande, NOW())");
+        $stmt = $pdo->prepare("INSERT INTO commande_statut_commande (Id_commande, Id_statut_commande, date_changement, motif, mode_contact)
+        VALUES (:Id_commande, :statut_commande, NOW(), :motif, :mode_contact)");
         $stmt->bindValue(':Id_commande', $idCommande);
         $stmt->bindValue(':statut_commande', $statut['Id_statut_commande']);
+        $stmt->bindValue(':motif', $motif);
+        $stmt->bindValue(':mode_contact', $modeContact);
 
         $stmt->execute();
         return true;

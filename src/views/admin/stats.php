@@ -4,6 +4,8 @@
 <div class="container mt-4">
     <h1 class="text-center mb-4">Statistiques</h1>
 
+<?php require_once('../src/views/layouts/messages.php'); ?>
+
     <!-- Formulaire de filtres -->
     <form method="GET" action="/admin/stats" class="card p-4 mb-5 shadow-sm">
         <div class="row g-3 align-items-end">

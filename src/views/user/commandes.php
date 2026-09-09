@@ -1,7 +1,7 @@
 <?php require_once('../src/views/layouts/header.php'); ?>
 
 <div class="big-title-accueil container-fluid">
-    <img src="/assets/images/Buffet_Big_title.png" alt="buffet">
+    <img src="/assets/images/Buffet_Big_title.png" alt="">
     <h1 class="text-center">mon espace</h1>
 </div>
 
@@ -23,33 +23,38 @@
             </div>
             <div class="modal-body">
                 <form id="form-profil" action="/mon-espace/profil" method="post">
+                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                    <div id="error-nom" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Nom</label>
-                        <input class="form-control" type="text" name="nom" value="<?= htmlspecialchars($user['nom']) ?>" required>
+                        <input id="nom" class="form-control" type="text" name="nom" value="<?= htmlspecialchars($user['nom']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Prénom</label>
-                        <input class="form-control" type="text" name="prenom" value="<?= htmlspecialchars($user['prenom']) ?>" required>
+                        <input id="prenom" class="form-control" type="text" name="prenom" value="<?= htmlspecialchars($user['prenom']) ?>" required>
                     </div>
+                    <div id="error-email" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Email</label>
-                        <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+                        <input id="email" class="form-control" type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
                     </div>
+                    <div id="error-telephone" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Téléphone</label>
-                        <input class="form-control" type="text" name="telephone" value="<?= htmlspecialchars($user['telephone']) ?>" required>
+                        <input id="telephone" class="form-control" type="text" name="telephone" value="<?= htmlspecialchars($user['telephone']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Adresse</label>
-                        <input class="form-control" type="text" name="adresse" value="<?= htmlspecialchars($user['adresse']) ?>" required>
+                        <input id="adresse" class="form-control" type="text" name="adresse" value="<?= htmlspecialchars($user['adresse']) ?>" required>
                     </div>
+                    <div id="error-code-postal" class="alert alert-danger" style="display:none"></div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Code postal</label>
-                        <input class="form-control" type="text" name="code_postal" value="<?= htmlspecialchars($user['code_postal']) ?>" required>
+                        <input id="codePostal" class="form-control" type="text" name="code_postal" value="<?= htmlspecialchars($user['code_postal']) ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="mb-1 d-block">Ville</label>
-                        <input class="form-control" type="text" name="ville" value="<?= htmlspecialchars($user['ville']) ?>" required>
+                        <input id="ville" class="form-control" type="text" name="ville" value="<?= htmlspecialchars($user['ville']) ?>" required>
                     </div>
                 </form>
             </div>
@@ -62,15 +67,7 @@
 </div>
 
 
-<?php if (isset($_SESSION['success'])): ?>
-    <div class="alert alert-success"><?= $_SESSION['success'];
-                                        unset($_SESSION['success']); ?></div>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger"><?= $_SESSION['error'];
-                                    unset($_SESSION['error']); ?></div>
-<?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
 
 <!-- Tableau des commandes du client -->
 <div class="py-5 px-5">
@@ -164,6 +161,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Retour</button>
                         <form action="/mon-espace/commandes/annuler" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
                             <button type="submit" class="btn btn-danger">confirmer l'annulation</button>
                         </form>
@@ -182,6 +181,8 @@
                     </div>
                     <div class="modal-body">
                         <form id="form-modifier-<?= $commande['Id_commande'] ?>" action="/mon-espace/commandes/modifier" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
 
                             <div class="livraison text-start mb-4 ">
@@ -194,17 +195,17 @@
 
                             <div class="livraison livraison-param text-start mb-4">
                                 <label class="mb-1 d-block" for="adresse_liv">Adresse de livraison</label>
-                                <input class="form-control" type="text" id="adresse_liv" name="adresse_liv" value="<?= htmlspecialchars($commande['adresse_livraison']) ?>">
+                                <input class="form-control" type="text" id="adresse_liv" name="adresse_liv" value="<?= htmlspecialchars($commande['adresse_livraison'] ?? '') ?>">
                             </div>
 
                             <div class="livraison livraison-param text-start mb-4">
                                 <label class="mb-1 d-block" for="codePostal">Code postal</label>
-                                <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" value="<?= htmlspecialchars($commande['code_postal_livraison']) ?>">
+                                <input class="form-control" type="text" id="codePostal_liv" name="codePostal_liv" value="<?= htmlspecialchars($commande['code_postal_livraison'] ?? '') ?>">
                             </div>
 
                             <div class="livraison livraison-param text-start mb-4">
                                 <label class="mb-1 d-block" for="ville_liv">Ville</label>
-                                <input class="form-control" type="text" id="ville_liv" name="ville_liv" value="<?= htmlspecialchars($commande['ville_livraison']) ?>">
+                                <input class="form-control" type="text" id="ville_liv" name="ville_liv" value="<?= htmlspecialchars($commande['ville_livraison'] ?? '') ?>">
                             </div>
 
                             <div id="error-date" class="alert alert-danger" style="display:none"></div>
@@ -298,6 +299,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="form-avis-<?= $commande['Id_commande'] ?>" action="/mon-espace/avis" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <input type="hidden" name="id_commande" value="<?= $commande['Id_commande'] ?>">
                             <div class="mb-3">
                                 <label class="mb-1 d-block" for="prenom_avis">Prénom</label>

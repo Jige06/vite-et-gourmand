@@ -6,14 +6,7 @@
     <h2>Tableau des commandes</h2>
 </div>
 
-<?php if (isset($_SESSION['success'])): ?>
-    <div class="alert alert-success"><?= $_SESSION['success'];
-                                        unset($_SESSION['success']); ?></div>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
-<?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
 
 <!-- Filtres des menus par statut ou par nom/prenon -->
 <div class="container filters mb-4 py-3">
@@ -27,7 +20,7 @@
             <option value="En préparation">En préparation</option>
             <option value="En cours de livraison">En cours de livraison</option>
             <option value="Livré">Livré</option>
-            <option value="En attente de retour matériel">En attente de retour matériel</option>
+            <option value="En attente du retour matériel">En attente du retour matériel</option>
             <option value="Terminé">Terminé</option>
             <option value="Annulé">Annulé</option>
         </select>
@@ -36,7 +29,7 @@
 </div>
 
 <!-- Tableau des commandes -->
-<div class="container mb-4 table-responsive">
+<div class="container-fluid mb-4 table-responsive">
     <table class="table table-hover table-borderless table-responsive-md">
         <thead>
             <tr>
@@ -46,6 +39,9 @@
                 <th scope="col">Montant total</th>
                 <th scope="col">Statut actuel</th>
                 <th scope="col">Statut à changer</th>
+                <th scope="col">Motif</th>
+                <th scope="col">Mode de contact</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -58,6 +54,7 @@
                     <td><?= htmlspecialchars($order['statut_actuel']) ?></td>
                     <td>
                         <form class="container" method="POST" action="/employe/statut">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                             <input type="hidden" name="Id_Commande" value="<?= $order['Id_commande'] ?>">
                             <label for="statut-select">Nouveau statut&nbsp;:</label>
                             <select name="nouveau_statut" id="nouveau_statut">
@@ -66,13 +63,26 @@
                                 <option value="En préparation">En préparation</option>
                                 <option value="En cours de livraison">En cours de livraison</option>
                                 <option value="Livré">Livré</option>
-                                <option value="En attente de retour matériel">En attente de retour matériel</option>
+                                <option value="En attente du retour matériel">En attente du retour matériel</option>
                                 <option value="Terminé">Terminé</option>
                                 <option value="Annulé">Annulé</option>
                             </select>
-                            <button class="connect-button ms-4" type="submit">valider</button>
-                        </form>
                     </td>
+                    <td>
+                        <textarea name="motif" rows="2" cols="20" required></textarea>
+                    </td>
+                    <td>
+                        <label for="mode_contact">Mode de contact&nbsp;:</label>
+                        <select name="mode_contact" id="mode_contact" required>
+                            <option value=""></option>
+                            <option value="Téléphone">Téléphone</option>
+                            <option value="Mail">Mail</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="connect-button ms-4" type="submit">valider</button>
+                    </td>
+                    </form>
                 </tr>
             <?php endforeach; ?>
         </tbody>

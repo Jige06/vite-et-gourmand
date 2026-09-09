@@ -21,7 +21,7 @@ class Auth
         }
     }
 
-    // Redirige l'utilisateurles met
+    // Redirige l'utilisateur
     public static function redirect(string $url)
     {
         header('Location: ' . $url);

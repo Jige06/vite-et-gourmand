@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /employe
+Disallow: /admin
+Disallow: /mon-espace
+Disallow: /connexion
+Disallow: /inscription
+Disallow: /mot-de-passe-oublie
+Disallow: /changer-mot-de-passe
+Disallow: /commande
+Disallow: /menus/filter
+
+Sitemap: https://vite-et-gourmand.fr/sitemap.xml

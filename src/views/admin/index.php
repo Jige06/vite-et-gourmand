@@ -68,32 +68,36 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-crea-employe" action="/admin" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="creer">
+                        <div id="error-nom" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block">Nom</label>
-                            <input class="form-control" type="text" name="nom" required>
+                            <input id="nom" class="form-control" type="text" name="nom" required>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1 d-block">Prénom</label>
-                            <input class="form-control" type="text" name="prenom" required>
+                            <input id="prenom" class="form-control" type="text" name="prenom" required>
                         </div>
+                        <div id="error-email" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block">email</label>
-                            <input class="form-control" type="email" name="email" required>
+                            <input id="email" class="form-control" type="email" name="email" required>
                         </div>
-
+                        <div id="error-mot-de-passe" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block" for="motdepasse">Mot de passe</label>
                             <div class="password-input">
                                 <input class="form-control" type="password" id="motdepasse" name="password" required placeholder="Votre mot de passe">
-                                <span class="toggle-password" onclick="togglePassword('motdepasse')">👁</span>
+                                <button type="button" class="toggle-password" onclick="togglePassword('motdepasse')" aria-label="Afficher ou masquer le mot de passe">👁</button>
                             </div>
                         </div>
+                        <div id="error-confirmation" class="alert alert-danger" style="display:none"></div>
                         <div class="mb-3">
                             <label class="mb-1 d-block" for="confirm_motdepasse">Confirmation de votre mot de passe</label>
                             <div class="password-input">
                                 <input class="form-control" type="password" id="confirm_motdepasse" name="confirm_password" required placeholder="Votre mot de passe">
-                                <span class="toggle-password" onclick="togglePassword('confirm_motdepasse')">👁</span>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirm_motdepasse')" aria-label="Afficher ou masquer le mot de passe">👁</button>
                             </div>
                         </div>
                     </form>
@@ -120,6 +124,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/admin">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="desactiver">
                         <input type="hidden" name="id_user" id="id-utilisateur-desactiver">
                         <button type="submit" class="btn btn-danger">désactiver</button>

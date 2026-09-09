@@ -278,9 +278,8 @@ if (formUser && formMenu && formOrder) {
       }
       document.getElementById("error-livraison").style.display = "none";
 
-      // Assemblage de l'adresse complète
-      const adresseComplete = adresse + " " + codePostal + " " + ville;
-      calculerFraisLivraison(adresseComplete);
+      // Appel au serveur pour calculer les frais (plus de calcul direct côté client)
+      calculerFraisLivraison(adresse, codePostal, ville);
     }
 
     formUser.style.display = "none";
@@ -336,49 +335,31 @@ if (formUser && formMenu && formOrder) {
       infoPret.style.display = this.checked ? "block" : "none";
     });
 
-  /* Géocode les deux adresses, calcule la distance par la route
- et affiche les frais de livraison dans le récap de commande. */
+  /* Récupère les frais de livraison calculés côté serveur (PHP), via une
+requête au serveur, et les affiche dans le récapitulatif de la commande.
+Le calcul n'est plus fait en JS pour éviter d'exposer la clé API et pour
+empêcher la manipulation du prix par l'utilisateur. */
 
-  // Récupération des données pour obtenir la distance pour calculer les frais de livraison
-  const apiKey =
-    "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjMwM2Q5YjE3ZGIxNzRiZDhiOTM4MDBhNDdkZDJhNjk4IiwiaCI6Im11cm11cjY0In0=";
-  const adresseViteGourmand = "19 Rue Bouffard 33000 Bordeaux";
+  async function calculerFraisLivraison(adresseLiv, codePostalLiv, villeLiv) {
+    const params = new URLSearchParams({
+      adresse: adresseLiv,
+      codePostal: codePostalLiv,
+      ville: villeLiv,
+    });
 
-  async function calculerFraisLivraison(adresseComplete) {
-    // Géocodage de l'adresse du client
-    const url = `https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(adresseComplete)}`;
-    const responseClient = await fetch(url);
-    const dataClient = await responseClient.json();
-    if (!dataClient.features || dataClient.features.length === 0) {
-      document.getElementById("recap-livraison").textContent =
-        "Adresse introuvable, veuillez vérifier votre adresse.";
+    const response = await fetch(`/commande/calculer-frais?${params}`);
+    const data = await response.json();
+
+    if (data.erreur) {
+      document.getElementById("recap-livraison").textContent = data.erreur;
       return;
     }
-    const coordsClient = dataClient.features[0].geometry.coordinates;
 
-    // Coordonnées fixes de Vite & Gourmand - 19 Rue Bouffard, Bordeaux
-    const coordsVG = [-0.5763, 44.8404];
+    prixLivraison = data.prix;
 
-    // Calcul de la distance
-    const responseDistance = await fetch(
-      "https://api.openrouteservice.org/v2/directions/driving-car",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: apiKey },
-        body: JSON.stringify({ coordinates: [coordsVG, coordsClient] }),
-      },
-    );
-    const dataDistance = await responseDistance.json();
-    const distanceKm = dataDistance.routes[0].summary.distance / 1000;
-
-    // Calcul du prix
-    prixLivraison = 5 + distanceKm * 0.59;
-
-    // Affichage dans le récap
     document.getElementById("recap-livraison").textContent =
-      `Frais de livraison : ${prixLivraison.toFixed(2)} € (${distanceKm.toFixed(1)} km)`;
-    document.getElementById("hidden-livraison").value =
-      prixLivraison.toFixed(2);
+      `Frais de livraison : ${data.prix.toFixed(2)} € (${data.distance.toFixed(1)} km)`;
+    document.getElementById("hidden-livraison").value = data.prix.toFixed(2);
     calculerPrixTotal();
   }
 

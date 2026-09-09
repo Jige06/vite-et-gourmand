@@ -8,10 +8,7 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= $_SESSION['success'];
-                                                unset($_SESSION['success']); ?></div>
-        <?php endif; ?>
+<?php require_once('../src/views/layouts/messages.php'); ?>
         <button class="connect-button" data-bs-toggle="modal" data-bs-target="#modalCreerMenu">
             + créer un menu
         </button>
@@ -80,6 +77,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="form-crea-menu" enctype="multipart/form-data" action="/employe/menus" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="creer">
                         <div class="mb-3">
                             <label class="mb-1 d-block">Nom du menu</label>
@@ -121,6 +119,23 @@
                         </div>
                         <label class="mb-1 d-block">Photo</label>
                         <input class="form-control" type="file" name="photo" accept="image/*" required>
+                        <div class="mb-3">
+                            <label class="mb-1 d-block fw-bold">Composition du menu</label>
+                            <?php foreach ($platsByType as $type => $plats): ?>
+                                <p class="mt-2 mb-1"><strong><?= htmlspecialchars($type) ?></strong></p>
+                                <?php foreach ($plats as $plat): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                            name="plat_<?= $type ?>"
+                                            value="<?= $plat['Id_plat'] ?>"
+                                            id="plat_<?= $plat['Id_plat'] ?>">
+                                        <label class="form-check-label" for="plat_<?= $plat['Id_plat'] ?>">
+                                            <?= htmlspecialchars($plat['titre']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -140,7 +155,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-modif-menu" action="/employe/menus" method="post">
+                    <form id="form-modif-menu" action="/employe/menus" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="modifier">
                         <input type="hidden" name="Id_menu" value="<?= $menu['Id_menu'] ?>">
                         <div class="mb-3">
@@ -183,6 +199,25 @@
                         </div>
                         <label class="mb-1 d-block">Photo</label>
                         <input class="form-control" type="file" name="photo" accept="image/*">
+                        <div class="mb-3">
+                            <label class="mb-1 d-block fw-bold">Composition du menu</label>
+                            <?php $idPlatsMenu = array_column($menu['plats'], 'Id_plat'); ?>
+                            <?php foreach ($platsByType as $type => $plats): ?>
+                                <p class="mt-2 mb-1"><strong><?= htmlspecialchars($type) ?></strong></p>
+                                <?php foreach ($plats as $plat): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                            name="plat_<?= $type ?>"
+                                            value="<?= $plat['Id_plat'] ?>"
+                                            id="modif_<?= $menu['Id_menu'] ?>_plat_<?= $plat['Id_plat'] ?>"
+                                            <?= in_array($plat['Id_plat'], $idPlatsMenu) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="modif_<?= $menu['Id_menu'] ?>_plat_<?= $plat['Id_plat'] ?>">
+                                            <?= htmlspecialchars($plat['titre']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -207,6 +242,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
                     <form method="POST" action="/employe/menus">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                         <input type="hidden" name="action" value="supprimer">
                         <input type="hidden" name="Id_menu" id="id-menu-supprimer">
                         <button type="submit" class="btn btn-danger">supprimer</button>

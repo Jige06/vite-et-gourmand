@@ -14,7 +14,7 @@ J'ai choisi d'utiliser PHP natif sans framework afin de maîtriser les mécanism
 
 ### Paradigme : Programmation Orientée Objet (POO)
 
-Tout le back-end a été développé en suivant les principes de la programmation orientée objet (POO). Chaque couche de l'architecture MVC est représentée par des classes : les models gèrent l'accès aux données via PDO, les controllers traitent la logique métier. Des classes entités représentant les objets du domaine (Utilisateur, Commande, Menu, Plat...) ont également été créées pour démontrer la compréhension du concept objet et de la modélisation. Le design pattern Singleton a été appliqué pour les connexions aux bases de données (DatabaseConnection et MongoDBModel), garantissant une instance unique tout au long du cycle de vie de l'application.
+Tout le back-end a été développé en suivant les principes de la programmation orientée objet (POO). Chaque couche de l'architecture MVC est représentée par des classes : les models gèrent l'accès aux données via PDO, les controllers traitent la logique métier. Des classes entités représentant les objets du domaine (Utilisateur, Commande, Menu, Plat...) ont également été créées pour démontrer la compréhension du concept objet et de la modélisation. Le design pattern Singleton a été appliqué pour les connexions aux bases de données (DatabaseConnection et MongoDBRepository), garantissant une instance unique tout au long du cycle de vie de l'application.
 
 ### Architecture : MVC (Model - View - Controller)
 

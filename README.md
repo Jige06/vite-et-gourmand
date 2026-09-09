@@ -1,11 +1,11 @@
-# 🍽️ Vite & Gourmand
+# 🍽 Vite & Gourmand
 
-Application web pour le traiteur bordelais **Vite & Gourmand** (Julie et José).  
+Application web pour le traiteur bordelais **Vite & Gourmand** (Julie et José).
 Permet aux clients de consulter les menus, passer des commandes en ligne et laisser des avis.
 
 ---
 
-## 🛠️ Stack technique
+## 🛠 Stack technique
 
 - **Back-end** : PHP natif, architecture MVC, PDO
 - **Base de données** : MySQL (relationnelle) + MongoDB (non relationnelle pour les statistiques)
@@ -19,35 +19,40 @@ Permet aux clients de consulter les menus, passer des commandes en ligne et lais
 
 ## ✅ Prérequis
 
-Avant de lancer le projet en local, assurez-vous d'avoir installé :
-
+### Option A — Avec Laragon (recommandé pour le développement)
 - [Laragon](https://laragon.org/) (Apache + PHP + MySQL)
 - [Composer](https://getcomposer.org/)
-- [MongoDB](https://www.mongodb.com/try/download/community) (installé séparément)
+- [MongoDB](https://www.mongodb.com/try/download/community)
+- [Git](https://git-scm.com/)
+
+### Option B — Avec Docker
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Git](https://git-scm.com/)
 
 ---
 
 ## 🚀 Installation et lancement en local
 
-### 1. Cloner le dépôt
+### Option A — Avec Laragon
+
+#### 1. Cloner le dépôt
 
 ```bash
 git clone https://github.com/Jige06/vite-et-gourmand.git
 ```
 
-Placez le dossier cloné dans le répertoire `www` de Laragon.  
-Laragon crée automatiquement le Virtual Host — l'application sera accessible sur :  
+Placez le dossier cloné dans le répertoire `www` de Laragon.
+Laragon crée automatiquement le Virtual Host — l'application sera accessible sur :
 👉 `http://vite-et-gourmand.test`
 
-### 2. Installer les dépendances PHP
+#### 2. Installer les dépendances PHP
 
 ```bash
 cd vite-et-gourmand
 composer install
 ```
 
-### 3. Importer la base de données MySQL
+#### 3. Importer la base de données MySQL
 
 1. Ouvrez **HeidiSQL** (inclus dans Laragon)
 2. Créez une base de données nommée `vite_et_gourmand`
@@ -55,66 +60,134 @@ composer install
    - `database/create_bdd.sql` — création de la structure
    - `database/data.sql` — insertion des données de test
 
-### 4. Configurer les variables d'environnement
+#### 4. Configurer les variables d'environnement
 
-Renommez le fichier `.env.example` en `.env` et renseignez vos identifiants Mailtrap :
+Renommez le fichier `.env.example` en `.env` et renseignez vos identifiants :
 
 ```env
+APP_ENV=local
+APP_URL=http://vite-et-gourmand.test
+
+DB_HOST=localhost
+DB_NAME=vite_et_gourmand
+DB_USER=root
+DB_PASS=
+
 MAIL_HOST=sandbox.smtp.mailtrap.io
 MAIL_PORT=2525
-MAIL_USERNAME=votre_username_mailtrap
-MAIL_PASSWORD=votre_password_mailtrap
+MAIL_USER=votre_username_mailtrap
+MAIL_PASS=votre_password_mailtrap
+MAIL_FROM=noreply@viteetgourmand.fr
+
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_DB=vite_gourmand
+
+ORS_API_KEY=votre_cle_openrouteservice
 ```
 
-> 💡 La clé API OpenRouteService est déjà intégrée dans le code — aucune configuration supplémentaire n'est nécessaire.
-
-### 5. Lancer MongoDB
-
-MongoDB doit être lancé manuellement. Ouvrez un terminal et exécutez :
+#### 5. Lancer MongoDB
 
 ```bash
 mongod --dbpath "chemin/vers/votre/dossier/data"
 ```
 *Exemple sous Windows :* `mongod --dbpath "C:\mongodb\data"`
 
-### 6. Lancer l'application
+#### 6. Lancer l'application
 
-Démarrez Laragon (Apache + MySQL), puis rendez-vous sur :  
+Démarrez Laragon (Apache + MySQL), puis rendez-vous sur :
 👉 `http://vite-et-gourmand.test`
 
 ---
 
-## 🗂️ Structure du projet
+### Option B — Avec Docker
+
+#### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/Jige06/vite-et-gourmand.git
+cd vite-et-gourmand
+```
+
+#### 2. Configurer les variables d'environnement
+
+Renommez le fichier `.env.example` en `.env` et renseignez vos identifiants :
+
+```env
+APP_ENV=local
+APP_URL=http://localhost:8080
+
+DB_HOST=mysql
+DB_NAME=vite_et_gourmand
+DB_USER=root
+DB_PASS=
+
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=votre_username_mailtrap
+MAIL_PASS=votre_password_mailtrap
+MAIL_FROM=noreply@viteetgourmand.fr
+
+MONGO_HOST=mongodb
+MONGO_PORT=27017
+MONGO_DB=vite_gourmand
+
+ORS_API_KEY=votre_cle_openrouteservice
+```
+
+> ⚠️ Avec Docker, `DB_HOST` doit valoir `mysql` et `MONGO_HOST` doit valoir `mongodb` (noms des services Docker).
+
+#### 3. Lancer les conteneurs
+
+```bash
+docker compose up --build
+```
+
+L'application sera accessible sur :
+👉 `http://localhost:8080`
+
+La base de données MySQL est initialisée automatiquement au premier lancement.
+
+---
+
+## 🗂 Structure du projet
 
 ```
 vite-et-gourmand/
 ├── database/
-│   ├── create_bdd.sql      # Structure de la base de données
-│   └── data.sql            # Données de test
-├── docs/
-│   ├── Diagramme de classes Vite et Gourmand
-│   └── MCD_Vite_et_gourmand.jpg
+│ ├── create_bdd.sql # Structure de la base de données
+│ └── data.sql # Données de test
+├── docs/ # Documentation du projet
 ├── public/
-│   ├── assets/
-│   │   ├── css/
-│   │   ├── images/
-│   │   └── js/
-│   ├── .htaccess
-│   ├── favicon-512.png
-│   └── index.php           # Point d'entrée + routeur
+│ ├── assets/
+│ │ ├── css/ # Feuilles de style
+│ │ ├── images/ # Images (menus, plats)
+│ │ └── js/ # Scripts JavaScript
+│ ├── .htaccess # Réécriture des URLs
+│ ├── favicon-512.png
+│ └── index.php # Point d'entrée + routeur
 ├── src/
-│   ├── controllers/        # Contrôleurs (AuthController, OrderController...)
-│   ├── core/               # Classes fondamentales (DatabaseConnection...)
-│   ├── entities/           # Classes entités (User, Menu, Commande...)
-│   ├── models/             # Modèles (UserModel, MenuModel, OrderModel...)
-│   └── views/              # Vues PHP
-├── vendor/                 # Dépendances Composer
+│ ├── controllers/ # Contrôleurs (AuthController, OrderController...)
+│ ├── core/ # Classes fondamentales (Auth, Csrf, Validator, FileUploadHandler...)
+│ ├── entities/ # Classes entités (User, Menu, Commande...)
+│ ├── repositories/ # Accès aux données (UserRepository, MenuRepository...)
+│ ├── services/ # Logique métier (CommandeService, LivraisonService)
+│ └── views/ # Vues PHP
+│ ├── layouts/ # Header, footer, nav, messages
+│ ├── auth/ # Connexion, inscription, reset password
+│ ├── admin/ # Espace administrateur
+│ ├── employe/ # Espace employé
+│ ├── user/ # Espace utilisateur
+│ ├── menus/ # Liste et détail des menus
+│ ├── commande/ # Formulaire de commande
+│ ├── contact/ # Page contact
+│ └── legal/ # CGV, mentions légales
+├── vendor/ # Dépendances Composer
 ├── .env.example
 ├── .gitignore
 ├── composer.json
-├── composer.lock
+├── docker-compose.yml
 ├── Dockerfile
-├── evolution.md
 └── README.md
 ```
 
@@ -133,7 +206,7 @@ vite-et-gourmand/
 ## 🌐 Liens
 
 - **Dépôt GitHub** : [github.com/Jige06/vite-et-gourmand](https://github.com/Jige06/vite-et-gourmand)
-- **Application déployée** : [vite-et-gourmand.up.railway.app](https://vite-et-gourmand.up.railway.app/)
+- **Application déployée** : [vite-et-gourmand.up.railway.app](https://vite-et-gourmand.up.railway.app)
 - **Gestion de projet** : [Trello — Vite & Gourmand](https://trello.com/invite/b/698f205608a640eec2cec29e/ATTIbc2a9d11b045fafeb3c16d80817390bf7F928597/ecf-vitegourmand)
 
 ---
@@ -141,10 +214,13 @@ vite-et-gourmand/
 ## 🔐 Sécurité
 
 - Requêtes préparées PDO (protection injections SQL)
-- Hachage des mots de passe avec `password_hash()`
+- Hachage des mots de passe avec `password_hash()` (bcrypt)
+- Protection CSRF sur tous les formulaires POST
 - Protection XSS via `htmlspecialchars()`
+- Validation des données côté serveur (classe `Validator`) et côté client (JS)
 - Contrôle d'accès par rôle sur toutes les routes protégées
-- Sessions PHP pour l'authentification
+- Upload de fichiers sécurisé (vérification MIME réel, nom aléatoire)
+- Sessions sécurisées (HttpOnly, SameSite, régénération d'ID)
 
 ---
 

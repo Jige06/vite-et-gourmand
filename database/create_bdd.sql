@@ -64,7 +64,8 @@ CREATE TABLE utilisateur(
    actif BOOLEAN NOT NULL DEFAULT 1,
    Id_role INT NOT NULL,
    -- Colonne ajoutée en cours de developpement
-   must_change_password BOOLEAN NOT NULL DEFAULT 0,
+   reset_token VARCHAR(64) NULL,
+   reset_token_expiry DATETIME NULL,
    PRIMARY KEY(Id_Utilisateur),
    UNIQUE(email),
    FOREIGN KEY(Id_role) REFERENCES roles(Id_role)
@@ -146,6 +147,8 @@ CREATE TABLE commande_statut_commande(
    Id_commande INT,
    Id_statut_commande INT,
    date_changement DATETIME NOT NULL,
+   motif VARCHAR(255) NULL,
+   mode_contact VARCHAR(50) NULL,
    PRIMARY KEY(Id_commande, Id_statut_commande),
    FOREIGN KEY(Id_commande) REFERENCES commande(Id_commande),
    FOREIGN KEY(Id_statut_commande) REFERENCES statut_commande(Id_statut_commande)

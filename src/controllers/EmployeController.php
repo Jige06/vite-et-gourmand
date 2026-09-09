@@ -2,7 +2,7 @@
 
 class EmployeController
 {
-    // Méthode qui appelle le model pour récuperer toutes les commandes
+    // Méthode qui appelle le repository pour récuperer toutes les commandes
     public function showOrders()
     {
         // Vérification du rôle pour acceder à l'espace employé
@@ -11,16 +11,27 @@ class EmployeController
             exit;
         }
 
-        $filters = [
-            'statut' => $_GET['statut'] ?? null,
-            'client' => $_GET['client'] ?? null,
+        $statuts = [
+            'En attente de validation',
+            'Accepté',
+            'En préparation',
+            'En cours de livraison',
+            'Livré',
+            'En attente du retour matériel',
+            'Terminé',
+            'Annulé'
         ];
-        $orders = EmployeModel::getAllOrders($filters);
+        $statutDemande = $_GET['statut'] ?? null;
+        $filters = [
+            'statut' => in_array($statutDemande, $statuts) ? $statutDemande : null,
+            'client' => filter_input(INPUT_GET, 'client', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: null,
+        ];
+        $orders = EmployeRepository::getAllOrders($filters);
 
         require_once(__DIR__ . '/../views/employe/commandes.php');
     }
 
-    // Méthode qui appelle le modele pour mettre a jour le statut d'une commande
+    // Méthode qui appelle le repository pour mettre a jour le statut d'une commande
     public static function handleUpdateStatus()
     {
         if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
@@ -28,10 +39,39 @@ class EmployeController
             exit;
         }
 
-        $idCommande = $_POST['Id_Commande'];
-        $nouveauStatut = $_POST['nouveau_statut'];
+        if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+            $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+            Auth::redirect('/employe');
+            return;
+        }
 
-        $result = EmployeModel::updateStatus($idCommande, $nouveauStatut);
+        $idCommande = filter_input(INPUT_POST, 'Id_Commande', FILTER_VALIDATE_INT);
+        $statuts = [
+            'En attente de validation',
+            'Accepté',
+            'En préparation',
+            'En cours de livraison',
+            'Livré',
+            'En attente du retour matériel',
+            'Terminé',
+            'Annulé'
+        ];
+        $nouveauStatut = $_POST['nouveau_statut'] ?? null;
+        $nouveauStatut = in_array($nouveauStatut, $statuts) ? $nouveauStatut : null;
+
+        $motif = trim(htmlspecialchars($_POST['motif'] ?? ''));
+        $motif = $motif !== '' ? $motif : null;
+        $modesContact = ['Téléphone', 'Mail'];
+        $modeContact = trim(htmlspecialchars($_POST['mode_contact']));
+        $modeContact = in_array($modeContact, $modesContact) ? $modeContact : null;
+
+        if ($idCommande === false || $nouveauStatut === null || $motif === null || $modeContact === null) {
+            $_SESSION['error'] = "Veuillez renseigner le motif et le mode de contact.";
+            Auth::redirect('/employe');
+            return;
+        }
+
+        $result = EmployeRepository::updateStatus($idCommande, $nouveauStatut, $motif, $modeContact);
 
         // Si nouveau statut saisi a deja été passé --> message de refus de ce statut
         if ($result === false) {
@@ -44,7 +84,7 @@ class EmployeController
         Auth::redirect('/employe');
     }
 
-    // Méthode qui appelle le model pour changer le statut d'un avis client (validé/refusé)
+    // Méthode qui appelle le repository pour changer le statut d'un avis client (validé/refusé)
     public function handleReviews()
     {
         if (
@@ -56,17 +96,31 @@ class EmployeController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe');
+                return;
+            }
 
             // traitement du changement de statut
-            $idAvis = $_POST['id_avis'];
-            $statut = $_POST['statut'];
-            ReviewModel::updateReviewStatus($idAvis, $statut);
+            $idAvis = filter_input(INPUT_POST, 'id_avis', FILTER_VALIDATE_INT);
+            $statutsAvis = ['Validé', 'Refusé'];
+            $nouveauStatutAvis = $_POST['statut'] ?? null;
+            $nouveauStatutAvis = in_array($nouveauStatutAvis, $statutsAvis) ? $nouveauStatutAvis : null;
+
+            if ($idAvis === false || $nouveauStatutAvis === null) {
+                $_SESSION['error'] = "Une erreur s'est produite";
+                Auth::redirect('/employe');
+                return;
+            }
+
+            ReviewRepository::updateReviewStatus($idAvis, $nouveauStatutAvis);
             $_SESSION['success'] = "L'avis a bien été mis à jour";
             Auth::redirect('/employe/avis');
         } else {
 
             // affichage de la liste des avis
-            $avis = ReviewModel::getPendingReviews();
+            $avis = ReviewRepository::getPendingReviews();
             require_once(__DIR__ . '/../views/employe/avis.php');
         }
     }
@@ -81,6 +135,12 @@ class EmployeController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe/menus');
+                return;
+            }
+
             $action = $_POST['action'];
 
             if ($action === 'creer') {
@@ -93,14 +153,39 @@ class EmployeController
                 $conditions = trim($_POST['conditions']);
                 $regime = trim($_POST['regime']);
                 $idTheme = intval($_POST['Id_theme']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/menus/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
+
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/menus/uploads/';
+                $nomFichier = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nomFichier === null) {
+                    $_SESSION['error'] = "La photo est obligatoire et doit être une image valide (jpg, png, webp, max 6 Mo).";
+                    Auth::redirect('/employe/menus');
+                    return;
                 }
-                MenuModel::createMenu($titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
+
+                $photo = 'uploads/' . $nomFichier;
+
+                $idMenu = MenuRepository::createMenu(
+                    $titre,
+                    $descriptionMenu,
+                    $prixParPers,
+                    $nbrePersMin,
+                    $quantiteRestante,
+                    $conditions,
+                    $regime,
+                    $photo,
+                    $idTheme
+                );
+
+                $idEntree = trim($_POST['plat_Entrée']) ?? null;
+                $idPlat = trim($_POST['plat_Plat']) ?? null;
+                $idFromage = trim($_POST['plat_Fromage']) ?? null;
+                $idDessert = trim($_POST['plat_Dessert']) ?? null;
+                $idPlats = array_filter([$idEntree, $idPlat, $idFromage, $idDessert]);
+
+                MenuRepository::associerPlats($idMenu, $idPlats);
+
                 $_SESSION['success'] = "Le menu a bien été créé.";
             } elseif ($action === 'modifier') {
 
@@ -113,36 +198,68 @@ class EmployeController
                 $conditions = trim($_POST['conditions']);
                 $regime = trim($_POST['regime']);
                 $idTheme = intval($_POST['Id_theme']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/menus/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
 
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/menus/uploads/';
+                $nouvellePhoto = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nouvellePhoto !== null) {
+                    $photo = 'uploads/' . $nouvellePhoto;
                 } else {
-
-                    // récupérer l'ancienne photo depuis la BDD
-                    $menuActuel = MenuModel::getById($idMenu);
+                    // pas de nouveau fichier valide : on garde l'ancienne photo
+                    $menuActuel = MenuRepository::getById($idMenu);
                     $photo = $menuActuel['photo'];
                 }
 
-                MenuModel::updateMenu($idMenu, $titre, $descriptionMenu, $prixParPers, $nbrePersMin, $quantiteRestante, $conditions, $regime, $photo, $idTheme);
+                MenuRepository::updateMenu(
+                    $idMenu,
+                    $titre,
+                    $descriptionMenu,
+                    $prixParPers,
+                    $nbrePersMin,
+                    $quantiteRestante,
+                    $conditions,
+                    $regime,
+                    $photo,
+                    $idTheme
+                );
+
+                $idEntree = $_POST['plat_Entrée'] ?? null;
+                $idPlat = $_POST['plat_Plat'] ?? null;
+                $idFromage = $_POST['plat_Fromage'] ?? null;
+                $idDessert = $_POST['plat_Dessert'] ?? null;
+                $idPlats = array_filter([$idEntree, $idPlat, $idFromage, $idDessert]);
+
+                MenuRepository::supprimerPlats($idMenu);
+                MenuRepository::associerPlats($idMenu, $idPlats);
+
                 $_SESSION['success'] = "Le menu a bien été modifié.";
             } elseif ($action === 'supprimer') {
 
                 $idMenu = $_POST['Id_menu'];
-                MenuModel::deleteMenu($idMenu);
+                MenuRepository::supprimerPlats($idMenu);
+                MenuRepository::deleteMenu($idMenu);
                 $_SESSION['success'] = "Le menu a bien été supprimé.";
             }
             Auth::redirect('/employe/menus');
         } else {
-            $menus = MenuModel::getAllMenu();
-            $themes = MenuModel::getAllThemes();
+            $menus = MenuRepository::getAllMenu();
+            foreach ($menus as &$menu) {
+                $menu['plats'] = MenuRepository::getPlatsByMenu($menu['Id_menu']);
+            }
+            unset($menu);
+
+            $themes = MenuRepository::getAllThemes();
+            $plats = PlatRepository::getAllPlats();
+
+            // Regroupement des plats par type pour l'affichage dans la vue
+            $platsByType = [];
+            foreach ($plats as $plat) {
+                $platsByType[$plat['type_plat']][] = $plat;
+            }
             require_once(__DIR__ . '/../views/employe/menus.php');
         }
     }
-
 
     // Méthode CRUD pour gérer les plats (creation, modification, suppression) depuis l'espace employe
     public function handlePlats()
@@ -154,52 +271,97 @@ class EmployeController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe/plats');
+                return;
+            }
+
             $action = $_POST['action'];
 
             if ($action === 'creer') {
 
                 $titre = trim($_POST['titre']);
                 $typePlat = trim($_POST['type_plat']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/plats/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
+
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/plats/uploads/';
+                $nomFichier = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nomFichier === null) {
+                    $_SESSION['error'] = "La photo est obligatoire et doit être une image valide (jpg, png, webp, max 6 Mo).";
+                    Auth::redirect('/employe/plats');
+                    return;
                 }
-                PlatModel::createPlat($titre, $typePlat, $photo);
+
+                $photo = 'uploads/' . $nomFichier;
+
+                PlatRepository::createPlat($titre, $typePlat, $photo);
                 $_SESSION['success'] = "Le plat a bien été créé.";
             } elseif ($action === 'modifier') {
 
                 $idPlat = $_POST['Id_plat'];
                 $titre = trim($_POST['titre']);
                 $typePlat = trim($_POST['type_plat']);
-                $photo = null;
-                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                    $nomFichier = basename($_FILES['photo']['name']);
-                    $destination = __DIR__ . '/../../public/assets/images/plats/' . $nomFichier;
-                    move_uploaded_file($_FILES['photo']['tmp_name'], $destination);
-                    $photo = $nomFichier; // on stocke juste le nom en BDD
 
+                $fichier = $_FILES['photo'] ?? null;
+                $dossierDestination = __DIR__ . '/../../public/assets/images/plats/uploads/';
+                $nouvellePhoto = FileUploadHandler::uploadImage($fichier, $dossierDestination);
+
+                if ($nouvellePhoto !== null) {
+                    $photo = 'uploads/' . $nouvellePhoto;
                 } else {
 
                     // récupérer l'ancienne photo depuis la BDD
-                    $platActuel = PlatModel::getById($idPlat);
+                    $platActuel = PlatRepository::getById($idPlat);
                     $photo = $platActuel['photo'];
                 }
 
-                PlatModel::updatePlat($idPlat, $titre, $typePlat, $photo);
+                PlatRepository::updatePlat($idPlat, $titre, $typePlat, $photo);
                 $_SESSION['success'] = "Le plat a bien été modifié.";
             } elseif ($action === 'supprimer') {
 
                 $idPlat = $_POST['Id_plat'];
-                PlatModel::deletePlat($idPlat);
+                PlatRepository::deletePlat($idPlat);
                 $_SESSION['success'] = "Le plat a bien été supprimé.";
             }
             Auth::redirect('/employe/plats');
         } else {
-            $plats = PlatModel::getAllPlats();
+            $plats = PlatRepository::getAllPlats();
             require_once(__DIR__ . '/../views/employe/plats.php');
+        }
+    }
+
+    public function handleHoraires()
+    {
+        // Vérification du rôle pour acceder à l'espace employé
+        if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'Employé' && $_SESSION['role'] !== 'Administrateur')) {
+            header('Location: /connexion');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::verifierToken($_POST['csrf_token'] ?? null)) {
+                $_SESSION['error'] = "Une erreur de sécurité s'est produite, veuillez réessayer.";
+                Auth::redirect('/employe/horaires');
+                return;
+            }
+
+            $action = $_POST['action'];
+
+            if ($action === 'modifier') {
+
+                foreach ($_POST['heure_ouverture'] as $idHoraire => $heureOuverture) {
+                    $heureFermeture = $_POST['heure_fermeture'][$idHoraire];
+                    HoraireRepository::updateHoraire($idHoraire, $heureOuverture, $heureFermeture);
+                }
+
+                $_SESSION['success'] = "Les horaires ont bien été modifiés.";
+            }
+            Auth::redirect('/employe/horaires');
+        } else {
+            $horaires = HoraireRepository::getAllHoraire();
+            require_once(__DIR__ . '/../views/employe/horaires.php');
         }
     }
 }

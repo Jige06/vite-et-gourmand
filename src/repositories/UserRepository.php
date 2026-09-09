@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class UserModel
+class UserRepository
 {
     // Méthode qui retourne les utilisateurs en cherchant par leur email
     public static function findByEmail($email)
@@ -51,6 +51,7 @@ class UserModel
         $mail->isSMTP();
         $mail->Host = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth = true;
+        $mail->CharSet = 'UTF-8';
         $mail->Port = $_ENV['MAIL_PORT'];
         $mail->Username = $_ENV['MAIL_USER'];
         $mail->Password = $_ENV['MAIL_PASS'];
@@ -68,47 +69,6 @@ class UserModel
         }
     }
 
-    // Méthode qui génère un mot de passe temporaire pour le reset password
-    public static function generateTempPassword()
-    {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-        $tempPassword = '';
-        for ($i = 0; $i < 10; $i++) {
-            $tempPassword .= $chars[random_int(0, strlen($chars) - 1)];
-        }
-        return $tempPassword;
-    }
-
-    // Méthode qui met à jour la bdd avec le mot de passe temporaire (hashé) 
-    public static function updateTempPassword($email, $tempPassword)
-    {
-        // Connexion à la BDD
-        $pdo = DatabaseConnection::getInstance();
-
-        // On crypte le mot de passe temporaire
-        $hash = password_hash($tempPassword, PASSWORD_BCRYPT);
-
-        // Requête préparée qui met à jour la bdd
-        $stmt = $pdo->prepare("UPDATE utilisateur SET mot_de_passe = :hash WHERE email = :email");
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':hash', $hash);
-
-        $stmt->execute();
-    }
-
-    // Méthode qui change la valeur du parametre "MustChangePassword"
-    public static function updateMustChangePassword($email, $value = 1)
-    {
-        // Connexion à la BDD
-        $pdo = DatabaseConnection::getInstance();
-        // Requête préparée
-        $stmt = $pdo->prepare("UPDATE utilisateur SET must_change_password = :value WHERE email = :email");
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':value', $value);
-
-        $stmt->execute();
-    }
-
     // Méthode qui met à jour le mot de passe d'un utilisateur
     public static function updatePassword($email, $hash)
     {
@@ -119,14 +79,15 @@ class UserModel
         $stmt->execute();
     }
 
-    // Méthode qui envoie le mail avec le mot de passe temporaire via PHPMailer
-    public static function sendResetMail($nom, $prenom, $email, $tempPassword)
+    // Méthode qui envoie le mail avec le lien de reinitialisation via PHPMailer
+    public static function sendResetMail($nom, $prenom, $email, $token)
     {
         $mail = new PHPMailer(true);
 
         $mail->isSMTP();
         $mail->Host = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth = true;
+        $mail->CharSet = 'UTF-8';
         $mail->Port = $_ENV['MAIL_PORT'];
         $mail->Username = $_ENV['MAIL_USER'];
         $mail->Password = $_ENV['MAIL_PASS'];
@@ -134,8 +95,10 @@ class UserModel
         $mail->setFrom($_ENV['MAIL_FROM'], 'Vite & Gourmand');
         $mail->addAddress($email, $nom . ' ' . $prenom);
 
-        $mail->Subject = 'Mot de passe temporaire';
+        $mail->Subject = 'Lien de réinitialisation Vite et Gourmand';
         $mail->isHTML(true);
+
+        $lien = $_ENV['APP_URL'] . '/reset-password?token=' . $token;
 
         $mail->Body = "
         <!DOCTYPE html>
@@ -156,8 +119,10 @@ class UserModel
             </div>
             <div class='content'>
             <p>Bonjour $prenom $nom,</p>
-            <p>voici votre mot de passe temporaire: $tempPassword</p>
-            <p>Vous devrez le modifier lors de votre  première connexion.</p>
+            <p>Vous avez demandé la réinitialisation de votre mot de passe Vite et Gourmand</p>
+            <p>Veuillez cliquer sur le lien suivant:.</p>
+            <a href='$lien'>Réinitialiser mon mot de passe</a>
+            <p>Ce lien est valable 1 heure.</p>
             <br>
             <p>À bientôt,</p>
             <p>Vite & Gourmand</p>
@@ -285,5 +250,41 @@ class UserModel
         } catch (Exception $e) {
             error_log("Erreur envoi mail : " . $mail->ErrorInfo);
         }
+    }
+
+    // Méthode qui sauvegarde le token et sa date d'expiration
+    public static function saveResetToken($email, $token, $expiry)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare('UPDATE utilisateur
+        SET reset_token = :reset_token, reset_token_expiry = :reset_token_expiry
+        WHERE email = :email');
+        $stmt->bindvalue(':reset_token', $token);
+        $stmt->bindvalue(':reset_token_expiry', $expiry);
+        $stmt->bindvalue(':email', $email);
+        $stmt->execute();
+    }
+
+    // Méthode qui retrouve un utilisateur par son token
+    public static function findResetToken($token)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare('SELECT * FROM utilisateur
+        WHERE reset_token = ? AND reset_token_expiry > NOW()');
+        $stmt->execute([$token]);
+        return $stmt->fetch();
+    }
+
+    // Méthode qui efface le token après son utilisation
+    public static function clearResetToken($email)
+    {
+        $pdo = DatabaseConnection::getInstance();
+
+        $stmt = $pdo->prepare('UPDATE utilisateur
+        SET reset_token = NULL, reset_token_expiry = NULL
+        WHERE email = ?');
+        $stmt->execute([$email]);
     }
 }
