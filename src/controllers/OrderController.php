@@ -207,7 +207,39 @@ class OrderController
                 return;
             }
 
-            OrderRepository::updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat);
+                        // Vérification code postal (5 chiffres)
+            if ($codePostalLiv && !preg_match('/^[0-9]{5}$/', $codePostalLiv)) {
+                $_SESSION['error'] = "Le code postal n'est pas valide.";
+                Auth::redirect('/commande');
+                return;
+            }
+
+            $idMenu = $commande['Id_menu'];
+            // recalcul du prix du menu côté serveur
+            $montantTotal = CommandeService::calculerPrixMenu($idMenu, $nbrePers);
+            if ($montantTotal === null) {
+                $_SESSION['error'] = "Le nombre de personnes est insuffisant.";
+                Auth::redirect('/commande');
+                return;
+            }
+
+            // recalcul des frais de livraison côté serveur, si livraison hors Bordeaux
+            $prixLiv = 0;
+            if ($typeLiv === 'Livraison') {
+                $adresseComplete = $adresseLiv . ', ' . $codePostalLiv . ' ' . $villeLiv;
+                $resultatLivraison = LivraisonService::calculerFraisLivraison($adresseComplete, $codePostalLiv);
+
+                if ($resultatLivraison === null) {
+                    $_SESSION['error'] = "Impossible de calculer les frais de livraison. Vérifiez votre adresse.";
+                    Auth::redirect('/commande');
+                    return;
+                }
+                $prixLiv = $resultatLivraison['prix'];
+            }
+
+            $montantTotal += $prixLiv;
+
+            OrderRepository::updateOrder($idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat);
             $_SESSION['success'] = "Votre commande a été mis à jour !";
             Auth::redirect('/mon-espace/commandes');
         } else {
