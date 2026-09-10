@@ -97,7 +97,7 @@ CREATE TABLE commande(
    prix_livraison DECIMAL(15,2),
    type_livraison VARCHAR(50) NOT NULL,
    adresse_livraison VARCHAR(255),
-   code_postal_livraison INT,
+   code_postal_livraison VARCHAR(50),
    ville_livraison VARCHAR(255) ,
    heure_livraison TIME NOT NULL,
    date_livraison DATE NOT NULL,

@@ -19,7 +19,7 @@ class OrderRepository
         $stmt->bindValue(':prix_livraison', $prixLivraison);
         $stmt->bindValue(':type_livraison', $typeLiv);
         $stmt->bindValue(':adresse_livraison', $adresseLiv ?: null);
-        $stmt->bindValue(':code_postal_livraison', $codePostalLiv ?: null, PDO::PARAM_INT);
+        $stmt->bindValue(':code_postal_livraison', $codePostalLiv ?: null);
         $stmt->bindValue(':ville_livraison', $villeLiv ?: null);
         $stmt->bindValue(':heure_livraison', $heureLiv);
         $stmt->bindValue(':date_livraison', $dateLiv);
@@ -142,19 +142,21 @@ class OrderRepository
         $stmt->execute();
     }
 
-    public static function updateOrder($idCommande, $nbrePers, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat)
+    public static function updateOrder($idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat)
     {
         // Connexion à la BDD
         $pdo = DatabaseConnection::getInstance();
 
         // Requête préparée
         $stmt = $pdo->prepare("UPDATE commande
-        SET nbre_pers = :nbre_pers, type_livraison = :type_livraison, adresse_livraison = :adresse_livraison,
+        SET nbre_pers = :nbre_pers, montant_total = :montant_total, prix_livraison = :prix_livraison, type_livraison = :type_livraison, adresse_livraison = :adresse_livraison,
         code_postal_livraison = :code_postal_livraison, ville_livraison = :ville_livraison, heure_livraison = :heure_livraison, date_livraison = :date_livraison, pret_materiel = :pret_materiel
         WHERE Id_commande = :Id_commande");
 
         $stmt->bindValue(':Id_commande', $idCommande);
         $stmt->bindValue(':nbre_pers', $nbrePers);
+        $stmt->bindValue(':montant_total', $montantTotal);
+        $stmt->bindValue(':prix_livraison', $prixLiv);
         $stmt->bindValue(':type_livraison', $typeLiv);
         $stmt->bindValue(':adresse_livraison', $adresseLiv);
         $stmt->bindValue(':code_postal_livraison', $codePostalLiv);
