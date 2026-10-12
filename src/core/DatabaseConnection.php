@@ -7,8 +7,10 @@ class DatabaseConnection
 {
     private static $instance = null;
 
+    // Constructeur privé : empêche l'instanciation directe (Singleton)
     private function __construct() {}
 
+    // Méthode qui retourne l'unique connexion PDO, en la créant au premier appel à partir des variables d'environnement
     public static function getInstance()
     {
         try {

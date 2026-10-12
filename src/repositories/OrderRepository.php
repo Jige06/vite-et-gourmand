@@ -130,6 +130,7 @@ class OrderRepository
         return $commande;
     }
 
+    // Méthode qui annule une commande en lui ajoutant le statut "Annulé" (Id_statut_commande = 8)
     public static function cancelOrder($idCommande)
     {
         // Connexion à la BDD
@@ -142,6 +143,7 @@ class OrderRepository
         $stmt->execute();
     }
 
+    // Méthode qui modifie les informations d'une commande existante (nombre de personnes, montant, livraison, prêt de matériel)
     public static function updateOrder($idCommande, $nbrePers, $montantTotal, $prixLiv, $typeLiv, $adresseLiv, $codePostalLiv, $villeLiv, $heureLiv, $dateLiv, $pretMat)
     {
         // Connexion à la BDD
@@ -168,6 +170,7 @@ class OrderRepository
         $stmt->execute();
     }
 
+    // Méthode qui récupère l'historique des statuts d'une commande, du plus ancien au plus récent
     public static function getStatusByOrder($idCommande)
     {
         $pdo = DatabaseConnection::getInstance();
