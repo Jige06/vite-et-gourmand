@@ -38,6 +38,7 @@ class EmployeRepository
         return $orders;
     }
 
+    // Méthode qui ajoute un nouveau statut à une commande (avec motif et mode de contact), retourne false si ce statut a déjà été attribué
     public static function updateStatus($idCommande, $nouveauStatut, $motif, $modeContact)
     {
         $pdo = DatabaseConnection::getInstance();

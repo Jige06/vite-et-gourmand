@@ -2,6 +2,7 @@
 
 class HoraireRepository
 {
+    // Méthode qui modifie les heures d'ouverture et de fermeture d'un jour
     public static function updateHoraire($idHoraire, $heureOuverture, $heureFermeture)
     {
         $pdo = DatabaseConnection::getInstance();
@@ -15,6 +16,7 @@ class HoraireRepository
         $stmt->execute();
     }
 
+    // Méthode qui récupère les horaires d'ouverture de tous les jours
     public static function getAllHoraire()
     {
         $pdo = DatabaseConnection::getInstance();

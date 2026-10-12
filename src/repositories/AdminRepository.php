@@ -2,6 +2,7 @@
 
 class AdminRepository
 {
+    // Méthode qui récupère tous les utilisateurs ayant le rôle Employé (Id_role = 2)
     public static function getEmployes()
     {
         $pdo = DatabaseConnection::getInstance();

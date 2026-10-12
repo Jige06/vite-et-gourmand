@@ -332,6 +332,7 @@ class EmployeController
         }
     }
 
+    // Méthode qui affiche les horaires d'ouverture (GET) ou enregistre leur modification (POST) depuis l'espace employé
     public function handleHoraires()
     {
         // Vérification du rôle pour acceder à l'espace employé
