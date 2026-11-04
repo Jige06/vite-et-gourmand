@@ -12,6 +12,7 @@ Permet aux clients de consulter les menus, passer des commandes en ligne et lais
 - **Front-end** : HTML5, CSS3, Bootstrap 5.3, JavaScript vanilla, Chart.js
 - **Envoi de mails** : PHPMailer + Mailtrap (tests)
 - **API externe** : OpenRouteService (calcul frais de livraison)
+- **Application installable (PWA)** : manifest + service worker en JavaScript natif, consultation hors ligne des menus ([docs/pwa.md](docs/pwa.md))
 - **Conteneurisation** : Docker
 - **Déploiement** : Railway
 
@@ -161,11 +162,15 @@ vite-et-gourmand/
 ├── public/
 │ ├── assets/
 │ │ ├── css/ # Feuilles de style
+│ │ ├── icons/ # Icônes de l'application installée (PWA)
 │ │ ├── images/ # Images (menus, plats)
-│ │ └── js/ # Scripts JavaScript
+│ │ └── js/ # Scripts JavaScript (dont pwa.js)
 │ ├── .htaccess # Réécriture des URLs
 │ ├── favicon-512.png
-│ └── index.php # Point d'entrée + routeur
+│ ├── index.php # Point d'entrée + routeur
+│ ├── manifest.webmanifest # Manifest de la PWA
+│ ├── offline.html # Page affichée hors connexion
+│ └── sw.js # Service worker (cache et hors ligne)
 ├── src/
 │ ├── controllers/ # Contrôleurs (AuthController, OrderController...)
 │ ├── core/ # Classes fondamentales (Auth, Csrf, Validator, FileUploadHandler...)

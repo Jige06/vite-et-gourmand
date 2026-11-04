@@ -18,11 +18,21 @@
     <meta name="author" content="Vite & Gourmand">
     <meta name="robots" content="index, follow">
     <?php
-    $urlCanonique = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    // Derrière le proxy de Railway, le conteneur reçoit du HTTP : le protocole
+    // d'origine du visiteur est transmis dans l'en-tête X-Forwarded-Proto
+    $estHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+    $urlCanonique = ($estHttps ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     ?>
     <link rel="canonical" href="<?= htmlspecialchars($urlCanonique) ?>">
     <!-- Balise link favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon-512.png">
+    <link rel="icon" type="image/png" href="/favicon-512.png">
+    <!-- PWA : manifest, couleur de la barre d'état, icône iPhone -->
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="V&G">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -33,6 +43,7 @@
     <title>Vite & Gourmand</title>
     <script src="/assets/js/app.js" defer></script>
     <script src="/assets/js/validation.js" defer></script>
+    <script src="/assets/js/pwa.js" defer></script>
 </head>
 
 <body>
@@ -72,6 +83,10 @@
                             <li class="nav-item"><a class="nav-link" href="/connexion">connexion</a></li>
                             <li class="nav-item"><a class="nav-link" href="/inscription">s'inscrire</a></li>
                         <?php endif; ?>
+                        <!-- Affiché par pwa.js uniquement si le navigateur propose l'installation -->
+                        <li class="nav-item" hidden>
+                            <button type="button" class="nav-link bouton-installer" id="bouton-installer">installer l'appli</button>
+                        </li>
                     </ul>
                 </div>
             </div>

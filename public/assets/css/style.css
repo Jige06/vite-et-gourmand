@@ -456,3 +456,16 @@ th {
 .nom-plat {
   text-align: center;
 }
+
+/* PWA : bouton « installer l'appli » de la navbar */
+.bouton-installer {
+  background: none;
+  border: 1px solid var(--couleur-secondary);
+  border-radius: 6px;
+  padding: 0.25rem 0.75rem !important;
+}
+
+.bouton-installer:hover {
+  background-color: var(--couleur-secondary);
+  color: white !important;
+}

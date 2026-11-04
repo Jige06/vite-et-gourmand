@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="robots" content="noindex">
+    <title>Hors ligne — Vite & Gourmand</title>
+    <link rel="icon" href="/favicon-512.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <!--
+        Page servie par le service worker quand une page n'est ni joignable
+        sur le réseau ni présente dans le cache.
+        Elle est autonome (pas de PHP, styles intégrés) pour pouvoir
+        s'afficher sans aucune connexion.
+    -->
+    <style>
+        :root {
+            --couleur-primary: #0056b3;
+            --couleur-secondary: #e67e22;
+            --couleur-dark: #0f172a;
+            --couleur-bg-dark: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            background-color: var(--couleur-dark);
+            color: #fff;
+            font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            text-align: center;
+        }
+
+        main {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .logo {
+            width: 96px;
+            height: 96px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .bouton {
+            display: inline-block;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid var(--couleur-secondary);
+            border-radius: 8px;
+            background-color: var(--couleur-secondary);
+            color: #fff;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .bouton:hover {
+            background-color: transparent;
+        }
+
+        #pages-dispo {
+            margin-top: 32px;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: var(--couleur-bg-dark);
+            text-align: left;
+        }
+
+        #pages-dispo h2 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        #pages-dispo ul {
+            list-style: none;
+        }
+
+        #pages-dispo li+li {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #pages-dispo a {
+            display: block;
+            padding: 10px 0;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #pages-dispo a:hover {
+            color: var(--couleur-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <img class="logo" src="/assets/icons/icon-192.png" alt="Logo Vite & Gourmand">
+        <h1>Vous êtes hors ligne</h1>
+        <p>Cette page n'est pas disponible sans connexion. Vérifiez votre réseau puis réessayez.</p>
+        <button class="bouton" type="button" id="bouton-reessayer">Réessayer</button>
+
+        <!-- Rempli en JS avec les pages déjà consultées, si le cache en contient -->
+        <section id="pages-dispo" hidden>
+            <h2>Disponible sans connexion</h2>
+            <ul id="liste-pages"></ul>
+        </section>
+    </main>
+
+    <script>
+        // Bouton « Réessayer » : recharge la page demandée au départ
+        document.getElementById('bouton-reessayer').addEventListener('click', function () {
+            window.location.reload();
+        });
+
+        // Dès que la connexion revient, on recharge automatiquement
+        window.addEventListener('online', function () {
+            window.location.reload();
+        });
+
+        // Libellés lisibles pour les pages publiques
+        const LIBELLES = {
+            '/': 'Accueil',
+            '/menus': 'Nos menus',
+            '/avis': 'Les avis',
+            '/cgv': 'Conditions générales de vente',
+            '/mentions-legales': 'Mentions légales'
+        };
+
+        // Liste les pages déjà mises en cache par le service worker
+        async function afficherPagesDisponibles() {
+            if (!('caches' in window)) {
+                return;
+            }
+
+            const nomsCaches = await caches.keys();
+            const cachePages = nomsCaches.find(function (nom) {
+                return nom.startsWith('vg-pages-');
+            });
+            if (!cachePages) {
+                return;
+            }
+
+            const cache = await caches.open(cachePages);
+            const requetes = await cache.keys();
+            const liste = document.getElementById('liste-pages');
+
+            for (const requete of requetes) {
+                const url = new URL(requete.url);
+                let libelle = LIBELLES[url.pathname];
+
+                // Pour un menu, on lit son titre (h2 « Menu … ») dans la page en cache
+                if (url.pathname === '/menus/detail') {
+                    const reponse = await cache.match(requete);
+                    const html = await reponse.text();
+                    const page = new DOMParser().parseFromString(html, 'text/html');
+                    const titre = page.querySelector('h2');
+                    libelle = titre ? titre.textContent.trim() : 'Détail d\'un menu';
+                }
+
+                if (!libelle) {
+                    continue;
+                }
+
+                const lien = document.createElement('a');
+                lien.href = url.pathname + url.search;
+                lien.textContent = libelle;
+
+                const element = document.createElement('li');
+                element.appendChild(lien);
+                liste.appendChild(element);
+            }
+
+            if (liste.children.length > 0) {
+                document.getElementById('pages-dispo').hidden = false;
+            }
+        }
+
+        afficherPagesDisponibles();
+    </script>
+</body>
+
+</html>

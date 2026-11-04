@@ -2,3 +2,17 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
+
+# PWA : type MIME officiel du manifest
+AddType application/manifest+json .webmanifest
+
+<IfModule mod_headers.c>
+    # Le service worker ne doit jamais être servi depuis le cache HTTP :
+    # sinon le navigateur ne détecte pas ses nouvelles versions
+    <Files "sw.js">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </Files>
+    <Files "manifest.webmanifest">
+        Header set Cache-Control "no-cache"
+    </Files>
+</IfModule>
